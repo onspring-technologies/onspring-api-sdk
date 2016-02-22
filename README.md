@@ -1,0 +1,258 @@
+# Onspring .NET SDK
+
+The .NET SDK for the [Onspring](https://www.onspring.com) API simplifies .NET application development for Onspring customers that would like to integrate with their Onspring instance.
+
+## Prerequisites
+
+- .NET 4.5 or later
+
+## Installation
+
+Install the SDK using Nuget
+
+`PM> Install-Package Onspring.API.SDK`
+
+## API Key
+
+In order to successfully interact with the Onspring API, you must use an API key.  API keys may be obtained by an Onspring user with permissions to read API Keys for your instance, using the following instructions: 
+
+1.	Within Onspring, navigate to Administration | Security | API Keys.  
+2.	On the list page, add a new API Key (requires Create permissions) or click an existing API Key to view its details.  
+3.	On the details page for an API Key, expand the **Developer Information** section.  Copy the **X-ApiKey Header** value from this section.
+
+#### Important
+
+- An API Key must have a **Status** of *Enabled* (available on the details page) in order to be used.
+- Each API Key has an associated **Role** that controls the permissions for requests made using that API Key.  An Onspring administrator may configure those permissions as they would any other Role in Onspring.  If the API Key does not have sufficient permissions to perform the requested action, an error will be returned.
+
+## Sample Projects
+
+- [Onspring.ApiDemo](https://github.com/onspring-technologies/Onspring.ApiDemo) - a WinForms application that can be used to try out the SDK features in a more visual way
+- [Onspring.ADSync](https://github.com/onspring-technologies/Onspring.ADSync) - a console application that helps you learn the recommended approach for creating an integration to an Onspring instance using the SDK
+
+## Start Coding
+
+The most common way to use the SDK is to create an `HttpHelper` instance and call its methods.  Its constructor requires two parameters:
+
+- `baseUrl` - currently this should always be: **`https://api.onspring.com/v1`**
+- `apiKey` - the value obtained by following the steps in the **API Key** section
+
+For example:
+
+```C#
+using Onspring.API.SDK.Helpers;
+
+const string baseUrl = "https://api.onspring.com/v1";
+const string apiKey = "000000ffffff000000ffffff/00000000-ffff-0000-ffff-000000000000";
+var httpHelper = new HttpHelper(baseUrl, apiKey);
+```
+
+## Full API Documentation
+
+When using the SDK, you do not need to be as concerned with the details covered in the full [Onspring API documentation](https://goo.gl/vgyHm2).  However, you may wish to refer to it when determining which values to pass as parameters to some of the `HttpHelper` methods.
+
+## Example Code
+
+The examples that follow assume you have created an `HttpHelper` as described in the **Start Coding** section.
+
+### Verify connectivity
+
+```C#
+if (httpHelper.CanConnect())
+{
+  // we're connected
+}
+```
+
+### Get the list of apps and surveys
+
+```C#
+foreach (App app in httpHelper.GetApps())
+{
+	Console.WriteLine($"{app.Id}, {app.Name}");
+}
+```
+
+### Get the fields for an app/survey
+
+```C#
+var appId = 5;
+foreach (Field field in httpHelper.GetAppFields(appId))
+{
+	Console.WriteLine($"{field.Id}, {field.AppId}, {field.Name}, {field.Type}, {field.Status}, {field.IsRequired}, {field.IsUnique}");
+}
+```
+
+### Get one field
+
+```C#
+var fieldId = 40;
+Field field = httpHelper.GetAppField(fieldId);
+Console.WriteLine($"{field.Id}, {field.AppId}, {field.Name}, {field.Type}, {field.Status}, {field.IsRequired}, {field.IsUnique}");
+var referenceField = field as ReferenceField;
+if (referenceField != null)
+{
+    Console.WriteLine($"Multiplicity: {referenceField.Multiplicity}");
+}
+var listField = field as ListField;
+if (listField != null)
+{
+    Console.WriteLine($"Multiplicity: {listField.Multiplicity}");
+    WriteListValues(listField.Values);
+}
+var formulaField = field as FormulaField;
+if (formulaField != null)
+{
+    Console.WriteLine($"OutputType: {formulaField.OutputType}");
+    if (formulaField.OutputType == FormulaOutputType.List)
+    {
+        WriteListValues(formulaField.Values);
+    }
+}
+
+private void WriteListValues(IReadOnlyList<ListValue> listValues)
+{
+    foreach (ListValue value in listValues)
+    {
+        Console.WriteLine($"{value.Id}, {value.Name}, {value.SortOrder}, {value.NumericValue}, {value.Color}");
+    }
+}
+```
+
+### Get the reports for an app/survey
+
+```C#
+var appId = 5;
+foreach (Report report in httpHelper.GetAppReports(appId))
+{
+	Console.WriteLine($"{report.Id}, {report.AppId}, {report.Name}");
+}
+```
+
+### Get the data from one report
+
+```C#
+var reportId = 61;
+var dataType = ReportDataType.ChartData;
+var dataFormat = DataFormat.Raw;
+ReportData reportData = httpHelper.GetReportData(reportId, dataType, dataFormat);
+Console.WriteLine(string.Join(", ", reportData.Columns));
+foreach (ReportDataRow row in reportData.Rows)
+{
+    Console.WriteLine(string.Join(", ", row.Cells));
+}
+```
+
+### Get records
+
+```C#
+var appId = 5;
+var filter = "not (38 lt 10 or 36 eq 'Smith') and 37 gt datetime'2014-03-01T00:00:00.0000000'";
+var recordIds = new[] {100, 101, 102};
+var fieldIds = new[] {36, 37, 38};
+var dataFormat = DataFormat.Formatted;
+var records = httpHelper.GetAppRecords(appId, filter, recordIds, fieldIds, dataFormat);
+foreach (ResultRecord record in records)
+{
+    Console.WriteLine($"AppId: {record.AppId}, RecordId: {record.RecordId}");
+    foreach (FieldValueWrapper wrapper in record.Values.WithFieldId())
+    {
+        Console.WriteLine($"FieldId: {wrapper.FieldId}, Type: {wrapper.Value.Type}");
+    }
+}
+```
+
+### Get one record
+
+```C#
+var appId = 5;
+var recordId = 100;
+var fieldIds = new[] {36, 37, 38};
+var dataFormat = DataFormat.Raw;
+ResultRecord record = httpHelper.GetAppRecord(appId, recordId, fieldIds, dataFormat);
+foreach (FieldValueWrapper wrapper in record.Values.WithFieldId())
+{
+    Console.WriteLine($"FieldId: {wrapper.FieldId}, Type: {wrapper.Value.Type}, Value: {GetResultValueString(wrapper.Value)}");
+}
+
+private string GetResultValueString(ResultValue value)
+{
+    switch (value.Type)
+    {
+        case ResultValueType.String:
+            return value.AsString;
+        case ResultValueType.Integer:
+            return $"{value.AsNullableInteger}";
+        case ResultValueType.Decimal:
+            return $"{value.AsNullableDecimal}";
+        case ResultValueType.Date:
+            return $"{value.AsNullableDateTime}";
+        case ResultValueType.TimeSpan:
+            var data = value.AsTimeSpanData;
+            return $"Quantity: {data.Quantity}, Increment: {data.Increment}, Recurrence: {data.Recurrence}, EndByDate: {data.EndByDate}, EndAfterOccurrences: {data.EndAfterOccurrences}";
+        case ResultValueType.Guid:
+            return $"{value.AsNullableGuid}";
+        case ResultValueType.StringList:
+            return string.Join(", ", value.AsStringList);
+        case ResultValueType.IntegerList:
+            return string.Join(", ", value.AsIntegerList);
+        case ResultValueType.GuidList:
+            return string.Join(", ", value.AsGuidList);
+        case ResultValueType.AttachmentList:
+            var attachmentFiles = value.AsAttachmentList.Select(f => $"FileId: {f.FileId}, FileName: {f.FileName}, Notes: {f.Notes}");
+            return string.Join(", ", attachmentFiles);
+        case ResultValueType.ScoringGroupList:
+            var scoringGroups = value.AsScoringGroupList.Select(g => $"ListValueId: {g.ListValueId}, Name: {g.Name}, Score: {g.Score}, MaximumScore: {g.MaximumScore}");
+            return string.Join(", ", scoringGroups);
+        default:
+            // e.g., future types not supported in this version
+            return $"Unsupported ResultValueType: {value.Type}";
+    }
+}
+```
+
+### Add a record
+
+```C#
+var appId = 5;
+const int numberFieldId = 38;
+const int dateFieldId = 37;
+const int textFieldId = 36;
+FieldAddEditContainer fieldValues = new FieldAddEditContainer();
+fieldValues.Add(numberFieldId, 123.45);
+fieldValues.Add(dateFieldId, DateTime.UtcNow);
+fieldValues.Add(textFieldId, "text value");
+AddEditResult result = httpHelper.CreateAppRecord(appId, fieldValues);
+Console.WriteLine($"New Record Id is: {result.CreatedId}");
+foreach (string warning in result.Warnings)
+{
+	Console.WriteLine($"Warning: {warning}");
+}
+```
+
+### Update a record
+
+```C#
+var appId = 5;
+var recordId = 100;
+const int numberFieldId = 38;
+const int dateFieldId = 37;
+const int textFieldId = 36;
+FieldAddEditContainer fieldValues = new FieldAddEditContainer();
+fieldValues.Add(numberFieldId, 678.90);
+fieldValues.Add(dateFieldId, DateTime.UtcNow);
+fieldValues.Add(textFieldId, "updated text value");
+AddEditResult result = httpHelper.UpdateAppRecord(appId, recordId, fieldValues);
+foreach (string warning in result.Warnings)
+{
+	Console.WriteLine($"Warning: {warning}");
+}
+```
+
+### Delete a record
+
+```C#
+var appId = 5;
+var recordId = 100;
+DeleteRecord result = httpHelper.DeleteAppRecord(appId, recordId);
+```

@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{80DB29FB-B774-4E87-83E9-C2E7A7CB640B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Onspring.API.SDK</RootNamespace>
+    <AssemblyName>Onspring.API.SDK</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Enums\Multiplicity.cs" />
+    <Compile Include="Enums\TimeSpanIncrement.cs" />
+    <Compile Include="Enums\TimeSpanRecurrenceType.cs" />
+    <Compile Include="Enums\ResultValueType.cs" />
+    <Compile Include="Enums\DataFormat.cs" />
+    <Compile Include="Enums\FormulaOutputType.cs" />
+    <Compile Include="Enums\FieldType.cs" />
+    <Compile Include="Enums\FieldStatus.cs" />
+    <Compile Include="Enums\ReportDataType.cs" />
+    <Compile Include="Helpers\HttpHelper.cs" />
+    <Compile Include="Helpers\JsonHelper.cs" />
+    <Compile Include="Helpers\UrlHelper.cs" />
+    <Compile Include="Models\DeleteResult.cs" />
+    <Compile Include="Models\AddEditResult.cs" />
+    <Compile Include="Models\FieldAddEditContainer.cs" />
+    <Compile Include="Models\FieldValueWrapper.cs" />
+    <Compile Include="Models\FieldValueContainer.cs" />
+    <Compile Include="Models\ReferenceField.cs" />
+    <Compile Include="Models\ResultRecord.cs" />
+    <Compile Include="Models\ReportDataRow.cs" />
+    <Compile Include="Models\ReportData.cs" />
+    <Compile Include="Models\Report.cs" />
+    <Compile Include="Models\ListValue.cs" />
+    <Compile Include="Models\ListField.cs" />
+    <Compile Include="Models\FormulaField.cs" />
+    <Compile Include="Models\Field.cs" />
+    <Compile Include="Models\App.cs" />
+    <Compile Include="ResultValues\AttachmentFile.cs" />
+    <Compile Include="ResultValues\AttachmentListValue.cs" />
+    <Compile Include="ResultValues\DateValue.cs" />
+    <Compile Include="ResultValues\DecimalValue.cs" />
+    <Compile Include="ResultValues\GuidListValue.cs" />
+    <Compile Include="ResultValues\IntegerListValue.cs" />
+    <Compile Include="ResultValues\GuidValue.cs" />
+    <Compile Include="ResultValues\IntegerValue.cs" />
+    <Compile Include="ResultValues\ResultValue.cs" />
+    <Compile Include="ResultValues\ScoringGroup.cs" />
+    <Compile Include="ResultValues\ScoringGroupListValue.cs" />
+    <Compile Include="ResultValues\StringListValue.cs" />
+    <Compile Include="ResultValues\StringValue.cs" />
+    <Compile Include="ResultValues\TimeSpanData.cs" />
+    <Compile Include="ResultValues\TimeSpanValue.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
