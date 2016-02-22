@@ -1,4 +1,12 @@
-﻿using System.Reflection;
+﻿#region Copyright
+// /* 
+//  * Onspring API SDK
+//  * Copyright (c) 2010, 2016 Onspring Technologies, LLC. All Rights Reserved.
+//  * 
+//  *  
+// */
+#endregion
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 

@@ -1,4 +1,12 @@
-﻿using System.Collections.Generic;
+﻿#region Copyright
+// /* 
+//  * Onspring API SDK
+//  * Copyright (c) 2010, 2016 Onspring Technologies, LLC. All Rights Reserved.
+//  * 
+//  *  
+// */
+#endregion
+using System.Collections.Generic;
 using System.Linq;
 using Onspring.API.SDK.ResultValues;
 

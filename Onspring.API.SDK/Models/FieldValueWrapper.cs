@@ -1,4 +1,12 @@
-﻿using Onspring.API.SDK.ResultValues;
+﻿#region Copyright
+// /* 
+//  * Onspring API SDK
+//  * Copyright (c) 2010, 2016 Onspring Technologies, LLC. All Rights Reserved.
+//  * 
+//  *  
+// */
+#endregion
+using Onspring.API.SDK.ResultValues;
 
 namespace Onspring.API.SDK.Models
 {
