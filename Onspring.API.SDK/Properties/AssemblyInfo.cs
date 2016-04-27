@@ -13,7 +13,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Onspring.API.SDK")]
-[assembly: AssemblyDescription("Onspring Technologies SDK for API Access")]
+[assembly: AssemblyDescription("Onspring Technologies .NET SDK for API Access")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Onspring Technologies")]
 [assembly: AssemblyProduct("Onspring.API.SDK")]
@@ -31,15 +31,21 @@ using System.Runtime.InteropServices;
 
 // Version information for an assembly consists of the following four values:
 //
-//      Major Version
-//      Minor Version 
-//      Build Number
+//      Major Version - Breaking changes
+//      Minor Version - New features, but backwards compatible
+//      Patch - Backwards compatible bug fixes only
 //      Revision
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.1.0.0")]
+[assembly: AssemblyFileVersion("1.1.0.0")]
+
 // this is used by Nuget - if anything follows the "x.x.x", this will be considered a prerelease Nuget package (e.g., "1.0.0-prerelease")
-[assembly: AssemblyInformationalVersion("1.0.0")]
+//
+//      Major Version - Breaking changes
+//      Minor Version - New features, but backwards compatible
+//      Patch - Backwards compatible bug fixes only
+//
+[assembly: AssemblyInformationalVersion("1.1.0")]

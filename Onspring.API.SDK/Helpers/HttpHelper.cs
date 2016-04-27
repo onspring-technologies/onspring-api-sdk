@@ -8,6 +8,7 @@
 #endregion
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -157,7 +158,7 @@ namespace Onspring.API.SDK.Helpers
             var recordJson = fieldValues.Serialize();
             var uri = _urlHelper.GetCreateAppRecordUri(appId);
             const string method = "POST";
-            using (var response = MakeRequestWithBody(uri, method, recordJson))
+            using (var response = MakeRequestWithJsonBody(uri, method, recordJson))
             {
                 if (response.StatusCode == HttpStatusCode.Created)
                 {
@@ -172,9 +173,61 @@ namespace Onspring.API.SDK.Helpers
             var recordJson = fieldValues.Serialize();
             var uri = _urlHelper.GetUpdateAppRecordUri(appId, recordId);
             const string method = "PUT";
-            using (var response = MakeRequestWithBody(uri, method, recordJson))
+            using (var response = MakeRequestWithJsonBody(uri, method, recordJson))
             {
                 if (IsSuccessfulNonRedirectRequest(response))
+                {
+                    return CreateSuccessfulAddEditResult(response);
+                }
+                throw CreateResponseException(uri, method, response);
+            }
+        }
+
+        public FileResult GetFileFromRecord(int appId, int recordId, int fieldId, int fileId)
+        {
+            var uri = _urlHelper.GetFileFromRecordUri(appId, recordId, fieldId, fileId);
+            using (var response = MakeGetRequest(uri))
+            {
+                var result = new FileResult
+                {
+                    FileName = response.Headers["Content-Disposition"].Replace("attachment; filename=", "").Replace("\"", ""),
+                    ContentType = response.ContentType,
+                    ContentLength = response.ContentLength,
+                };
+                using (var rs = response.GetResponseStream())
+                {
+                    rs?.CopyTo(result.Stream);
+                }
+                if (result.ContentLength != result.Stream.Length)
+                {
+                    throw new ApplicationException($"Expected {result.ContentLength} bytes, but received {result.Stream.Length} bytes");
+                }
+                return result;
+            }
+        }
+
+        public AddEditResult AddFileToRecord(int appId, int recordId, int fieldId, string filePath, string contentType, string fileNotes = null)
+        {
+            if (!File.Exists(filePath))
+            {
+                throw new ApplicationException($"File not found: {filePath}");
+            }
+            var fileName = Path.GetFileName(filePath);
+            var modifiedTime = File.GetLastWriteTime(filePath);
+            using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            {
+                // call the other version
+                return AddFileToRecord(appId, recordId, fieldId, fileStream, fileName, contentType, modifiedTime, fileNotes);
+            }
+        }
+
+        public AddEditResult AddFileToRecord(int appId, int recordId, int fieldId, Stream fileStream, string fileName, string contentType, DateTime? modifiedTime = null, string fileNotes = null)
+        {
+            var uri = _urlHelper.GetAddFileToRecordUri(appId, recordId, fieldId, fileName, modifiedTime, fileNotes);
+            const string method = "POST";
+            using (var response = MakeRequestWithStreamBody(uri, method, fileStream, contentType))
+            {
+                if (response.StatusCode == HttpStatusCode.Created)
                 {
                     return CreateSuccessfulAddEditResult(response);
                 }
@@ -188,10 +241,10 @@ namespace Onspring.API.SDK.Helpers
             if (response.Headers.AllKeys.Contains("OnspringCreatedId"))
             {
                 var idString = response.Headers["OnspringCreatedId"];
-                int recordId;
-                if (int.TryParse(idString, out recordId))
+                int id;
+                if (int.TryParse(idString, out id))
                 {
-                    result.CreatedId = recordId;
+                    result.CreatedId = id;
                 }
             }
             if (response.Headers.AllKeys.Contains("Location"))
@@ -255,7 +308,7 @@ namespace Onspring.API.SDK.Helpers
             throw CreateResponseException(uri, method, response);
         }
 
-        private HttpWebResponse MakeRequestWithBody(Uri uri, string method, string body)
+        private HttpWebResponse MakeRequestWithJsonBody(Uri uri, string method, string body)
         {
             var request = InitRequest(uri);
             request.Method = method;
@@ -265,6 +318,29 @@ namespace Onspring.API.SDK.Helpers
             using (var requestStream = request.GetRequestStream())
             {
                 requestStream.Write(data, 0, data.Length);
+            }
+
+            HttpWebResponse response;
+            try
+            {
+                response = request.GetResponse() as HttpWebResponse;
+            }
+            catch (WebException ex)
+            {
+                response = ex.Response as HttpWebResponse;
+            }
+            return response;
+        }
+
+        private HttpWebResponse MakeRequestWithStreamBody(Uri uri, string method, Stream fileStream, string contentType)
+        {
+            var request = InitRequest(uri);
+            request.Method = method;
+            request.ContentType = contentType;
+            request.ContentLength = fileStream.Length;
+            using (var requestStream = request.GetRequestStream())
+            {
+                fileStream.CopyTo(requestStream);
             }
 
             HttpWebResponse response;

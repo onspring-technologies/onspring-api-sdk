@@ -19,6 +19,7 @@ namespace Onspring.API.SDK.Enums
         Reference = 500,
         SurveyGroupScoring = 600,
         SurveyCampaign = 601,
+        SurveyUnifiedAnswer = 602,
         Attachment = 800,
         Image = 801,
         Formula = 900,

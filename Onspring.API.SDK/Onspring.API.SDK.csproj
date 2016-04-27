@@ -59,6 +59,7 @@
     <Compile Include="Helpers\HttpHelper.cs" />
     <Compile Include="Helpers\JsonHelper.cs" />
     <Compile Include="Helpers\UrlHelper.cs" />
+    <Compile Include="Models\FileResult.cs" />
     <Compile Include="Models\DeleteResult.cs" />
     <Compile Include="Models\AddEditResult.cs" />
     <Compile Include="Models\FieldAddEditContainer.cs" />

@@ -178,6 +178,33 @@ namespace Onspring.API.SDK.Helpers
             return builder.Uri;
         }
 
+        public Uri GetFileFromRecordUri(int appId, int recordId, int fieldId, int fileId)
+        {
+            var builder = new UriBuilder(_baseUri);
+            builder.Path += $"files/{appId}/{recordId}/{fieldId}";
+            builder.Query = "fileId=" + fileId;
+            return builder.Uri;
+        }
+
+        public Uri GetAddFileToRecordUri(int appId, int recordId, int fieldId, string fileName,
+            DateTime? modifiedTime = null, string fileNotes = null)
+        {
+            var builder = new UriBuilder(_baseUri);
+            builder.Path += $"files/{appId}/{recordId}/{fieldId}";
+            var queryBuilder = new QueryBuilder();
+            queryBuilder.Add("fileName", fileName);
+            if (modifiedTime != null)
+            {
+                queryBuilder.Add("modifiedTime", modifiedTime.Value.ToUniversalTime().ToString("u"));
+            }
+            if (fileNotes != null)
+            {
+                queryBuilder.Add("fileNotes", fileNotes);
+            }
+            builder.Query = queryBuilder.ToString();
+            return builder.Uri;
+        }
+
         private class QueryBuilder
         {
             private readonly List<string> _segments = new List<string>();

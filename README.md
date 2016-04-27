@@ -215,9 +215,9 @@ private string GetResultValueString(ResultValue value)
 
 ```C#
 var appId = 5;
-const int numberFieldId = 38;
-const int dateFieldId = 37;
-const int textFieldId = 36;
+var numberFieldId = 38;
+var dateFieldId = 37;
+var textFieldId = 36;
 FieldAddEditContainer fieldValues = new FieldAddEditContainer();
 fieldValues.Add(numberFieldId, 123.45);
 fieldValues.Add(dateFieldId, DateTime.UtcNow);
@@ -235,9 +235,9 @@ foreach (string warning in result.Warnings)
 ```C#
 var appId = 5;
 var recordId = 100;
-const int numberFieldId = 38;
-const int dateFieldId = 37;
-const int textFieldId = 36;
+var numberFieldId = 38;
+var dateFieldId = 37;
+var textFieldId = 36;
 FieldAddEditContainer fieldValues = new FieldAddEditContainer();
 fieldValues.Add(numberFieldId, 678.90);
 fieldValues.Add(dateFieldId, DateTime.UtcNow);
@@ -254,5 +254,56 @@ foreach (string warning in result.Warnings)
 ```C#
 var appId = 5;
 var recordId = 100;
-DeleteRecord result = httpHelper.DeleteAppRecord(appId, recordId);
+DeleteResult result = httpHelper.DeleteAppRecord(appId, recordId);
+```
+
+### Add an attachment or image file to a record
+
+If the file you want to add physically exists on disk, you can use the overload that accepts a filePath parameter:
+
+```C#
+var appId = 5;
+var recordId = 100;
+var attachmentFieldId = 50;
+var filePath = "C:\Users\Public\Documents\Contract.pdf";
+var contentType = "application/pdf";
+var fileNotes = "Initial revision";
+AddEditResult result = httpHelper.AddFileToRecord(appId, recordId, attachmentFieldId, filePath, contentType, fileNotes);
+Console.WriteLine($"New File Id is: {result.CreatedId}");
+```
+
+Otherwise, you can create a stream that contains the file's contents and use the other overload:
+
+```C#
+var appId = 5;
+var recordId = 100;
+var attachmentFieldId = 50;
+var fileName = "Contract.pdf";
+var contentType = "application/pdf";
+var modifiedTime = DateTime.UtcNow;
+var fileNotes = "Initial revision";
+using (Stream stream = new MemoryStream())
+{
+    AddEditResult result = httpHelper.AddFileToRecord(appId, recordId, attachmentFieldId, stream, fileName, contentType, modifiedTime, fileNotes);
+    Console.WriteLine($"New File Id is: {result.CreatedId}");
+}
+```
+
+### Get an attachment or image file from a record
+
+```C#
+var appId = 5;
+var recordId = 100;
+var attachmentFieldId = 50;
+var fileId = 1234;
+using (FileResult result = httpHelper.GetFileFromRecord(appId, recordId, attachmentFieldId, fileId))
+{
+    Console.WriteLine($"FileName is: {result.FileName}");
+    Console.WriteLine($"ContentType: {result.ContentType}");
+    Console.WriteLine($"ContentLength: {result.ContentLength}");
+    using (var fileStream = new FileStream($"C:\Users\Public\Documents\{result.FileName}", FileMode.Create))
+    {
+       result.Stream.CopyTo(fileStream);
+    }
+} 
 ```
