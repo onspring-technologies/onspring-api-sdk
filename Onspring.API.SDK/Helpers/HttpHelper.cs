@@ -299,7 +299,7 @@ namespace Onspring.API.SDK.Helpers
             }
             catch (WebException ex)
             {
-                response = ex.Response as HttpWebResponse;
+                response = HandleWebException(ex, uri, method);
             }
             if (IsSuccessfulNonRedirectRequest(response))
             {
@@ -327,7 +327,7 @@ namespace Onspring.API.SDK.Helpers
             }
             catch (WebException ex)
             {
-                response = ex.Response as HttpWebResponse;
+                response = HandleWebException(ex, uri, method);
             }
             return response;
         }
@@ -350,9 +350,27 @@ namespace Onspring.API.SDK.Helpers
             }
             catch (WebException ex)
             {
-                response = ex.Response as HttpWebResponse;
+                response = HandleWebException(ex, uri, method);
             }
             return response;
+        }
+
+        private HttpWebResponse HandleWebException(WebException ex, Uri uri, string method)
+        {
+            var result = ex.Response as HttpWebResponse;
+            if (result == null)
+            {
+                // e.g., timeout
+                var message = $"Request to {method} '{uri}' failed ({ex.Message}). ";
+                var innerException = ex.InnerException;
+                while (innerException != null)
+                {
+                    message += "\r\n" + innerException.Message;
+                    innerException = innerException.InnerException;
+                }
+                throw new ApplicationException(message);
+            }
+            return result;
         }
 
         /// <summary>
