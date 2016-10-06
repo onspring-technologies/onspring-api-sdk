@@ -188,19 +188,39 @@ namespace Onspring.API.SDK.Helpers
             var uri = _urlHelper.GetFileFromRecordUri(appId, recordId, fieldId, fileId);
             using (var response = MakeGetRequest(uri))
             {
+                long contentLength = 0;
+                if (response.Headers.AllKeys.Contains("X-FileSize"))
+                {
+                    var fileSizeString = response.Headers["X-FileSize"];
+                    long fileSize;
+                    if (long.TryParse(fileSizeString, out fileSize))
+                    {
+                        contentLength = fileSize;
+                    }
+                }
+                if (contentLength == 0)
+                {
+                    // will be -1 if Content-Length header is not present (e.g., Transfer-Encoding is chunked)
+                    contentLength = response.ContentLength;
+                }
                 var result = new FileResult
                 {
                     FileName = response.Headers["Content-Disposition"].Replace("attachment; filename=", "").Replace("\"", ""),
                     ContentType = response.ContentType,
-                    ContentLength = response.ContentLength,
+                    ContentLength = contentLength,
                 };
                 using (var rs = response.GetResponseStream())
                 {
                     rs?.CopyTo(result.Stream);
                 }
-                if (result.ContentLength != result.Stream.Length)
+                var streamLength = result.Stream.Length;
+                if (contentLength <= 0)
                 {
-                    throw new ApplicationException($"Expected {result.ContentLength} bytes, but received {result.Stream.Length} bytes");
+                    result.ContentLength = streamLength;
+                }
+                else if (contentLength != streamLength)
+                {
+                    throw new ApplicationException($"Expected {contentLength} bytes, but received {streamLength} bytes");
                 }
                 return result;
             }
