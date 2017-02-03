@@ -17,7 +17,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Onspring Technologies")]
 [assembly: AssemblyProduct("Onspring.API.SDK")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyCopyright("Copyright © Onspring Technologies 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -39,8 +39,8 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.1.2.0")]
-[assembly: AssemblyFileVersion("1.1.2.0")]
+[assembly: AssemblyVersion("2.0.0.0")]
+[assembly: AssemblyFileVersion("2.0.0.0")]
 
 // this is used by Nuget - if anything follows the "x.x.x", this will be considered a prerelease Nuget package (e.g., "1.0.0-prerelease")
 //
@@ -48,4 +48,4 @@ using System.Runtime.InteropServices;
 //      Minor Version - New features, but backwards compatible
 //      Patch - Backwards compatible bug fixes only
 //
-[assembly: AssemblyInformationalVersion("1.1.2")]
+[assembly: AssemblyInformationalVersion("2.0.0")]
