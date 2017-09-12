@@ -17,6 +17,7 @@ namespace Onspring.API.SDK.Enums
         TimeSpan = 307,
         List = 400,
         Reference = 500,
+        SurveyReference = 502,
         SurveyGroupScoring = 600,
         SurveyCampaign = 601,
         SurveyUnifiedAnswer = 602,

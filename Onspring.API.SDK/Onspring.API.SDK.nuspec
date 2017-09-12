@@ -8,6 +8,6 @@
     <owners></owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>.NET SDK for interacting with the Onspring API</description>
-    <copyright>Copyright 2016 Onspring Technologies, LLC</copyright>
+    <copyright>Copyright 2017 Onspring Technologies, LLC</copyright>
   </metadata>
 </package>
