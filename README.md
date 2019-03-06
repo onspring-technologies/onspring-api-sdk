@@ -4,7 +4,7 @@ The .NET SDK for the [Onspring](https://www.onspring.com) API simplifies .NET ap
 
 ## Prerequisites
 
-- .NET 4.7.2 or later
+- .NET 4.6.1 or later
 
 ## Installation
 
