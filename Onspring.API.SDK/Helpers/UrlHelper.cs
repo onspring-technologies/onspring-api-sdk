@@ -15,21 +15,21 @@ namespace Onspring.API.SDK.Helpers
 {
     public sealed class UrlHelper
     {
-        private readonly Uri _baseUri;
-
         /// <summary>
         /// baseUrl is assumed to include the api version - e.g., https://api.onspring.com/v1
         /// </summary>
         public UrlHelper(string baseUrl)
         {
-            _baseUri = new Uri(baseUrl.EndsWith("/") ? baseUrl : baseUrl + "/");
+            BaseUri = new Uri(baseUrl.EndsWith("/") ? baseUrl : baseUrl + "/");
         }
+
+        public Uri BaseUri { get; }
 
         public Uri PingUri
         {
             get
             {
-                var builder = new UriBuilder(_baseUri);
+                var builder = new UriBuilder(BaseUri);
                 builder.Path += "ping";
                 return builder.Uri;
             }
@@ -39,7 +39,7 @@ namespace Onspring.API.SDK.Helpers
         {
             get
             {
-                var builder = new UriBuilder(_baseUri);
+                var builder = new UriBuilder(BaseUri);
                 builder.Path += "apps";
                 return builder.Uri;
             }
@@ -50,7 +50,7 @@ namespace Onspring.API.SDK.Helpers
         /// </summary>
         public Uri GetAppFieldUri(int fieldId)
         {
-            var builder = new UriBuilder(_baseUri);
+            var builder = new UriBuilder(BaseUri);
             builder.Path += "fields/" + fieldId;
             return builder.Uri;
         }
@@ -60,7 +60,7 @@ namespace Onspring.API.SDK.Helpers
         /// </summary>
         public Uri GetAppFieldsUri(int appId)
         {
-            var builder = new UriBuilder(_baseUri);
+            var builder = new UriBuilder(BaseUri);
             builder.Path += "fields";
             builder.Query = "appId=" + appId;
             return builder.Uri;
@@ -76,7 +76,7 @@ namespace Onspring.API.SDK.Helpers
         /// <param name="dataFormat">"Raw" or "Formatted" (if not provided, Raw is used)</param>
         public Uri GetAppRecordsUri(int appId, string filter = null, IReadOnlyList<int> recordIds = null, IReadOnlyList<int> fieldIds = null, DataFormat? dataFormat = null)
         {
-            var builder = new UriBuilder(_baseUri);
+            var builder = new UriBuilder(BaseUri);
             builder.Path += "records/" + appId;
             var queryBuilder = new QueryBuilder();
             if (!string.IsNullOrEmpty(filter))
@@ -108,7 +108,7 @@ namespace Onspring.API.SDK.Helpers
         /// <param name="dataFormat">"Raw" or "Formatted" (if not provided, Raw is used)</param>
         public Uri GetAppRecordUri(int appId, int recordId, IReadOnlyList<int> fieldIds = null, DataFormat? dataFormat = null)
         {
-            var builder = new UriBuilder(_baseUri);
+            var builder = new UriBuilder(BaseUri);
             builder.Path += $"records/{appId}/{recordId}";
             var queryBuilder = new QueryBuilder();
             if (fieldIds != null && fieldIds.Any())
@@ -125,21 +125,21 @@ namespace Onspring.API.SDK.Helpers
 
         public Uri GetCreateAppRecordUri(int appId)
         {
-            var builder = new UriBuilder(_baseUri);
+            var builder = new UriBuilder(BaseUri);
             builder.Path += "records/" + appId;
             return builder.Uri;
         }
 
         public Uri GetUpdateAppRecordUri(int appId, int recordId)
         {
-            var builder = new UriBuilder(_baseUri);
+            var builder = new UriBuilder(BaseUri);
             builder.Path += $"records/{appId}/{recordId}";
             return builder.Uri;
         }
 
         public Uri GetDeleteAppRecordUri(int appId, int recordId)
         {
-            var builder = new UriBuilder(_baseUri);
+            var builder = new UriBuilder(BaseUri);
             builder.Path += $"records/{appId}/{recordId}";
             return builder.Uri;
         }
@@ -149,7 +149,7 @@ namespace Onspring.API.SDK.Helpers
         /// </summary>
         public Uri GetAppReportsUri(int appId)
         {
-            var builder = new UriBuilder(_baseUri);
+            var builder = new UriBuilder(BaseUri);
             builder.Path += "reports";
             builder.Query = "appId=" + appId;
             return builder.Uri;
@@ -163,7 +163,7 @@ namespace Onspring.API.SDK.Helpers
         /// <param name="dataFormat">"Raw" or "Formatted" (if not provided, Raw is used)</param>
         public Uri GetReportDataUri(int reportId, ReportDataType? dataType = null, DataFormat? dataFormat = null)
         {
-            var builder = new UriBuilder(_baseUri);
+            var builder = new UriBuilder(BaseUri);
             builder.Path += $"reports/{reportId}";
             var queryBuilder = new QueryBuilder();
             if (dataType != null)
@@ -180,7 +180,7 @@ namespace Onspring.API.SDK.Helpers
 
         public Uri GetFileFromRecordUri(int appId, int recordId, int fieldId, int fileId)
         {
-            var builder = new UriBuilder(_baseUri);
+            var builder = new UriBuilder(BaseUri);
             builder.Path += $"files/{appId}/{recordId}/{fieldId}";
             builder.Query = "fileId=" + fileId;
             return builder.Uri;
@@ -189,7 +189,7 @@ namespace Onspring.API.SDK.Helpers
         public Uri GetAddFileToRecordUri(int appId, int recordId, int fieldId, string fileName,
             DateTime? modifiedTime = null, string fileNotes = null)
         {
-            var builder = new UriBuilder(_baseUri);
+            var builder = new UriBuilder(BaseUri);
             builder.Path += $"files/{appId}/{recordId}/{fieldId}";
             var queryBuilder = new QueryBuilder();
             queryBuilder.Add("fileName", fileName);

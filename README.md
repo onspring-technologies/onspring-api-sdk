@@ -4,7 +4,7 @@ The .NET SDK for the [Onspring](https://www.onspring.com) API simplifies .NET ap
 
 ## Prerequisites
 
-- .NET 4.6.1 or later
+- .NET 4.7.2 or later
 
 ## Installation
 
@@ -55,8 +55,13 @@ When using the SDK, you do not need to be as concerned with the details covered 
 
 The examples that follow assume you have created an `HttpHelper` as described in the **Start Coding** section.
 
+## Async Methods
+
+The latest version of the SDK includes async versions of all HttpHelper methods - examples of the new calls have been provided. The existing synchronous methods have been marked obsolete and will be removed from future versions of the SDK.
+
 ### Verify connectivity
 
+##### Synchronous
 ```C#
 if (httpHelper.CanConnect())
 {
@@ -64,8 +69,18 @@ if (httpHelper.CanConnect())
 }
 ```
 
+##### Asynchronous
+```C#
+var canConnect = await httpHelper.CanConnectAsync();
+if (canConnect)
+{
+  // we're connected                
+}
+```
+
 ### Get the list of apps and surveys
 
+##### Synchronous
 ```C#
 foreach (App app in httpHelper.GetApps())
 {
@@ -73,8 +88,18 @@ foreach (App app in httpHelper.GetApps())
 }
 ```
 
+##### Asynchronous
+```C#
+var apps = await httpHelper.GetAppsAsync();
+foreach (App app in apps)
+{
+    Console.WriteLine($"{app.Id}, {app.Name}");
+}
+```
+
 ### Get the fields for an app/survey
 
+##### Synchronous
 ```C#
 var appId = 5;
 foreach (Field field in httpHelper.GetAppFields(appId))
@@ -83,8 +108,19 @@ foreach (Field field in httpHelper.GetAppFields(appId))
 }
 ```
 
+##### Asynchronous
+```C#
+var appId = 5;
+var fields = await httpHelper.GetAppFieldsAsync(appId);
+foreach (Field field in fields)
+{
+    Console.WriteLine($"{field.Id}, {field.AppId}, {field.Name}, {field.Type}, {field.Status}, {field.IsRequired}, {field.IsUnique}");
+}
+```
+
 ### Get one field
 
+##### Synchronous
 ```C#
 var fieldId = 40;
 Field field = httpHelper.GetAppField(fieldId);
@@ -119,8 +155,44 @@ private void WriteListValues(IReadOnlyList<ListValue> listValues)
 }
 ```
 
+##### Asynchronous
+```C#
+var fieldId = 40;
+Field field = await httpHelper.GetAppFieldAsync(fieldId);
+Console.WriteLine($"{field.Id}, {field.AppId}, {field.Name}, {field.Type}, {field.Status}, {field.IsRequired}, {field.IsUnique}");
+var referenceField = field as ReferenceField;
+if (referenceField != null)
+{
+    Console.WriteLine($"Multiplicity: {referenceField.Multiplicity}");
+}
+var listField = field as ListField;
+if (listField != null)
+{
+    Console.WriteLine($"Multiplicity: {listField.Multiplicity}");
+    WriteListValues(listField.Values);
+}
+var formulaField = field as FormulaField;
+if (formulaField != null)
+{
+    Console.WriteLine($"OutputType: {formulaField.OutputType}");
+    if (formulaField.OutputType == FormulaOutputType.List)
+    {
+        WriteListValues(formulaField.Values);
+    }
+}
+
+private void WriteListValues(IReadOnlyList<ListValue> listValues)
+{
+    foreach (ListValue value in listValues)
+    {
+        Console.WriteLine($"{value.Id}, {value.Name}, {value.SortOrder}, {value.NumericValue}, {value.Color}");
+    }
+}
+```
+
 ### Get the reports for an app/survey
 
+##### Synchronous
 ```C#
 var appId = 5;
 foreach (Report report in httpHelper.GetAppReports(appId))
@@ -129,8 +201,19 @@ foreach (Report report in httpHelper.GetAppReports(appId))
 }
 ```
 
+##### Asynchronous
+```C#
+var appId = 5;
+var reports = await httpHelper.GetAppReportsAsync(appId);
+foreach (Report report in reports)
+{
+    Console.WriteLine($"{report.Id}, {report.AppId}, {report.Name}");
+}
+```
+
 ### Get the data from one report
 
+##### Synchronous
 ```C#
 var reportId = 61;
 var dataType = ReportDataType.ChartData;
@@ -143,8 +226,22 @@ foreach (ReportDataRow row in reportData.Rows)
 }
 ```
 
+##### Asynchronous
+```C#
+var reportId = 61;
+var dataType = ReportDataType.ChartData;
+var dataFormat = DataFormat.Raw;
+ReportData reportData = await httpHelper.GetReportDataAsync(reportId, dataType, dataFormat);
+Console.WriteLine(string.Join(", ", reportData.Columns));
+foreach (ReportDataRow row in reportData.Rows)
+{
+    Console.WriteLine(string.Join(", ", row.Cells));
+}
+```
+
 ### Get records
 
+##### Synchronous
 ```C#
 var appId = 5;
 var filter = "not (38 lt 10 or 36 eq 'Smith') and 37 gt datetime'2014-03-01T00:00:00.0000000'";
@@ -162,8 +259,27 @@ foreach (ResultRecord record in records)
 }
 ```
 
+##### Asynchronous
+```C#
+var appId = 5;
+var filter = "not (38 lt 10 or 36 eq 'Smith') and 37 gt datetime'2014-03-01T00:00:00.0000000'";
+var recordIds = new[] { 100, 101, 102 };
+var fieldIds = new[] { 36, 37, 38 };
+var dataFormat = DataFormat.Formatted;
+var records = await httpHelper.GetAppRecordsAsync(appId, filter, recordIds, fieldIds, dataFormat);
+foreach (ResultRecord record in records)
+{
+    Console.WriteLine($"AppId: {record.AppId}, RecordId: {record.RecordId}");
+    foreach (FieldValueWrapper wrapper in record.Values.WithFieldId())
+    {
+        Console.WriteLine($"FieldId: {wrapper.FieldId}, Type: {wrapper.Value.Type}");
+    }
+}
+```
+
 ### Get one record
 
+##### Synchronous
 ```C#
 var appId = 5;
 var recordId = 100;
@@ -211,8 +327,57 @@ private string GetResultValueString(ResultValue value)
 }
 ```
 
+##### Asynchronous
+```C#
+var appId = 5;
+var recordId = 100;
+var fieldIds = new[] { 36, 37, 38 };
+var dataFormat = DataFormat.Raw;
+ResultRecord record = await httpHelper.GetAppRecordAsync(appId, recordId, fieldIds, dataFormat);
+foreach (FieldValueWrapper wrapper in record.Values.WithFieldId())
+{
+    Console.WriteLine($"FieldId: {wrapper.FieldId}, Type: {wrapper.Value.Type}, Value: {GetResultValueString(wrapper.Value)}");
+}
+
+private string GetResultValueString(ResultValue value)
+{
+    switch (value.Type)
+    {
+        case ResultValueType.String:
+            return value.AsString;
+        case ResultValueType.Integer:
+            return $"{value.AsNullableInteger}";
+        case ResultValueType.Decimal:
+            return $"{value.AsNullableDecimal}";
+        case ResultValueType.Date:
+            return $"{value.AsNullableDateTime}";
+        case ResultValueType.TimeSpan:
+            var data = value.AsTimeSpanData;
+            return $"Quantity: {data.Quantity}, Increment: {data.Increment}, Recurrence: {data.Recurrence}, EndByDate: {data.EndByDate}, EndAfterOccurrences: {data.EndAfterOccurrences}";
+        case ResultValueType.Guid:
+            return $"{value.AsNullableGuid}";
+        case ResultValueType.StringList:
+            return string.Join(", ", value.AsStringList);
+        case ResultValueType.IntegerList:
+            return string.Join(", ", value.AsIntegerList);
+        case ResultValueType.GuidList:
+            return string.Join(", ", value.AsGuidList);
+        case ResultValueType.AttachmentList:
+            var attachmentFiles = value.AsAttachmentList.Select(f => $"FileId: {f.FileId}, FileName: {f.FileName}, Notes: {f.Notes}");
+            return string.Join(", ", attachmentFiles);
+        case ResultValueType.ScoringGroupList:
+            var scoringGroups = value.AsScoringGroupList.Select(g => $"ListValueId: {g.ListValueId}, Name: {g.Name}, Score: {g.Score}, MaximumScore: {g.MaximumScore}");
+            return string.Join(", ", scoringGroups);
+        default:
+            // e.g., future types not supported in this version
+            return $"Unsupported ResultValueType: {value.Type}";
+    }
+}
+```
+
 ### Add a record
 
+##### Synchronous
 ```C#
 var appId = 5;
 var numberFieldId = 38;
@@ -230,8 +395,27 @@ foreach (string warning in result.Warnings)
 }
 ```
 
+##### Asynchronous
+```C#
+var appId = 5;
+var numberFieldId = 38;
+var dateFieldId = 37;
+var textFieldId = 36;
+FieldAddEditContainer fieldValues = new FieldAddEditContainer();
+fieldValues.Add(numberFieldId, 123.45);
+fieldValues.Add(dateFieldId, DateTime.UtcNow);
+fieldValues.Add(textFieldId, "text value");
+AddEditResult result = await httpHelper.CreateAppRecordAsync(appId, fieldValues);
+Console.WriteLine($"New Record Id is: {result.CreatedId}");
+foreach (string warning in result.Warnings)
+{
+    Console.WriteLine($"Warning: {warning}");
+}
+```
+
 ### Update a record
 
+##### Synchronous
 ```C#
 var appId = 5;
 var recordId = 100;
@@ -249,18 +433,45 @@ foreach (string warning in result.Warnings)
 }
 ```
 
+##### Asynchronous
+```C#
+var appId = 5;
+var recordId = 100;
+var numberFieldId = 38;
+var dateFieldId = 37;
+var textFieldId = 36;
+FieldAddEditContainer fieldValues = new FieldAddEditContainer();
+fieldValues.Add(numberFieldId, 678.90);
+fieldValues.Add(dateFieldId, DateTime.UtcNow);
+fieldValues.Add(textFieldId, "updated text value");
+AddEditResult result = await httpHelper.UpdateAppRecordAsync(appId, recordId, fieldValues);
+foreach (string warning in result.Warnings)
+{
+    Console.WriteLine($"Warning: {warning}");
+}
+```
+
 ### Delete a record
 
+##### Synchronous
 ```C#
 var appId = 5;
 var recordId = 100;
 DeleteResult result = httpHelper.DeleteAppRecord(appId, recordId);
 ```
 
+##### Asynchronous
+```C#
+var appId = 5;
+var recordId = 100;
+DeleteResult result = await httpHelper.DeleteAppRecordAsync(appId, recordId);
+```
+
 ### Add an attachment or image file to a record
 
 If the file you want to add physically exists on disk, you can use the overload that accepts a filePath parameter:
 
+##### Synchronous
 ```C#
 var appId = 5;
 var recordId = 100;
@@ -272,8 +483,21 @@ AddEditResult result = httpHelper.AddFileToRecord(appId, recordId, attachmentFie
 Console.WriteLine($"New File Id is: {result.CreatedId}");
 ```
 
+##### Asynchronous
+```C#
+var appId = 5;
+var recordId = 100;
+var attachmentFieldId = 50;
+var filePath = "C:\Users\Public\Documents\Contract.pdf";
+var contentType = "application/pdf";
+var fileNotes = "Initial revision";
+AddEditResult result = await httpHelper.AddFileToRecordAsync(appId, recordId, attachmentFieldId, filePath, contentType, fileNotes);
+Console.WriteLine($"New File Id is: {result.CreatedId}");
+```
+
 Otherwise, you can create a stream that contains the file's contents and use the other overload:
 
+##### Synchronous
 ```C#
 var appId = 5;
 var recordId = 100;
@@ -289,8 +513,25 @@ using (Stream stream = new MemoryStream())
 }
 ```
 
+##### Asynchronous
+```C#
+var appId = 5;
+var recordId = 100;
+var attachmentFieldId = 50;
+var fileName = "Contract.pdf";
+var contentType = "application/pdf";
+var modifiedTime = DateTime.UtcNow;
+var fileNotes = "Initial revision";
+using (Stream stream = new MemoryStream())
+{
+    AddEditResult result = await httpHelper.AddFileToRecordAsync(appId, recordId, attachmentFieldId, stream, fileName, contentType, modifiedTime, fileNotes);
+    Console.WriteLine($"New File Id is: {result.CreatedId}");
+}
+```
+
 ### Get an attachment or image file from a record
 
+##### Synchronous
 ```C#
 var appId = 5;
 var recordId = 100;
@@ -306,4 +547,22 @@ using (FileResult result = httpHelper.GetFileFromRecord(appId, recordId, attachm
        result.Stream.CopyTo(fileStream);
     }
 } 
+```
+
+##### Asynchronous
+```C#           
+var appId = 5;
+var recordId = 100;
+var attachmentFieldId = 50;
+var fileId = 1234;
+using (FileResult result = await httpHelper.GetFileFromRecordAsync(appId, recordId, attachmentFieldId, fileId))
+{
+    Console.WriteLine($"FileName is: {result.FileName}");
+    Console.WriteLine($"ContentType: {result.ContentType}");
+    Console.WriteLine($"ContentLength: {result.ContentLength}");
+    using (var fileStream = new FileStream($"C:\Users\Public\Documents\{result.FileName}", FileMode.Create))
+    {
+        result.Stream.CopyTo(fileStream);
+    }
+}
 ```

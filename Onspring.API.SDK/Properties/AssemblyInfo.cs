@@ -17,7 +17,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Onspring Technologies")]
 [assembly: AssemblyProduct("Onspring.API.SDK")]
-[assembly: AssemblyCopyright("Copyright © Onspring Technologies 2017")]
+[assembly: AssemblyCopyright("Copyright © Onspring Technologies 2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
