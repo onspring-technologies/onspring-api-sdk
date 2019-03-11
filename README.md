@@ -51,13 +51,13 @@ var httpHelper = new HttpHelper(baseUrl, apiKey);
 
 When using the SDK, you do not need to be as concerned with the details covered in the full [Onspring API documentation](https://goo.gl/vgyHm2).  However, you may wish to refer to it when determining which values to pass as parameters to some of the `HttpHelper` methods.
 
+## Async Methods
+
+The latest version of the SDK includes async versions of all HttpHelper methods - examples of the new calls have been provided. The existing synchronous methods have been marked obsolete and will be removed in a future version of the SDK.
+
 ## Example Code
 
 The examples that follow assume you have created an `HttpHelper` as described in the **Start Coding** section.
-
-## Async Methods
-
-The latest version of the SDK includes async versions of all HttpHelper methods - examples of the new calls have been provided. The existing synchronous methods have been marked obsolete and will be removed from future versions of the SDK.
 
 ### Verify connectivity
 
