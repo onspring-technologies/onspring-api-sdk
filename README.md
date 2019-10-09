@@ -49,7 +49,7 @@ var httpHelper = new HttpHelper(baseUrl, apiKey);
 
 ## Full API Documentation
 
-When using the SDK, you do not need to be as concerned with the details covered in the full [Onspring API documentation](https://goo.gl/vgyHm2).  However, you may wish to refer to it when determining which values to pass as parameters to some of the `HttpHelper` methods.
+When using the SDK, you do not need to be as concerned with the details covered in the full [Onspring API documentation](https://ss-usa.s3.amazonaws.com/c/308463180/media/99045cf01cc2f0ad1795036815/Admin%20Guide%20-%20API%20-%20Onspring.pdf).  However, you may wish to refer to it when determining which values to pass as parameters to some of the `HttpHelper` methods.
 
 ## Async Methods
 
