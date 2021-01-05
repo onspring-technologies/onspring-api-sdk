@@ -2,10 +2,6 @@
 
 The .NET SDK for the [Onspring](https://www.onspring.com) API simplifies .NET application development for Onspring customers that would like to integrate with their Onspring instance.
 
-## Prerequisites
-
-- .NET 4.6.1 or later
-
 ## Installation
 
 Install the SDK using Nuget
