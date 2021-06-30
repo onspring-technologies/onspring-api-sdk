@@ -8,11 +8,10 @@
 #endregion
 namespace Onspring.API.SDK.Models
 {
-    public class Report
+    /// <summary>
+    /// Represents the response for getting applications
+    /// </summary>
+    public class GetPagedAppsResponse : PagedResponse<App>
     {
-        public int Id { get; set; }
-        public int AppId { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
     }
 }

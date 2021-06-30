@@ -6,7 +6,7 @@
     <Product>Onspring.API.SDK</Product>
     <Description>.NET SDK for interacting with the Onspring API</Description>
     <Copyright>Copyright 2021 Onspring Technologies, LLC</Copyright>
-    <Version>3.0.0</Version>
+    <Version>3.0.0-beta</Version>
     <AssemblyVersion>3.0.0.0</AssemblyVersion>
     <FileVersion>3.0.0.0</FileVersion>
     <OutputPath>bin\$(Configuration)\</OutputPath>
