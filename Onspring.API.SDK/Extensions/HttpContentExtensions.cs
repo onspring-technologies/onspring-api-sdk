@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Onspring.API.SDK.Json;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -18,7 +19,7 @@ namespace Onspring.API.SDK.Extensions
         /// <returns></returns>
         public static async Task<T> ReadAsJsonAsync<T>(this HttpContent content)
         {
-            var serializer = new JsonSerializer();
+            var serializer = JsonSerializerFactory.GetDefaultSerializer();
 
             var stream = await content.ReadAsStreamAsync();
 

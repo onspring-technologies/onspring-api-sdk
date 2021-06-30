@@ -11,12 +11,12 @@ namespace Onspring.API.SDK.Extensions
         /// Converts the <paramref name="pagingRequest"/> into a query string (minus ?).
         /// </summary>
         /// <param name="pagingRequest"></param>
-        /// <returns>PageNumber=1&PageSize=50</returns>
+        /// <returns>PageNumber=1&amp;PageSize=50</returns>
         public static string ToQueryStringParams(this PagingRequest pagingRequest)
         {
             if (pagingRequest == null)
             {
-                return "";
+                return string.Empty;
             }
 
             return $"{nameof(pagingRequest.PageNumber)}={pagingRequest.PageNumber}&{nameof(pagingRequest.PageSize)}={pagingRequest.PageSize}";

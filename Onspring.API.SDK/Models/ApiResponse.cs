@@ -11,7 +11,7 @@ namespace Onspring.API.SDK.Models
         /// <summary>
         /// Gets the actual response value, if any.
         /// </summary>
-        public T Response { get; set; }
+        public T Value { get; set; }
     }
 
     /// <summary>

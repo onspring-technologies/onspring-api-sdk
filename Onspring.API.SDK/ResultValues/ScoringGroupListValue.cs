@@ -6,12 +6,13 @@
 //  *  
 // */
 #endregion
-using System.Collections.Generic;
 using Onspring.API.SDK.Enums;
+using Onspring.API.SDK.Models;
+using System.Collections.Generic;
 
 namespace Onspring.API.SDK.ResultValues
 {
-    public class ScoringGroupListValue: ResultValue
+    public class ScoringGroupListValue : ResultValue
     {
         public ScoringGroupListValue(IReadOnlyList<ScoringGroup> value)
         {

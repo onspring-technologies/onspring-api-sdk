@@ -8,6 +8,6 @@
         /// <summary>
         /// Gets the header name for an API Key.
         /// </summary>
-        public const string ApiKeyName = "ApiKey";
+        public const string ApiKeyName = "X-ApiKey";
     }
 }

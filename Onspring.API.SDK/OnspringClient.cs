@@ -36,7 +36,7 @@ namespace Onspring.API.SDK
         /// </summary>
         /// <param name="apiKey"></param>
         /// <param name="httpClient"></param>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="httpClient"/> or its base address is null.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="httpClient"/> is null.</exception>
         /// <exception cref="ArgumentException">Thrown when <paramref name="apiKey"/> is null/empty/whitespace or if the <paramref name="httpClient"/>'s base address is invalid.</exception>
         public OnspringClient(string apiKey, HttpClient httpClient)
         {
@@ -173,8 +173,6 @@ namespace Onspring.API.SDK
 
         // ------------------------------------ Fields ------------------------------------
 
-        // TODO: Update to deserialize the classes that inherit from Field.
-
         #region Fields
 
         /// <summary>
@@ -229,6 +227,7 @@ namespace Onspring.API.SDK
         /// Gets the fields associated to the <paramref name="appId"/>. 
         /// </summary>
         /// <param name="appId"></param>
+        /// <param name="pagingRequest"></param>
         /// <returns></returns>
         [Obsolete("Using GetFieldsForAppAsync is recommended.")]
         public ApiResponse<GetPagedFieldsResponse> GetFieldsForApp(int appId, PagingRequest pagingRequest = null)
@@ -241,6 +240,7 @@ namespace Onspring.API.SDK
         /// Gets the fields associated to the <paramref name="appId"/>. 
         /// </summary>
         /// <param name="appId"></param>
+        /// <param name="pagingRequest"></param>
         /// <returns></returns>
         public async Task<ApiResponse<GetPagedFieldsResponse>> GetFieldsForAppAsync(int appId, PagingRequest pagingRequest = null)
         {
@@ -318,7 +318,7 @@ namespace Onspring.API.SDK
 
             if (response.IsSuccessStatusCode)
             {
-                apiResponse.Response = await response.Content.ReadAsStreamAsync();
+                apiResponse.Value = await response.Content.ReadAsStreamAsync();
             }
 
             return apiResponse;
@@ -424,9 +424,7 @@ namespace Onspring.API.SDK
         public async Task<ApiResponse> DeleteListItemAsync(int listId, Guid itemId)
         {
             var path = UrlHelper.GetDeleteListItemPath(listId, itemId);
-            var httpResponse = await _httpClient.DeleteAsync(path, _clientConfig.ApiKey);
-
-            var apiResponse = await ApiResponseFactory.GetApiResponseAsync(httpResponse);
+            var apiResponse = await DeleteAsync(path);
             return apiResponse;
         }
 
@@ -493,8 +491,7 @@ namespace Onspring.API.SDK
         /// <summary>
         /// Gets a record by its identifier.
         /// </summary>
-        /// <param name="appId"></param>
-        /// <param name="recordId"></param>
+        /// <param name="request"></param>
         /// <returns></returns>
         [Obsolete("Using GetRecordAsync is recommended.")]
         public ApiResponse<ResultRecord> GetRecord(GetRecordRequest request)
@@ -506,8 +503,7 @@ namespace Onspring.API.SDK
         /// <summary>
         /// Gets a record by its identifier.
         /// </summary>
-        /// <param name="appId"></param>
-        /// <param name="recordId"></param>
+        /// <param name="request"></param>
         /// <returns></returns>
         public async Task<ApiResponse<ResultRecord>> GetRecordAsync(GetRecordRequest request)
         {
@@ -713,7 +709,6 @@ namespace Onspring.API.SDK
         /// <summary>
         /// Performs an HTTP DELETE request to the <paramref name="path"/> and adds an API Key header.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="path"></param>
         /// <returns></returns>
         private async Task<ApiResponse> DeleteAsync(string path)
@@ -742,8 +737,8 @@ namespace Onspring.API.SDK
         /// <summary>
         /// Performs an HTTP POST request to the <paramref name="path"/> and adds an API Key header.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="path"></param>
+        /// <param name="content"></param>
         /// <returns></returns>
         private async Task<ApiResponse> PostAsync(string path, object content)
         {
@@ -756,8 +751,9 @@ namespace Onspring.API.SDK
         /// <summary>
         /// Performs an HTTP POST request to the <paramref name="path"/> and adds an API Key header.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TOutput"></typeparam>
         /// <param name="path"></param>
+        /// <param name="content"></param>
         /// <returns></returns>
         private async Task<ApiResponse<TOutput>> PostAsync<TOutput>(string path, object content)
             where TOutput : class
@@ -771,8 +767,9 @@ namespace Onspring.API.SDK
         /// <summary>
         /// Performs an HTTP PUT request to the <paramref name="path"/> and adds an API Key header.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TOutput"></typeparam>
         /// <param name="path"></param>
+        /// <param name="content"></param>
         /// <returns></returns>
         private async Task<ApiResponse<TOutput>> PutAsync<TOutput>(string path, object content)
             where TOutput : class

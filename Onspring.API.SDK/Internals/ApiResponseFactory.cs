@@ -14,7 +14,6 @@ namespace Onspring.API.SDK.Internals
         /// <summary>
         /// Generates an <see cref="ApiResponse"/> based on the <paramref name="httpResponse"/>.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="httpResponse"></param>
         /// <returns></returns>
         public static async Task<ApiResponse> GetApiResponseAsync(this HttpResponseMessage httpResponse)
@@ -48,7 +47,7 @@ namespace Onspring.API.SDK.Internals
 
             if (httpResponse.IsSuccessStatusCode)
             {
-                apiResponse.Response = await httpResponse.Content.ReadAsJsonAsync<T>();
+                apiResponse.Value = await httpResponse.Content.ReadAsJsonAsync<T>();
             }
 
             return apiResponse;
@@ -64,14 +63,13 @@ namespace Onspring.API.SDK.Internals
             if (httpResponse.StatusCode == HttpStatusCode.Unauthorized || httpResponse.StatusCode == HttpStatusCode.Forbidden || httpResponse.StatusCode == HttpStatusCode.NotFound)
             {
                 var messageResponse = await httpResponse.Content.ReadAsJsonAsync<MessageResponse>();
-                message = messageResponse?.Message ?? message;
+                message = messageResponse?.Message;
             }
             else if (httpResponse.IsSuccessStatusCode == false)
             {
                 message = await httpResponse.Content.ReadAsStringAsync();
-                message = message ?? string.Empty;
             }
-            return message;
+            return message ?? string.Empty;
         }
     }
 }

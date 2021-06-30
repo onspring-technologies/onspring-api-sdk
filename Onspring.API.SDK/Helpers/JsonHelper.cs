@@ -6,102 +6,20 @@
 //  *  
 // */
 #endregion
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Onspring.API.SDK.Enums;
 using Onspring.API.SDK.Models;
 using Onspring.API.SDK.ResultValues;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace Onspring.API.SDK.Helpers
 {
     internal static class JsonHelper
     {
-        public static IReadOnlyList<App> LoadApps(Stream inputStream)
-        {
-            var result = new List<App>();
-            ProcessArray(inputStream, array =>
-            {
-                result.AddRange(array.Select(appJson => new App
-                {
-                    Id = (int)appJson["Id"],
-                    Name = (string)appJson["Name"],
-                }));
-            });
-            return result;
-        }
-
-        public static Field LoadField(Stream inputStream)
-        {
-            Field result = null;
-            ProcessToken(inputStream, token => result = LoadField(token));
-            return result;
-        }
-
-        public static IReadOnlyList<Field> LoadFields(Stream inputStream)
-        {
-            var result = new List<Field>();
-            ProcessArray(inputStream, array => result.AddRange(array.Select(LoadField)));
-            return result;
-        }
-
-        private static Field LoadField(JToken fieldJson)
-        {
-            var type = ParseEnum<FieldType>(fieldJson["Type"]);
-            Field field;
-            switch (type)
-            {
-                case FieldType.Formula:
-                    field = new FormulaField
-                    {
-                        OutputType = ParseEnum<FormulaOutputType>(fieldJson["OutputType"]),
-                        Values = LoadListValues(fieldJson["Values"]),
-                    };
-                    break;
-                case FieldType.List:
-                    field = new ListField
-                    {
-                        Multiplicity = ParseEnum<Multiplicity>(fieldJson["Multiplicity"]),
-                        Values = LoadListValues(fieldJson["Values"]),
-                    };
-                    break;
-                case FieldType.Reference:
-                    field = new ReferenceField
-                    {
-                        Multiplicity = ParseEnum<Multiplicity>(fieldJson["Multiplicity"]),
-                    };
-                    break;
-                default:
-                    field = new Field();
-                    break;
-            }
-            field.Id = (int) fieldJson["Id"];
-            field.AppId = (int) fieldJson["AppId"];
-            field.Name = (string) fieldJson["Name"];
-            field.Type = type;
-            field.Status = ParseEnum<FieldStatus>(fieldJson["Status"]);
-            field.IsRequired = (bool) fieldJson["IsRequired"];
-            field.IsUnique = (bool) fieldJson["IsUnique"];
-            return field;
-        }
-
-        private static IReadOnlyList<ListValue> LoadListValues(JToken valuesToken)
-        {
-            var result = new List<ListValue>();
-            var array = (JArray)valuesToken;
-            result.AddRange(array.Select(valueJson => new ListValue
-            {
-                Id = (Guid)valueJson["Id"],
-                Name = (string)valueJson["Name"],
-                SortOrder = (int)valueJson["SortOrder"],
-                NumericValue = (decimal?)valueJson["NumericValue"],
-                Color = (string)valueJson["Color"],
-            }));
-            return result;
-        }
 
         public static IReadOnlyList<Report> LoadReports(Stream inputStream)
         {
@@ -123,9 +41,9 @@ namespace Onspring.API.SDK.Helpers
             var result = new ReportData();
             ProcessToken(inputStream, token =>
             {
-                var columnTokens = (JArray) token["Columns"];
-                result.Columns = columnTokens.Select(col => (string) col).ToList();
-                var rowArray = (JArray) token["Rows"];
+                var columnTokens = (JArray)token["Columns"];
+                result.Columns = columnTokens.Select(col => (string)col).ToList();
+                var rowArray = (JArray)token["Rows"];
                 result.Rows = rowArray.Select(rowJson => new ReportDataRow
                 {
                     Cells = rowJson.ToList(),
@@ -152,8 +70,8 @@ namespace Onspring.API.SDK.Helpers
         {
             var record = new ResultRecord
             {
-                AppId = (int) recordJson["AppId"],
-                RecordId = (int) recordJson["RecordId"],
+                AppId = (int)recordJson["AppId"],
+                RecordId = (int)recordJson["RecordId"],
             };
             var fieldArray = (JArray)recordJson["FieldData"];
             LoadFieldValueContainer(record.Values, fieldArray);
@@ -215,9 +133,9 @@ namespace Onspring.API.SDK.Helpers
                     var attachmentTokens = (JArray)rawValue;
                     var attachmentList = attachmentTokens.Select(attachmentToken => new AttachmentFile
                     {
-                        FileId = (int) attachmentToken["FileId"],
-                        FileName = (string) attachmentToken["FileName"],
-                        Notes = (string) attachmentToken["Notes"],
+                        FileId = (int)attachmentToken["FileId"],
+                        FileName = (string)attachmentToken["FileName"],
+                        Notes = (string)attachmentToken["Notes"],
                     }).ToArray();
                     return new AttachmentListValue(attachmentList);
                 case ResultValueType.ScoringGroupList:
@@ -240,37 +158,10 @@ namespace Onspring.API.SDK.Helpers
             var result = new List<string>();
             ProcessToken(inputStream, token =>
             {
-                var warningsArray = (JArray) token["Warnings"];
+                var warningsArray = (JArray)token["Warnings"];
                 if (warningsArray != null)
                 {
                     result.AddRange(warningsArray.Select(w => (string)w));
-                }
-            });
-            return result;
-        }
-
-        public static IReadOnlyList<string> LoadErrors(Stream inputStream)
-        {
-            var result = new List<string>();
-            ProcessToken(inputStream, token =>
-            {
-                var message = (string)token["Message"];
-                if (!string.IsNullOrWhiteSpace(message))
-                {
-                    try
-                    {
-                        var messageJson = JToken.Parse(message);
-                        var errorsArray = (JArray)messageJson?["Errors"];
-                        if (errorsArray != null)
-                        {
-                            result.AddRange(errorsArray.Select(e => (string)e));
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        // may be just a string, not json
-                        result.Add(message);
-                    }
                 }
             });
             return result;
@@ -298,7 +189,7 @@ namespace Onspring.API.SDK.Helpers
 
         public static T ParseEnum<T>(JToken value)
         {
-            return (T)(object)(int) value;
+            return (T)(object)(int)value;
         }
 
     }

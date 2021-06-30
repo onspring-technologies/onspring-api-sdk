@@ -6,9 +6,10 @@
 //  *  
 // */
 #endregion
+using Onspring.API.SDK.Enums;
+using Onspring.API.SDK.Models;
 using System;
 using System.Collections.Generic;
-using Onspring.API.SDK.Enums;
 
 namespace Onspring.API.SDK.ResultValues
 {

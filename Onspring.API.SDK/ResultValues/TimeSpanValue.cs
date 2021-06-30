@@ -7,10 +7,11 @@
 // */
 #endregion
 using Onspring.API.SDK.Enums;
+using Onspring.API.SDK.Models;
 
 namespace Onspring.API.SDK.ResultValues
 {
-    public class TimeSpanValue: ResultValue
+    public class TimeSpanValue : ResultValue
     {
         public TimeSpanValue(TimeSpanData value)
         {
