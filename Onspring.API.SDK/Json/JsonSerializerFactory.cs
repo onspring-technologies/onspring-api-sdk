@@ -28,6 +28,7 @@ namespace Onspring.API.SDK.Json
             var serializer = new JsonSerializer();
 
             serializer.Converters.Add(new FieldJsonConverter());
+            serializer.Converters.Add(new RecordFieldValueJsonConverter());
 
             return serializer;
         }

@@ -12,5 +12,14 @@ namespace Onspring.API.SDK.Models
         public List<int> FieldIds { get; set; } = new List<int>();
         public DataFormat DataFormat { get; set; } = DataFormat.Raw;
         public PagingRequest PagingRequest { get; set; } = null;
+
+        public GetRecordsByAppRequest()
+        {
+        }
+
+        public GetRecordsByAppRequest(int appId)
+        {
+            AppId = appId;
+        }
     }
 }
