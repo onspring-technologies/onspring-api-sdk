@@ -7,7 +7,6 @@ using System.Text.Json.Serialization;
 
 namespace Onspring.API.SDK.Tests.TestServer
 {
-
     [ExcludeFromCodeCoverage]
     public class Startup
     {

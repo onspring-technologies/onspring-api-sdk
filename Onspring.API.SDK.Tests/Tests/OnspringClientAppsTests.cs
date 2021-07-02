@@ -44,7 +44,7 @@ namespace Onspring.API.SDK.Tests.Tests
         [TestMethod]
         public async Task GetApps_WithPaging()
         {
-            var pagingRequest = new Models.PagingRequest(2, 50);
+            var pagingRequest = new Models.PagingRequest(1, 50);
             var appsResponse = await _apiClient.GetAppsAsync(pagingRequest);
 
             AssertHelper.AssertSuccess(appsResponse);

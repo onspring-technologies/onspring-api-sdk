@@ -26,11 +26,8 @@ namespace Onspring.API.SDK.Json
         private static JsonSerializer GetSerializer()
         {
             var serializer = new JsonSerializer();
-            var converters = JsonConverterFactory.GetJsonConverters();
-            foreach (var converter in converters)
-            {
-                serializer.Converters.Add(converter);
-            }
+
+            serializer.Converters.Add(new FieldJsonConverter());
 
             return serializer;
         }

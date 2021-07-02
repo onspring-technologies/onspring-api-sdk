@@ -21,37 +21,6 @@ namespace Onspring.API.SDK.Helpers
     internal static class JsonHelper
     {
 
-        public static IReadOnlyList<Report> LoadReports(Stream inputStream)
-        {
-            var result = new List<Report>();
-            ProcessArray(inputStream, array =>
-            {
-                result.AddRange(array.Select(reportJson => new Report
-                {
-                    Id = (int)reportJson["Id"],
-                    AppId = (int)reportJson["AppId"],
-                    Name = (string)reportJson["Name"],
-                }));
-            });
-            return result;
-        }
-
-        public static ReportData LoadReportData(Stream inputStream)
-        {
-            var result = new ReportData();
-            ProcessToken(inputStream, token =>
-            {
-                var columnTokens = (JArray)token["Columns"];
-                result.Columns = columnTokens.Select(col => (string)col).ToList();
-                var rowArray = (JArray)token["Rows"];
-                result.Rows = rowArray.Select(rowJson => new ReportDataRow
-                {
-                    Cells = rowJson.ToList(),
-                }).ToList();
-            });
-            return result;
-        }
-
         public static ResultRecord LoadRecord(Stream inputStream)
         {
             ResultRecord result = null;
@@ -151,20 +120,6 @@ namespace Onspring.API.SDK.Helpers
             }
             // e.g., future types not supported in this version
             return null;
-        }
-
-        public static IReadOnlyList<string> LoadWarnings(Stream inputStream)
-        {
-            var result = new List<string>();
-            ProcessToken(inputStream, token =>
-            {
-                var warningsArray = (JArray)token["Warnings"];
-                if (warningsArray != null)
-                {
-                    result.AddRange(warningsArray.Select(w => (string)w));
-                }
-            });
-            return result;
         }
 
         public static void ProcessArray(Stream inputStream, Action<JArray> arrayProcessingCallback)
