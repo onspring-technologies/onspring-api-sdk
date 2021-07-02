@@ -9,7 +9,7 @@ namespace Onspring.API.SDK.Extensions
     /// <summary>
     /// Extensions around <see cref="HttpResponseMessage"/>.
     /// </summary>
-    public static class HttpContentExtensions
+    internal static class HttpContentExtensions
     {
         /// <summary>
         /// Reads the <paramref name="content"/> content as JSON and deserializes it into an object.

@@ -4,7 +4,7 @@ using System;
 
 namespace Onspring.API.SDK.Json
 {
-    public abstract class JsonCreationConverter<T> : JsonConverter
+    internal abstract class JsonCreationConverter<T> : JsonConverter
     {
         public override bool CanWrite => false;
 

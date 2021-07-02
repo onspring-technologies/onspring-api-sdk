@@ -20,7 +20,7 @@ namespace Onspring.API.SDK.Helpers
     /// <summary>
     /// Helper class used to get URL values from a single location.
     /// </summary>
-    public sealed class UrlHelper
+    public class UrlHelper
     {
         /// <summary>
         /// Gets the path to the ping endpoint.
