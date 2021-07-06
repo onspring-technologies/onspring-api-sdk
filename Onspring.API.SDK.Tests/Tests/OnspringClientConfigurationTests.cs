@@ -17,6 +17,7 @@ namespace Onspring.API.SDK.Tests.Tests
             {
                 ApiKey = apiKey,
                 BaseAddress = baseAddress,
+                JsonSerializer = new Newtonsoft.Json.JsonSerializer()
             };
 
             Assert.AreEqual(apiKey, clientConfig.ApiKey, "ApiKey was not correct");

@@ -15,7 +15,6 @@ namespace Onspring.API.SDK.Json
             switch (valueType)
             {
                 case ResultValueType.String:
-                default:
                     return new StringFieldValue();
                 case ResultValueType.Integer:
                     return new IntegerFieldValue();
@@ -39,6 +38,8 @@ namespace Onspring.API.SDK.Json
                     return new ScoringGroupListFieldValue();
                 case ResultValueType.FileList:
                     return new FileListFieldValue();
+                default:
+                    return new RecordFieldValue();
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using Onspring.API.SDK.Validation;
+﻿using Newtonsoft.Json;
+using Onspring.API.SDK.Validation;
 using System;
 
 namespace Onspring.API.SDK
@@ -17,6 +18,11 @@ namespace Onspring.API.SDK
         /// Gets or sets the API Key used for authentication.
         /// </summary>
         public string ApiKey { get; set; }
+
+        /// <summary>
+        /// Gets or sets the JSON Serializer. Optional to set, but included to allow for extension/modification of the serializer logic.
+        /// </summary>
+        public JsonSerializer JsonSerializer { get; set; } = null;
 
         /// <summary>
         /// Initializes a new instance of <see cref="OnspringClientConfiguration"/>.

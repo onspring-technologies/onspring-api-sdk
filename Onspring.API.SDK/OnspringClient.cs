@@ -309,7 +309,7 @@ namespace Onspring.API.SDK
             var path = UrlHelper.GetFilePath(recordId, fieldId, fileId);
             var response = await _httpClient.GetAsync(path, _clientConfig.ApiKey);
 
-            var message = await ApiResponseFactory.TryGetMessageAsync(response);
+            var message = await ApiResponseFactory.TryGetMessageAsync(response, _clientConfig.JsonSerializer);
             var apiResponse = new ApiResponse<Stream>
             {
                 Message = message,
@@ -366,7 +366,7 @@ namespace Onspring.API.SDK
 
             var httpResponse = await _httpClient.SendAsync(httpRequest);
 
-            var apiResponse = await ApiResponseFactory.GetApiResponseAsync<CreatedWithIdResponse<int>>(httpResponse);
+            var apiResponse = await ApiResponseFactory.GetApiResponseAsync<CreatedWithIdResponse<int>>(httpResponse, _clientConfig.JsonSerializer);
             return apiResponse;
         }
 
@@ -715,7 +715,7 @@ namespace Onspring.API.SDK
         {
             var httpResponse = await _httpClient.DeleteAsync(path, _clientConfig.ApiKey);
 
-            var apiResponse = await ApiResponseFactory.GetApiResponseAsync(httpResponse);
+            var apiResponse = await ApiResponseFactory.GetApiResponseAsync(httpResponse, _clientConfig.JsonSerializer);
             return apiResponse;
         }
 
@@ -730,7 +730,7 @@ namespace Onspring.API.SDK
         {
             var httpResponse = await _httpClient.GetAsync(path, _clientConfig.ApiKey);
 
-            var apiResponse = await ApiResponseFactory.GetApiResponseAsync<T>(httpResponse);
+            var apiResponse = await ApiResponseFactory.GetApiResponseAsync<T>(httpResponse, _clientConfig.JsonSerializer);
             return apiResponse;
         }
 
@@ -744,7 +744,7 @@ namespace Onspring.API.SDK
         {
             var httpResponse = await _httpClient.PostAsync(path, _clientConfig.ApiKey, content);
 
-            var apiResponse = await ApiResponseFactory.GetApiResponseAsync(httpResponse);
+            var apiResponse = await ApiResponseFactory.GetApiResponseAsync(httpResponse, _clientConfig.JsonSerializer);
             return apiResponse;
         }
 
@@ -760,7 +760,7 @@ namespace Onspring.API.SDK
         {
             var httpResponse = await _httpClient.PostAsync(path, _clientConfig.ApiKey, content);
 
-            var apiResponse = await ApiResponseFactory.GetApiResponseAsync<TOutput>(httpResponse);
+            var apiResponse = await ApiResponseFactory.GetApiResponseAsync<TOutput>(httpResponse, _clientConfig.JsonSerializer);
             return apiResponse;
         }
 
@@ -776,7 +776,7 @@ namespace Onspring.API.SDK
         {
             var httpResponse = await _httpClient.PutAsync(path, _clientConfig.ApiKey, content);
 
-            var apiResponse = await ApiResponseFactory.GetApiResponseAsync<TOutput>(httpResponse);
+            var apiResponse = await ApiResponseFactory.GetApiResponseAsync<TOutput>(httpResponse, _clientConfig.JsonSerializer);
             return apiResponse;
         }
     }

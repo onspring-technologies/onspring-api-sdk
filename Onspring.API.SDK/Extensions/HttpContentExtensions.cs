@@ -16,10 +16,11 @@ namespace Onspring.API.SDK.Extensions
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="content"></param>
+        /// <param name="jsonSerializer"></param>
         /// <returns></returns>
-        public static async Task<T> ReadAsJsonAsync<T>(this HttpContent content)
+        public static async Task<T> ReadAsJsonAsync<T>(this HttpContent content, JsonSerializer jsonSerializer)
         {
-            var serializer = JsonSerializerFactory.GetDefaultSerializer();
+            var serializer = jsonSerializer ?? JsonSerializerFactory.GetDefaultSerializer();
 
             var stream = await content.ReadAsStreamAsync();
 
