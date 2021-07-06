@@ -21,5 +21,11 @@ namespace Onspring.API.SDK.Models
         {
             AppId = appId;
         }
+
+        public GetRecordsByAppRequest(int appId, PagingRequest pagingRequest)
+        {
+            AppId = appId;
+            PagingRequest = pagingRequest;
+        }
     }
 }

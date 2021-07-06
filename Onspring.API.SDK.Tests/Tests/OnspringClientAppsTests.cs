@@ -106,7 +106,7 @@ namespace Onspring.API.SDK.Tests.Tests
         public async Task GetAppsBatchAsync()
         {
             var ids = new[] { 1, 2, 3 };
-            var getAppsResponse = await _apiClient.GetAppsBatchAsync(ids);
+            var getAppsResponse = await _apiClient.GetAppsAsync(ids);
 
             AssertHelper.AssertSuccess(getAppsResponse);
             Assert.IsTrue(getAppsResponse.Value.Items.Any(), "No items returned.");
@@ -117,7 +117,7 @@ namespace Onspring.API.SDK.Tests.Tests
         public async Task GetAppsBatch_Unauthorized()
         {
             var ids = new[] { 401 };
-            var getAppsResponse = await _apiClient.GetAppsBatchAsync(ids);
+            var getAppsResponse = await _apiClient.GetAppsAsync(ids);
 
             AssertHelper.AssertError(getAppsResponse, HttpStatusCode.Unauthorized);
         }
@@ -126,7 +126,7 @@ namespace Onspring.API.SDK.Tests.Tests
         public async Task GetAppsBatch_Forbidden()
         {
             var ids = new[] { 403 };
-            var getAppsResponse = await _apiClient.GetAppsBatchAsync(ids);
+            var getAppsResponse = await _apiClient.GetAppsAsync(ids);
 
             AssertHelper.AssertError(getAppsResponse, HttpStatusCode.Forbidden);
         }

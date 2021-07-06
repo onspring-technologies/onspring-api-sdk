@@ -8,8 +8,10 @@ using System.Linq;
 
 namespace Onspring.API.SDK.Tests.TestServer.Controllers
 {
+    [ApiController, Route("[controller]")]
     [ExcludeFromCodeCoverage]
-    [Route("[controller]")]
+    [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Just a test controller. Not an API that gets shipped.")]
+    [SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Just a test controller. Not an API that gets shipped.")]
     public class FieldsController : ControllerBase
     {
         [HttpGet("id/{fieldId}")]

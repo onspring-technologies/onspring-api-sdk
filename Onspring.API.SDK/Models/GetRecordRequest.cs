@@ -12,5 +12,16 @@ namespace Onspring.API.SDK.Models
         public int RecordId { get; set; }
         public List<int> FieldIds { get; set; } = new List<int>();
         public DataFormat DataFormat { get; set; } = DataFormat.Raw;
+
+        public GetRecordRequest()
+        {
+
+        }
+
+        public GetRecordRequest(int appId, int recordId)
+        {
+            AppId = appId;
+            RecordId = recordId;
+        }
     }
 }

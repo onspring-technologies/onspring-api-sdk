@@ -6,7 +6,7 @@ namespace Onspring.API.SDK.Models
     /// <summary>
     /// Represents a request to get a batch of records.
     /// </summary>
-    public class BatchGetRecordsRequest
+    public class GetRecordsRequest
     {
         /// <summary>
         /// Associated app identifier.

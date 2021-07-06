@@ -10,11 +10,7 @@ namespace Onspring.API.SDK.Json
         protected override Field Create(Type objectType, JObject jObject)
         {
             var fieldTypeStr = jObject["type"]?.ToString() ?? jObject["Type"]?.ToString();
-            var didParse = Enum.TryParse<FieldType>(fieldTypeStr, out var fieldType);
-            if (didParse == false)
-            {
-                return new Field();
-            }
+            Enum.TryParse<FieldType>(fieldTypeStr, out var fieldType);
 
             switch (fieldType)
             {

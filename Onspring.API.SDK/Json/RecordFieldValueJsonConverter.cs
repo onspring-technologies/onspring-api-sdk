@@ -10,11 +10,7 @@ namespace Onspring.API.SDK.Json
         protected override RecordFieldValue Create(Type objectType, JObject jObject)
         {
             var valueTypeStr = jObject["type"]?.ToString() ?? jObject["Type"]?.ToString();
-            var didParse = Enum.TryParse<ResultValueType>(valueTypeStr, out var valueType);
-            if (didParse == false)
-            {
-                return new RecordFieldValue();
-            }
+            Enum.TryParse<ResultValueType>(valueTypeStr, out var valueType);
 
             switch (valueType)
             {

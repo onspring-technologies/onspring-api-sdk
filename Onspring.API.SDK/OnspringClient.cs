@@ -150,10 +150,10 @@ namespace Onspring.API.SDK
         /// </summary>
         /// <param name="appIds"></param>
         /// <returns></returns>
-        [Obsolete("Using GetAppsBatchAsync is recommended.")]
+        [Obsolete("Using GetAppsAsync is recommended.")]
         public ApiResponse<GetAppsResponse> GetAppsBatch(IEnumerable<int> appIds)
         {
-            var getAppsResponse = AsyncHelper.RunTask(() => GetAppsBatchAsync(appIds));
+            var getAppsResponse = AsyncHelper.RunTask(() => GetAppsAsync(appIds));
             return getAppsResponse;
         }
 
@@ -162,7 +162,7 @@ namespace Onspring.API.SDK
         /// </summary>
         /// <param name="appIds"></param>
         /// <returns></returns>
-        public async Task<ApiResponse<GetAppsResponse>> GetAppsBatchAsync(IEnumerable<int> appIds)
+        public async Task<ApiResponse<GetAppsResponse>> GetAppsAsync(IEnumerable<int> appIds)
         {
             var path = UrlHelper.GetAppsBatchPath();
             var getAppsResponse = await PostAsync<GetAppsResponse>(path, appIds.Distinct().ToArray());
@@ -520,7 +520,7 @@ namespace Onspring.API.SDK
         /// <param name="request"></param>
         /// <returns></returns>
         [Obsolete("Using GetRecordsAsync is recommended.")]
-        public ApiResponse<GetRecordsResponse> GetRecords(BatchGetRecordsRequest request)
+        public ApiResponse<GetRecordsResponse> GetRecords(GetRecordsRequest request)
         {
             var apiResponse = AsyncHelper.RunTask(() => GetRecordsAsync(request));
             return apiResponse;
@@ -531,7 +531,7 @@ namespace Onspring.API.SDK
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<ApiResponse<GetRecordsResponse>> GetRecordsAsync(BatchGetRecordsRequest request)
+        public async Task<ApiResponse<GetRecordsResponse>> GetRecordsAsync(GetRecordsRequest request)
         {
             Arg.IsNotNull(request, nameof(request));
 
@@ -625,10 +625,10 @@ namespace Onspring.API.SDK
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [Obsolete("Using DeleteRecordBatchAsync is recommended.")]
-        public ApiResponse DeleteRecordBatch(BatchDeleteRecordsRequest request)
+        [Obsolete("Using DeleteRecordsAsync is recommended.")]
+        public ApiResponse DeleteRecords(DeleteRecordsRequest request)
         {
-            var apiResponse = AsyncHelper.RunTask(() => DeleteRecordBatchAsync(request));
+            var apiResponse = AsyncHelper.RunTask(() => DeleteRecordsAsync(request));
             return apiResponse;
         }
 
@@ -637,7 +637,7 @@ namespace Onspring.API.SDK
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<ApiResponse> DeleteRecordBatchAsync(BatchDeleteRecordsRequest request)
+        public async Task<ApiResponse> DeleteRecordsAsync(DeleteRecordsRequest request)
         {
             Arg.IsNotNull(request, nameof(request));
 
