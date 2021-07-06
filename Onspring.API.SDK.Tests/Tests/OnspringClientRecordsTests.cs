@@ -31,7 +31,7 @@ namespace Onspring.API.SDK.Tests.Tests
         public async Task GetRecordsByApp()
         {
             var getRequest = new GetRecordsByAppRequest(_appIdWithRecords);
-            var getResponse = await _apiClient.GetRecordsByAppAsync(getRequest);
+            var getResponse = await _apiClient.GetRecordsForAppAsync(getRequest);
             AssertHelper.AssertSuccess(getResponse);
         }
 
@@ -82,7 +82,7 @@ namespace Onspring.API.SDK.Tests.Tests
             {
                 FieldIds = { _fieldId },
             };
-            var getByAppResponse = await _apiClient.GetRecordsByAppAsync(getByAppRequest);
+            var getByAppResponse = await _apiClient.GetRecordsForAppAsync(getByAppRequest);
             AssertHelper.AssertSuccess(getByAppResponse);
             AssertCasting(getByAppResponse.Value.Items);
 

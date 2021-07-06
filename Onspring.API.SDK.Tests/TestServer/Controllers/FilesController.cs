@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Onspring.API.SDK.Models;
 using Onspring.API.SDK.Tests.Infrastructure.Helpers;
+using Onspring.API.SDK.Tests.TestServer.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
@@ -26,11 +27,11 @@ namespace Onspring.API.SDK.Tests.TestServer.Controllers
             var path = TestHelper.GetDefaultImagePath();
 
             var fileStream = System.IO.File.OpenRead(path);
-            return File(fileStream, "image/png");
+            return File(fileStream, "image/png", "Test file name.png");
         }
 
         [HttpPost]
-        public IActionResult SaveFile([FromForm, Required] SaveFileRequest request)
+        public IActionResult SaveFile([FromForm, Required] ApiSaveFileRequest request)
         {
             return Created("", new CreatedWithIdResponse<int>(new Random().Next()));
         }

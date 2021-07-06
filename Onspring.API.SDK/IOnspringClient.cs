@@ -2,7 +2,6 @@
 using Onspring.API.SDK.Models;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace Onspring.API.SDK
@@ -20,11 +19,11 @@ namespace Onspring.API.SDK
         Task<ApiResponse<Field>> GetFieldAsync(int fieldId);
         Task<ApiResponse<GetFieldsResponse>> GetFieldsAsync(IEnumerable<int> fieldIds);
         Task<ApiResponse<GetPagedFieldsResponse>> GetFieldsForAppAsync(int appId, PagingRequest pagingRequest = null);
-        Task<ApiResponse<Stream>> GetFileAsync(int recordId, int fieldId, int fileId);
+        Task<ApiResponse<GetFileResponse>> GetFileAsync(int recordId, int fieldId, int fileId);
         Task<ApiResponse<GetFileInfoResponse>> GetFileInfoAsync(int recordId, int fieldId, int fileId);
         Task<ApiResponse<ResultRecord>> GetRecordAsync(GetRecordRequest request);
         Task<ApiResponse<GetRecordsResponse>> GetRecordsAsync(GetRecordsRequest request);
-        Task<ApiResponse<GetPagedRecordsResponse>> GetRecordsByAppAsync(GetRecordsByAppRequest request);
+        Task<ApiResponse<GetPagedRecordsResponse>> GetRecordsForAppAsync(GetRecordsByAppRequest request);
         Task<ApiResponse<ReportData>> GetReportAsync(int reportId, ReportDataType dataType = ReportDataType.ReportData, DataFormat dataFormat = DataFormat.Raw);
         Task<ApiResponse<GetReportsForAppResponse>> GetReportsForAppAsync(int appId, PagingRequest pagingRequest = null);
         Task<ApiResponse<GetPagedRecordsResponse>> QueryRecordsAsync(QueryRecordsRequest request, PagingRequest pagingRequest = null);

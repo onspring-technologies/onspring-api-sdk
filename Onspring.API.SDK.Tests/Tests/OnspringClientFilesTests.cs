@@ -31,12 +31,11 @@ namespace Onspring.API.SDK.Tests.Tests
         {
             // Save file
             var filePath = TestHelper.GetDefaultImagePath();
-            var fileContents = await File.ReadAllBytesAsync(filePath);
             var saveFileRequest = new SaveFileRequest
             {
                 FieldId = _fieldId,
                 RecordId = _recordId,
-                FileContents = fileContents,
+                FileStream = File.OpenRead(filePath),
                 FileName = Path.GetFileName(filePath),
                 ModifiedDate = DateTime.UtcNow,
                 Notes = "Test file."

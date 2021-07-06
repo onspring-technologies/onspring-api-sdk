@@ -6,7 +6,6 @@ using Onspring.API.SDK.Models;
 using Onspring.API.SDK.Validation;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -193,13 +192,13 @@ namespace Onspring.API.SDK
         /// <param name="fieldId"></param>
         /// <param name="fileId"></param>
         /// <returns></returns>
-        public async Task<ApiResponse<Stream>> GetFileAsync(int recordId, int fieldId, int fileId)
+        public async Task<ApiResponse<GetFileResponse>> GetFileAsync(int recordId, int fieldId, int fileId)
         {
             var path = UrlHelper.GetFilePath(recordId, fieldId, fileId);
             var response = await _httpClient.GetAsync(path, _clientConfig.ApiKey);
 
             var message = await ApiResponseFactory.TryGetMessageAsync(response, _clientConfig.JsonSerializer);
-            var apiResponse = new ApiResponse<Stream>
+            var apiResponse = new ApiResponse<GetFileResponse>
             {
                 Message = message,
                 StatusCode = response.StatusCode,
@@ -207,7 +206,15 @@ namespace Onspring.API.SDK
 
             if (response.IsSuccessStatusCode)
             {
-                apiResponse.Value = await response.Content.ReadAsStreamAsync();
+                var fileStream = await response.Content.ReadAsStreamAsync();
+
+                apiResponse.Value = new GetFileResponse()
+                {
+                    FileName = response.Content.Headers?.ContentDisposition?.FileName,
+                    ContentLength = response.Content.Headers?.ContentLength ?? 0,
+                    ContentType = response.Content.Headers?.ContentType?.MediaType,
+                    Stream = fileStream,
+                };
             }
 
             return apiResponse;
@@ -225,7 +232,7 @@ namespace Onspring.API.SDK
             var path = UrlHelper.GetSaveFilePath();
             var multiPartContent = new MultipartFormDataContent
             {
-                { new ByteArrayContent(request.FileContents), "file", request.FileName },
+                { new StreamContent(request.FileStream), "file", request.FileName },
                 { new StringContent(request.RecordId.ToString()), nameof(request.RecordId) },
                 { new StringContent(request.FieldId.ToString()), nameof(request.FieldId) },
                 { new StringContent(request.Notes), nameof(request.Notes) },
@@ -305,7 +312,7 @@ namespace Onspring.API.SDK
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<ApiResponse<GetPagedRecordsResponse>> GetRecordsByAppAsync(GetRecordsByAppRequest request)
+        public async Task<ApiResponse<GetPagedRecordsResponse>> GetRecordsForAppAsync(GetRecordsByAppRequest request)
         {
             Arg.IsNotNull(request, nameof(request));
 
