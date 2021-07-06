@@ -27,40 +27,6 @@ namespace Onspring.API.SDK.Tests.Tests
         }
 
         [TestMethod]
-        public void SaveReadDeleteFile()
-        {
-            // Save file
-            var filePath = TestHelper.GetDefaultImagePath();
-            var fileContents = File.ReadAllBytes(filePath);
-            var saveFileRequest = new SaveFileRequest
-            {
-                FieldId = _fieldId,
-                RecordId = _recordId,
-                FileContents = fileContents,
-                FileName = Path.GetFileName(filePath),
-                ModifiedDate = DateTime.UtcNow,
-                Notes = "Test file."
-            };
-
-            var saveResponse = _apiClient.SaveFile(saveFileRequest);
-            AssertHelper.AssertSuccess(saveResponse);
-
-            var fileId = saveResponse.Value.Id;
-
-            // Get info
-            var getFileInfoResponse = _apiClient.GetFileInfo(_recordId, _fieldId, fileId);
-            AssertHelper.AssertSuccess(getFileInfoResponse);
-
-            // Get raw file back
-            var getFileResponse = _apiClient.GetFile(_recordId, _fieldId, fileId);
-            AssertHelper.AssertSuccess(getFileResponse);
-
-            // Delete file
-            var deleteResponse = _apiClient.DeleteFile(_recordId, _fieldId, fileId);
-            AssertHelper.AssertSuccess(deleteResponse);
-        }
-
-        [TestMethod]
         public async Task SaveReadDeleteFileAsync()
         {
             // Save file

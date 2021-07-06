@@ -1,4 +1,5 @@
-﻿using Onspring.API.SDK.Extensions;
+﻿using Onspring.API.SDK.Enums;
+using Onspring.API.SDK.Extensions;
 using Onspring.API.SDK.Helpers;
 using Onspring.API.SDK.Internals;
 using Onspring.API.SDK.Models;
@@ -72,17 +73,6 @@ namespace Onspring.API.SDK
         /// Determines if the API is reachable by calling the ping endpoint.
         /// </summary>
         /// <returns>Value indicating if the API is responsive.</returns>
-        [Obsolete("Using CanConnectAsync is recommended.")]
-        public bool CanConnect()
-        {
-            var canConnect = AsyncHelper.RunTask(() => CanConnectAsync());
-            return canConnect;
-        }
-
-        /// <summary>
-        /// Determines if the API is reachable by calling the ping endpoint.
-        /// </summary>
-        /// <returns>Value indicating if the API is responsive.</returns>
         public async Task<bool> CanConnectAsync()
         {
             var path = UrlHelper.GetPingPath();
@@ -102,18 +92,6 @@ namespace Onspring.API.SDK
         /// </summary>
         /// <param name="pagingRequest"></param>
         /// <returns></returns>
-        [Obsolete("Using GetAppsAsync is recommended.")]
-        public ApiResponse<GetPagedAppsResponse> GetApps(PagingRequest pagingRequest = null)
-        {
-            var getAppsResponse = AsyncHelper.RunTask(() => GetAppsAsync(pagingRequest));
-            return getAppsResponse;
-        }
-
-        /// <summary>
-        /// Gets all accessible apps.
-        /// </summary>
-        /// <param name="pagingRequest"></param>
-        /// <returns></returns>
         public async Task<ApiResponse<GetPagedAppsResponse>> GetAppsAsync(PagingRequest pagingRequest = null)
         {
             var path = UrlHelper.GetAppsPath(pagingRequest);
@@ -126,35 +104,11 @@ namespace Onspring.API.SDK
         /// </summary>
         /// <param name="appId"></param>
         /// <returns></returns>
-        [Obsolete("Using GetAppAsync is recommended.")]
-        public ApiResponse<App> GetApp(int appId)
-        {
-            var app = AsyncHelper.RunTask(() => GetAppAsync(appId));
-            return app;
-        }
-
-        /// <summary>
-        /// Gets the requested app. Returns null if app could not be found.
-        /// </summary>
-        /// <param name="appId"></param>
-        /// <returns></returns>
         public async Task<ApiResponse<App>> GetAppAsync(int appId)
         {
             var path = UrlHelper.GetAppByIdPath(appId);
             var app = await GetAsync<App>(path);
             return app;
-        }
-
-        /// <summary>
-        /// Gets a batch of apps by their identifiers.
-        /// </summary>
-        /// <param name="appIds"></param>
-        /// <returns></returns>
-        [Obsolete("Using GetAppsAsync is recommended.")]
-        public ApiResponse<GetAppsResponse> GetAppsBatch(IEnumerable<int> appIds)
-        {
-            var getAppsResponse = AsyncHelper.RunTask(() => GetAppsAsync(appIds));
-            return getAppsResponse;
         }
 
         /// <summary>
@@ -180,18 +134,6 @@ namespace Onspring.API.SDK
         /// </summary>
         /// <param name="fieldId"></param>
         /// <returns></returns>
-        [Obsolete("Using GetFieldAsync is recommended.")]
-        public ApiResponse<Field> GetField(int fieldId)
-        {
-            var field = AsyncHelper.RunTask(() => GetFieldAsync(fieldId));
-            return field;
-        }
-
-        /// <summary>
-        /// Gets the requested field. Returns null if field could not be found.
-        /// </summary>
-        /// <param name="fieldId"></param>
-        /// <returns></returns>
         public async Task<ApiResponse<Field>> GetFieldAsync(int fieldId)
         {
             var path = UrlHelper.GetFieldByIdPath(fieldId);
@@ -204,36 +146,11 @@ namespace Onspring.API.SDK
         /// </summary>
         /// <param name="fieldIds"></param>
         /// <returns></returns>
-        [Obsolete("Using GetFieldsAsync is recommended.")]
-        public ApiResponse<GetFieldsResponse> GetFields(IEnumerable<int> fieldIds)
-        {
-            var fields = AsyncHelper.RunTask(() => GetFieldsAsync(fieldIds));
-            return fields;
-        }
-
-        /// <summary>
-        /// Gets the requested fields. 
-        /// </summary>
-        /// <param name="fieldIds"></param>
-        /// <returns></returns>
         public async Task<ApiResponse<GetFieldsResponse>> GetFieldsAsync(IEnumerable<int> fieldIds)
         {
             var path = UrlHelper.GetFieldsBatchPath();
             var response = await PostAsync<GetFieldsResponse>(path, fieldIds);
             return response;
-        }
-
-        /// <summary>
-        /// Gets the fields associated to the <paramref name="appId"/>. 
-        /// </summary>
-        /// <param name="appId"></param>
-        /// <param name="pagingRequest"></param>
-        /// <returns></returns>
-        [Obsolete("Using GetFieldsForAppAsync is recommended.")]
-        public ApiResponse<GetPagedFieldsResponse> GetFieldsForApp(int appId, PagingRequest pagingRequest = null)
-        {
-            var fields = AsyncHelper.RunTask(() => GetFieldsForAppAsync(appId, pagingRequest));
-            return fields;
         }
 
         /// <summary>
@@ -262,38 +179,10 @@ namespace Onspring.API.SDK
         /// <param name="fieldId"></param>
         /// <param name="fileId"></param>
         /// <returns></returns>
-        [Obsolete("Using GetFileInfoAsync is recommended.")]
-        public ApiResponse<GetFileInfoResponse> GetFileInfo(int recordId, int fieldId, int fileId)
-        {
-            var apiResponse = AsyncHelper.RunTask(() => GetFileInfoAsync(recordId, fieldId, fileId));
-            return apiResponse;
-        }
-
-        /// <summary>
-        /// Gets a file's information.
-        /// </summary>
-        /// <param name="recordId"></param>
-        /// <param name="fieldId"></param>
-        /// <param name="fileId"></param>
-        /// <returns></returns>
         public async Task<ApiResponse<GetFileInfoResponse>> GetFileInfoAsync(int recordId, int fieldId, int fileId)
         {
             var path = UrlHelper.GetFileInfoPath(recordId, fieldId, fileId);
             var apiResponse = await GetAsync<GetFileInfoResponse>(path);
-            return apiResponse;
-        }
-
-        /// <summary>
-        /// Gets a file.
-        /// </summary>
-        /// <param name="recordId"></param>
-        /// <param name="fieldId"></param>
-        /// <param name="fileId"></param>
-        /// <returns></returns>
-        [Obsolete("Using GetFileAsync is recommended.")]
-        public ApiResponse<Stream> GetFile(int recordId, int fieldId, int fileId)
-        {
-            var apiResponse = AsyncHelper.RunTask(() => GetFileAsync(recordId, fieldId, fileId));
             return apiResponse;
         }
 
@@ -321,18 +210,6 @@ namespace Onspring.API.SDK
                 apiResponse.Value = await response.Content.ReadAsStreamAsync();
             }
 
-            return apiResponse;
-        }
-
-        /// <summary>
-        /// Saves a file.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        [Obsolete("Using SaveFileAsync is recommended.")]
-        public ApiResponse<CreatedWithIdResponse<int>> SaveFile(SaveFileRequest request)
-        {
-            var apiResponse = AsyncHelper.RunTask(() => SaveFileAsync(request));
             return apiResponse;
         }
 
@@ -377,20 +254,6 @@ namespace Onspring.API.SDK
         /// <param name="fieldId"></param>
         /// <param name="fileId"></param>
         /// <returns></returns>
-        [Obsolete("Using DeleteFileAsync is recommended.")]
-        public ApiResponse DeleteFile(int recordId, int fieldId, int fileId)
-        {
-            var apiResponse = AsyncHelper.RunTask(() => DeleteFileAsync(recordId, fieldId, fileId));
-            return apiResponse;
-        }
-
-        /// <summary>
-        /// Deletes a file.
-        /// </summary>
-        /// <param name="recordId"></param>
-        /// <param name="fieldId"></param>
-        /// <param name="fileId"></param>
-        /// <returns></returns>
         public async Task<ApiResponse> DeleteFileAsync(int recordId, int fieldId, int fileId)
         {
             var path = UrlHelper.GetDeleteFilePath(recordId, fieldId, fileId);
@@ -409,36 +272,11 @@ namespace Onspring.API.SDK
         /// </summary>
         /// <param name="listId"></param>
         /// <param name="itemId"></param>
-        [Obsolete("Using DeleteListItemAsync is recommended.")]
-        public ApiResponse DeleteListItem(int listId, Guid itemId)
-        {
-            var apiResponse = AsyncHelper.RunTask(() => DeleteListItemAsync(listId, itemId));
-            return apiResponse;
-        }
-
-        /// <summary>
-        /// Deletes an item from the list.
-        /// </summary>
-        /// <param name="listId"></param>
-        /// <param name="itemId"></param>
         public async Task<ApiResponse> DeleteListItemAsync(int listId, Guid itemId)
         {
             var path = UrlHelper.GetDeleteListItemPath(listId, itemId);
             var apiResponse = await DeleteAsync(path);
             return apiResponse;
-        }
-
-        /// <summary>
-        /// Saves (inserts/updates) a list item to the provided list. Returns the identifier of the new list item
-        /// or null if the list could not be found.
-        /// </summary>
-        /// <param name="saveListItemRequest"></param>
-        /// <returns></returns>
-        [Obsolete("Using SaveListItemAsync is recommended.")]
-        public ApiResponse<SaveListItemResponse> SaveListItem(SaveListItemRequest saveListItemRequest)
-        {
-            var saveResponse = AsyncHelper.RunTask(() => SaveListItemAsync(saveListItemRequest));
-            return saveResponse;
         }
 
         /// <summary>
@@ -467,18 +305,6 @@ namespace Onspring.API.SDK
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [Obsolete("Using GetRecordsByAppAsync is recommended.")]
-        public ApiResponse<GetPagedRecordsResponse> GetRecordsByApp(GetRecordsByAppRequest request)
-        {
-            var apiResponse = AsyncHelper.RunTask(() => GetRecordsByAppAsync(request));
-            return apiResponse;
-        }
-
-        /// <summary>
-        /// Gets the records associatd to an app.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
         public async Task<ApiResponse<GetPagedRecordsResponse>> GetRecordsByAppAsync(GetRecordsByAppRequest request)
         {
             Arg.IsNotNull(request, nameof(request));
@@ -493,36 +319,12 @@ namespace Onspring.API.SDK
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [Obsolete("Using GetRecordAsync is recommended.")]
-        public ApiResponse<ResultRecord> GetRecord(GetRecordRequest request)
-        {
-            var apiResponse = AsyncHelper.RunTask(() => GetRecordAsync(request));
-            return apiResponse;
-        }
-
-        /// <summary>
-        /// Gets a record by its identifier.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
         public async Task<ApiResponse<ResultRecord>> GetRecordAsync(GetRecordRequest request)
         {
             Arg.IsNotNull(request, nameof(request));
 
             var path = UrlHelper.GetRecordByIdPath(request.AppId, request.RecordId, request.FieldIds, request.DataFormat);
             var apiResponse = await GetAsync<ResultRecord>(path);
-            return apiResponse;
-        }
-
-        /// <summary>
-        /// Gets a batch of records.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        [Obsolete("Using GetRecordsAsync is recommended.")]
-        public ApiResponse<GetRecordsResponse> GetRecords(GetRecordsRequest request)
-        {
-            var apiResponse = AsyncHelper.RunTask(() => GetRecordsAsync(request));
             return apiResponse;
         }
 
@@ -546,37 +348,12 @@ namespace Onspring.API.SDK
         /// <param name="request"></param>
         /// <param name="pagingRequest"></param>
         /// <returns></returns>
-        [Obsolete("Using QueryRecordsAsync is recommended.")]
-        public ApiResponse<GetPagedRecordsResponse> QueryRecords(QueryRecordsRequest request, PagingRequest pagingRequest = null)
-        {
-            var apiResponse = AsyncHelper.RunTask(() => QueryRecordsAsync(request, pagingRequest));
-            return apiResponse;
-        }
-
-        /// <summary>
-        /// Queries records.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <param name="pagingRequest"></param>
-        /// <returns></returns>
         public async Task<ApiResponse<GetPagedRecordsResponse>> QueryRecordsAsync(QueryRecordsRequest request, PagingRequest pagingRequest = null)
         {
             Arg.IsNotNull(request, nameof(request));
 
             var path = UrlHelper.GetQueryRecordsPath(pagingRequest);
             var apiResponse = await PostAsync<GetPagedRecordsResponse>(path, request);
-            return apiResponse;
-        }
-
-        /// <summary>
-        /// Saves a record.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        [Obsolete("Using SaveRecordAsync is recommended.")]
-        public ApiResponse<SaveRecordResponse> SaveRecord(SaveRecordRequest request)
-        {
-            var apiResponse = AsyncHelper.RunTask(() => SaveRecordAsync(request));
             return apiResponse;
         }
 
@@ -600,35 +377,10 @@ namespace Onspring.API.SDK
         /// <param name="appId"></param>
         /// <param name="recordId"></param>
         /// <returns></returns>
-        [Obsolete("Using DeleteRecordAsync is recommended.")]
-        public ApiResponse DeleteRecord(int appId, int recordId)
-        {
-            var apiResponse = AsyncHelper.RunTask(() => DeleteRecordAsync(appId, recordId));
-            return apiResponse;
-        }
-
-        /// <summary>
-        /// Deletes a record for a given app.
-        /// </summary>
-        /// <param name="appId"></param>
-        /// <param name="recordId"></param>
-        /// <returns></returns>
         public async Task<ApiResponse> DeleteRecordAsync(int appId, int recordId)
         {
             var path = UrlHelper.GetDeleteRecordPath(appId, recordId);
             var apiResponse = await DeleteAsync(path);
-            return apiResponse;
-        }
-
-        /// <summary>
-        /// Deletes a batch of records.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        [Obsolete("Using DeleteRecordsAsync is recommended.")]
-        public ApiResponse DeleteRecords(DeleteRecordsRequest request)
-        {
-            var apiResponse = AsyncHelper.RunTask(() => DeleteRecordsAsync(request));
             return apiResponse;
         }
 
@@ -656,37 +408,14 @@ namespace Onspring.API.SDK
         /// Gets the report for <paramref name="reportId"/>. Returns null if no report could be found.
         /// </summary>
         /// <param name="reportId"></param>
+        /// <param name="dataType"></param>
+        /// <param name="dataFormat"></param>
         /// <returns></returns>
-        [Obsolete("Using GetReportAsync is recommended.")]
-        public ApiResponse<ReportData> GetReport(int reportId)
+        public async Task<ApiResponse<ReportData>> GetReportAsync(int reportId, ReportDataType dataType = ReportDataType.ReportData, DataFormat dataFormat = DataFormat.Raw)
         {
-            var report = AsyncHelper.RunTask(() => GetReportAsync(reportId));
-            return report;
-        }
-
-        /// <summary>
-        /// Gets the report for <paramref name="reportId"/>. Returns null if no report could be found.
-        /// </summary>
-        /// <param name="reportId"></param>
-        /// <returns></returns>
-        public async Task<ApiResponse<ReportData>> GetReportAsync(int reportId)
-        {
-            var path = UrlHelper.GetReportByIdPath(reportId);
+            var path = UrlHelper.GetReportByIdPath(reportId, dataType, dataFormat);
             var report = await GetAsync<ReportData>(path);
             return report;
-        }
-
-        /// <summary>
-        /// Gets the reports associated to the <paramref name="appId"/>.
-        /// </summary>
-        /// <param name="appId"></param>
-        /// <param name="pagingRequest"></param>
-        /// <returns></returns>
-        [Obsolete("Using GetReportsForAppAsync is recommended.")]
-        public ApiResponse<GetReportsForAppResponse> GetReportsForApp(int appId, PagingRequest pagingRequest = null)
-        {
-            var getReportsResponse = AsyncHelper.RunTask(() => GetReportsForAppAsync(appId, pagingRequest));
-            return getReportsResponse;
         }
 
         /// <summary>

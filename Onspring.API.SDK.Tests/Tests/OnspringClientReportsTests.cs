@@ -26,23 +26,9 @@ namespace Onspring.API.SDK.Tests.Tests
         }
 
         [TestMethod]
-        public void GetReport()
-        {
-            var getResponse = _apiClient.GetReport(_reportId);
-            AssertHelper.AssertSuccess(getResponse);
-        }
-
-        [TestMethod]
         public async Task GetReportAsync()
         {
             var getResponse = await _apiClient.GetReportAsync(_reportId);
-            AssertHelper.AssertSuccess(getResponse);
-        }
-
-        [TestMethod]
-        public void GetReportsForApp()
-        {
-            var getResponse = _apiClient.GetReportsForApp(_appIdWithReports);
             AssertHelper.AssertSuccess(getResponse);
         }
 

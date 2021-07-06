@@ -7,7 +7,7 @@ namespace Onspring.API.SDK.Helpers
     /// Helper for running asynchronous code, synchronously.
     /// Should only be used when the async method is unavailable.
     /// </summary>
-    internal static class AsyncHelper
+    public static class AsyncHelper
     {
         /// <summary>
         /// Runs the provided async delegate synchronously.

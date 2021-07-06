@@ -26,13 +26,6 @@ namespace Onspring.API.SDK.Tests.Tests
         }
 
         [TestMethod]
-        public void GetField()
-        {
-            var getResponse = _apiClient.GetField(_fields.First());
-            AssertHelper.AssertSuccess(getResponse);
-        }
-
-        [TestMethod]
         public async Task GetFieldAsync()
         {
             var getResponse = await _apiClient.GetFieldAsync(_fields.First());
@@ -40,23 +33,9 @@ namespace Onspring.API.SDK.Tests.Tests
         }
 
         [TestMethod]
-        public void GetFields()
-        {
-            var getResponse = _apiClient.GetFields(_fields);
-            AssertHelper.AssertSuccess(getResponse);
-        }
-
-        [TestMethod]
         public async Task GetFieldsAsync()
         {
             var getResponse = await _apiClient.GetFieldsAsync(_fields);
-            AssertHelper.AssertSuccess(getResponse);
-        }
-
-        [TestMethod]
-        public void GetFieldsForApp()
-        {
-            var getResponse = _apiClient.GetFieldsForApp(_appIdWithFields);
             AssertHelper.AssertSuccess(getResponse);
         }
 

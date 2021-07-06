@@ -21,13 +21,6 @@ namespace Onspring.API.SDK.Tests.Tests
         }
 
         [TestMethod]
-        public void CanConnect()
-        {
-            var canConnect = _apiClient.CanConnect();
-            Assert.IsTrue(canConnect, "Unable to connect");
-        }
-
-        [TestMethod]
         public async Task CanConnectAsync()
         {
             var canConnect = await _apiClient.CanConnectAsync();

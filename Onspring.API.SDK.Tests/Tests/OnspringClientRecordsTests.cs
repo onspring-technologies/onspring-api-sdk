@@ -36,73 +36,6 @@ namespace Onspring.API.SDK.Tests.Tests
         }
 
         [TestMethod]
-        public void Crud()
-        {
-            var record = GetTestRecord();
-
-            // Insert
-            var saveRequest = new SaveRecordRequest
-            {
-                AppId = _appIdWithRecords,
-            };
-
-            var insertResponse = _apiClient.SaveRecord(saveRequest); // Used for single delete
-            var secondInsertResponse = _apiClient.SaveRecord(saveRequest); // Used for batch delete
-            AssertHelper.AssertSuccess(insertResponse);
-
-            // Update
-            saveRequest.RecordId = insertResponse.Value.Id;
-            var updateResponse = _apiClient.SaveRecord(saveRequest);
-            AssertHelper.AssertSuccess(updateResponse);
-
-            // Reads
-            // Get by ID
-            var getRequest = new GetRecordRequest(_appIdWithRecords, insertResponse.Value.Id)
-            {
-                FieldIds = { _fieldId }
-            };
-            var getResponse = _apiClient.GetRecord(getRequest);
-            AssertHelper.AssertSuccess(getResponse);
-
-            // Get batch
-            var getBatchRequest = new GetRecordsRequest
-            {
-                AppId = _appIdWithRecords,
-                RecordIds = { insertResponse.Value.Id, secondInsertResponse.Value.Id },
-                FieldIds = { _fieldId }
-            };
-            var batchGetResponse = _apiClient.GetRecords(getBatchRequest);
-            AssertHelper.AssertSuccess(batchGetResponse);
-
-            // Get by app
-            var pagingRequest = new PagingRequest(1, 10);
-            var getByAppRequest = new GetRecordsByAppRequest(_appIdWithRecords, pagingRequest)
-            {
-                FieldIds = { _fieldId }
-            };
-            var getByAppResponse = _apiClient.GetRecordsByApp(getByAppRequest);
-            AssertHelper.AssertSuccess(getByAppResponse);
-
-            // Query
-            var queryRequest = new QueryRecordsRequest
-            {
-                AppId = _appIdWithRecords,
-            };
-            var queryResponse = _apiClient.QueryRecords(queryRequest);
-            AssertHelper.AssertSuccess(queryResponse);
-
-            // Delete
-            // Single delete
-            var deleteResponse = _apiClient.DeleteRecord(saveRequest.AppId, insertResponse.Value.Id);
-            AssertHelper.AssertSuccess(deleteResponse);
-
-            // Batch delete
-            var batchDeleteRequest = new DeleteRecordsRequest(_appIdWithRecords, new[] { secondInsertResponse.Value.Id });
-            var batchDeleteResponse = _apiClient.DeleteRecords(batchDeleteRequest);
-            AssertHelper.AssertSuccess(batchDeleteResponse);
-        }
-
-        [TestMethod]
         public async Task CrudAsync()
         {
             var record = GetTestRecord();
@@ -124,7 +57,10 @@ namespace Onspring.API.SDK.Tests.Tests
 
             // Reads
             // Get by ID
-            var getRequest = new GetRecordRequest(_appIdWithRecords, insertResponse.Value.Id);
+            var getRequest = new GetRecordRequest(_appIdWithRecords, insertResponse.Value.Id)
+            {
+                FieldIds = { _fieldId },
+            };
             var getResponse = await _apiClient.GetRecordAsync(getRequest);
             AssertHelper.AssertSuccess(getResponse);
             AssertCasting(getResponse.Value);
@@ -134,6 +70,7 @@ namespace Onspring.API.SDK.Tests.Tests
             {
                 AppId = _appIdWithRecords,
                 RecordIds = { insertResponse.Value.Id, secondInsertResponse.Value.Id },
+                FieldIds = { _fieldId },
             };
             var batchGetResponse = await _apiClient.GetRecordsAsync(getBatchRequest);
             AssertHelper.AssertSuccess(batchGetResponse);
@@ -141,8 +78,11 @@ namespace Onspring.API.SDK.Tests.Tests
 
             // Get by app
             var pagingRequest = new PagingRequest(1, 10);
-            var getByAppRequest = new GetRecordsByAppRequest(_appIdWithRecords, pagingRequest);
-            var getByAppResponse = _apiClient.GetRecordsByApp(getByAppRequest);
+            var getByAppRequest = new GetRecordsByAppRequest(_appIdWithRecords, pagingRequest)
+            {
+                FieldIds = { _fieldId },
+            };
+            var getByAppResponse = await _apiClient.GetRecordsByAppAsync(getByAppRequest);
             AssertHelper.AssertSuccess(getByAppResponse);
             AssertCasting(getByAppResponse.Value.Items);
 
@@ -193,40 +133,40 @@ namespace Onspring.API.SDK.Tests.Tests
                 switch (field.Type)
                 {
                     case Enums.ResultValueType.String:
-                        var str = field.AsString();
+                        _ = field.AsString();
                         break;
                     case Enums.ResultValueType.Integer:
-                        var integer = field.AsNullableInteger();
+                        _ = field.AsNullableInteger();
                         break;
                     case Enums.ResultValueType.Decimal:
-                        var dec = field.AsNullableDecimal();
+                        _ = field.AsNullableDecimal();
                         break;
                     case Enums.ResultValueType.Date:
-                        var date = field.AsNullableDateTime();
+                        _ = field.AsNullableDateTime();
                         break;
                     case Enums.ResultValueType.TimeSpan:
-                        var timeSpan = field.AsTimeSpanData();
+                        _ = field.AsTimeSpanData();
                         break;
                     case Enums.ResultValueType.Guid:
-                        var guid = field.AsNullableGuid();
+                        _ = field.AsNullableGuid();
                         break;
                     case Enums.ResultValueType.StringList:
-                        var stringList = field.AsStringList();
+                        _ = field.AsStringList();
                         break;
                     case Enums.ResultValueType.IntegerList:
-                        var intList = field.AsIntegerList();
+                        _ = field.AsIntegerList();
                         break;
                     case Enums.ResultValueType.GuidList:
-                        var guidList = field.AsGuidList();
+                        _ = field.AsGuidList();
                         break;
                     case Enums.ResultValueType.AttachmentList:
-                        var attachments = field.AsAttachmentList();
+                        _ = field.AsAttachmentList();
                         break;
                     case Enums.ResultValueType.ScoringGroupList:
-                        var scoringGroups = field.AsScoringGroupList();
+                        _ = field.AsScoringGroupList();
                         break;
                     case Enums.ResultValueType.FileList:
-                        var files = field.AsFileList();
+                        _ = field.AsFileList();
                         break;
                     default:
                         Assert.Fail($"Unknown field type for casting: {field.Type}");

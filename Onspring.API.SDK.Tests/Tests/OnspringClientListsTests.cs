@@ -24,39 +24,6 @@ namespace Onspring.API.SDK.Tests.Tests
         }
 
         [TestMethod]
-        public void AddUpdateRemoveListItem()
-        {
-            const int listId = 1;
-            var testId = Guid.NewGuid().ToString("N");
-
-            // Prepare initial list item
-            var saveRequest = new SaveListItemRequest
-            {
-                Color = testId,
-                Weight = 1,
-                Name = $"Test list item: {testId}",
-                ListId = listId,
-                NumericValue = 1,
-            };
-
-            // Insert and assert
-            var saveResponse = _apiClient.SaveListItem(saveRequest);
-            AssertHelper.AssertSuccess(saveResponse);
-            Assert.IsTrue(saveResponse.Value.Id != Guid.Empty, "Returned ID from insert was empty.");
-
-            // Update and assert
-            saveRequest.Id = saveResponse.Value.Id;
-            saveRequest.Name = $"Update test list item: {testId}";
-            saveResponse = _apiClient.SaveListItem(saveRequest);
-            AssertHelper.AssertSuccess(saveResponse);
-            Assert.IsTrue(saveResponse.Value.Id == saveRequest.Id, "Returned ID from update was not correct.");
-
-            // Remove
-            var deleteResponse = _apiClient.DeleteListItem(listId, saveRequest.Id.Value);
-            AssertHelper.AssertSuccess(deleteResponse);
-        }
-
-        [TestMethod]
         public async Task AddUpdateRemoveListItemAsync()
         {
             const int listId = 1;

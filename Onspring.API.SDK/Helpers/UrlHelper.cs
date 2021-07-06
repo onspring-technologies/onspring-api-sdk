@@ -249,11 +249,13 @@ namespace Onspring.API.SDK.Helpers
         /// <summary>
         /// Gets the path for getting a report by its identifier.
         /// </summary>
-        /// <param name="reportId"></param>
+        /// <param name="reportId"></param>        
+        /// <param name="dataType"></param>
+        /// <param name="dataFormat"></param>
         /// <returns></returns>
-        public static string GetReportByIdPath(int reportId)
+        public static string GetReportByIdPath(int reportId, ReportDataType dataType, DataFormat dataFormat)
         {
-            return $"/reports/id/{reportId}";
+            return $"/reports/id/{reportId}?apiDataFormat={dataFormat}&dataType={dataType}";
         }
 
         /// <summary>

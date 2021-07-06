@@ -24,15 +24,6 @@ namespace Onspring.API.SDK.Tests.Tests
         }
 
         [TestMethod]
-        public void GetApps()
-        {
-            var appsResponse = _apiClient.GetApps();
-
-            AssertHelper.AssertSuccess(appsResponse);
-            Assert.IsTrue(appsResponse.Value.Items.Any(), "No items returned.");
-        }
-
-        [TestMethod]
         public async Task GetAppsAsync()
         {
             var appsResponse = await _apiClient.GetAppsAsync();
@@ -49,14 +40,6 @@ namespace Onspring.API.SDK.Tests.Tests
 
             AssertHelper.AssertSuccess(appsResponse);
             AssertHelper.AssertPaging(pagingRequest, appsResponse.Value);
-        }
-
-        [TestMethod]
-        public void GetAppById()
-        {
-            var appResponse = _apiClient.GetApp(1);
-
-            AssertHelper.AssertSuccess(appResponse);
         }
 
         [TestMethod]
@@ -89,17 +72,6 @@ namespace Onspring.API.SDK.Tests.Tests
             var appResponse = await _apiClient.GetAppAsync(404);
 
             AssertHelper.AssertError(appResponse, HttpStatusCode.NotFound, true);
-        }
-
-        [TestMethod]
-        public void GetAppsBatch()
-        {
-            var ids = new[] { 1, 2, 3 };
-            var getAppsResponse = _apiClient.GetAppsBatch(ids);
-
-            AssertHelper.AssertSuccess(getAppsResponse);
-            Assert.IsTrue(getAppsResponse.Value.Items.Any(), "No items returned.");
-            Assert.AreEqual(ids.Length, getAppsResponse.Value.Count, "Count was not correct.");
         }
 
         [TestMethod]
