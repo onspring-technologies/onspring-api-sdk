@@ -28,65 +28,78 @@ In order to successfully interact with the Onspring API, you must use an API key
 
 ## Start Coding
 
-The most common way to use the SDK is to create an `HttpHelper` instance and call its methods.  Its constructor requires two parameters:
+The most common way to use the SDK is to create an `OnspringClient` instance and call its methods.  Its constructor requires two parameters:
 
-- `baseUrl` - currently this should always be: **`https://api.onspring.com/v1`**
+- `baseUrl` - currently this should always be: **`https://api.onspring.com/`**
 - `apiKey` - the value obtained by following the steps in the **API Key** section
 
 For example:
 
 ```C#
-using Onspring.API.SDK.Helpers;
+using Onspring.API.SDK;
 
-const string baseUrl = "https://api.onspring.com/v1";
+const string baseUrl = "https://api.onspring.com/";
 const string apiKey = "000000ffffff000000ffffff/00000000-ffff-0000-ffff-000000000000";
-var httpHelper = new HttpHelper(baseUrl, apiKey);
+var onspringClient = new OnspringClient(baseUrl, apiKey);
 ```
+
+### Bring Your Own HttpClient
+
+We also allow the caller to provide their own `HttpClient` instance, however the `BaseAddress` property must be set in order to use that overload.
+
+```C#
+using Onspring.API.SDK;
+
+var myHttpClient = new HttpClient {BaseAddress = new Uri("https://api.onspring.com/")};
+const string apiKey = "000000ffffff000000ffffff/00000000-ffff-0000-ffff-000000000000";
+var onspringClient = new OnspringClient(apiKey, myHttpClient);
+```
+
 
 ## Full API Documentation
 
-When using the SDK, you do not need to be as concerned with the details covered in the full [Onspring API documentation](https://ss-usa.s3.amazonaws.com/c/308463180/media/99045cf01cc2f0ad1795036815/Admin%20Guide%20-%20API%20-%20Onspring.pdf).  However, you may wish to refer to it when determining which values to pass as parameters to some of the `HttpHelper` methods.
+When using the SDK, you do not need to be as concerned with the details covered in the full [Onspring API documentation](https://ss-usa.s3.amazonaws.com/c/308463180/media/99045cf01cc2f0ad1795036815/Admin%20Guide%20-%20API%20-%20Onspring.pdf).  However, you may wish to refer to it when determining which values to pass as parameters to some of the `OnspringClient` methods.
 
-## Async Methods
+Each method on the `OnspringClient` aside from `CanConnectAsync` returns a wrapped response, allowing clients to decide how a response should be handled. This wrapper is the `ApiResponse` class and includes generic types to encompass the response body, if any. In the examples below, we're omitting the validation/error handling around that, however we recommend that each client adds resilience and error handling for potential unsuccessful responses. Please refer to the API documentation/swagger page to determine the possible responses.
 
-The latest version of the SDK includes async versions of all HttpHelper methods - examples of the new calls have been provided. The existing synchronous methods have been marked obsolete and will be removed in a future version of the SDK.
+## Client lifecycle
+
+The `OnspringClient` is thread-safe and can be used as a singleton or transient.
+
+## Upgrading SDK
+
+Already using a previous version of the SDK? Check out our migration guides below.
+- [2.x to 3.0](./docs/migrations/2-to-30.md)
 
 ## Example Code
 
-The examples that follow assume you have created an `HttpHelper` as described in the **Start Coding** section.
+The examples that follow assume you have created an `OnspringClient` as described in the **Start Coding** section.
 
 ### Verify connectivity
 
-##### Synchronous
 ```C#
-if (httpHelper.CanConnect())
+bool canConnect = await onspringClient.CanConnectAsync();
+```
+
+### Get all apps and surveys
+
+Returns a paged collection of apps/surveys, which can be paged through using the `Onspring.API.SDK.Models.PagingRequest`.
+
+##### Basic
+```C#
+var apps = await onspringClient.GetAppsAsync();
+foreach (App app in apps)
 {
-  // we're connected
+    Console.WriteLine($"{app.Id}, {app.Name}");
 }
 ```
 
-##### Asynchronous
-```C#
-var canConnect = await httpHelper.CanConnectAsync();
-if (canConnect)
-{
-  // we're connected                
-}
-```
+##### Paged
+Async and synchronous methods allow use of `Onspring.API.SDK.Models.PagingRequest`.
 
-### Get the list of apps and surveys
-
-##### Synchronous
 ```C#
-foreach (App app in httpHelper.GetApps())
-{
-	Console.WriteLine($"{app.Id}, {app.Name}");
-}
-```
-
-##### Asynchronous
-```C#
-var apps = await httpHelper.GetAppsAsync();
+var pagingRequest = new PagingRequest(1, 10);
+var apps = await onspringClient.GetAppsAsync(pagingRequest);
 foreach (App app in apps)
 {
     Console.WriteLine($"{app.Id}, {app.Name}");
@@ -95,20 +108,12 @@ foreach (App app in apps)
 
 ### Get the fields for an app/survey
 
-##### Synchronous
-```C#
-var appId = 5;
-foreach (Field field in httpHelper.GetAppFields(appId))
-{
-	Console.WriteLine($"{field.Id}, {field.AppId}, {field.Name}, {field.Type}, {field.Status}, {field.IsRequired}, {field.IsUnique}");
-}
-```
+Returns a paged collection of fields, which can be paged through using the `Onspring.API.SDK.Models.PagingRequest`.
 
-##### Asynchronous
 ```C#
-var appId = 5;
-var fields = await httpHelper.GetAppFieldsAsync(appId);
-foreach (Field field in fields)
+const int appId = 5;
+var getFieldsResponse = await onspringClient.GetFieldsForAppAsync(appId);
+foreach (Field field in getFieldsResponse.Value.Items)
 {
     Console.WriteLine($"{field.Id}, {field.AppId}, {field.Name}, {field.Type}, {field.Status}, {field.IsRequired}, {field.IsUnique}");
 }
@@ -116,45 +121,10 @@ foreach (Field field in fields)
 
 ### Get one field
 
-##### Synchronous
 ```C#
-var fieldId = 40;
-Field field = httpHelper.GetAppField(fieldId);
-Console.WriteLine($"{field.Id}, {field.AppId}, {field.Name}, {field.Type}, {field.Status}, {field.IsRequired}, {field.IsUnique}");
-var referenceField = field as ReferenceField;
-if (referenceField != null)
-{
-    Console.WriteLine($"Multiplicity: {referenceField.Multiplicity}");
-}
-var listField = field as ListField;
-if (listField != null)
-{
-    Console.WriteLine($"Multiplicity: {listField.Multiplicity}");
-    WriteListValues(listField.Values);
-}
-var formulaField = field as FormulaField;
-if (formulaField != null)
-{
-    Console.WriteLine($"OutputType: {formulaField.OutputType}");
-    if (formulaField.OutputType == FormulaOutputType.List)
-    {
-        WriteListValues(formulaField.Values);
-    }
-}
-
-private void WriteListValues(IReadOnlyList<ListValue> listValues)
-{
-    foreach (ListValue value in listValues)
-    {
-        Console.WriteLine($"{value.Id}, {value.Name}, {value.SortOrder}, {value.NumericValue}, {value.Color}");
-    }
-}
-```
-
-##### Asynchronous
-```C#
-var fieldId = 40;
-Field field = await httpHelper.GetAppFieldAsync(fieldId);
+const int fieldId = 40;
+var getFieldResponse = await onspringClient.GetFieldAsync(fieldId);
+var field = getFieldResponse.Value;
 Console.WriteLine($"{field.Id}, {field.AppId}, {field.Name}, {field.Type}, {field.Status}, {field.IsRequired}, {field.IsUnique}");
 var referenceField = field as ReferenceField;
 if (referenceField != null)
@@ -188,20 +158,12 @@ private void WriteListValues(IReadOnlyList<ListValue> listValues)
 
 ### Get the reports for an app/survey
 
-##### Synchronous
-```C#
-var appId = 5;
-foreach (Report report in httpHelper.GetAppReports(appId))
-{
-	Console.WriteLine($"{report.Id}, {report.AppId}, {report.Name}");
-}
-```
+Returns a paged collection of reports, which can be paged through using the `Onspring.API.SDK.Models.PagingRequest`.
 
-##### Asynchronous
 ```C#
-var appId = 5;
-var reports = await httpHelper.GetAppReportsAsync(appId);
-foreach (Report report in reports)
+const int appId = 1;
+var getReportsResponse = await onspringClient.GetReportsForAppAsync(appId);
+foreach (var report in getReportsResponse.Value.Items)
 {
     Console.WriteLine($"{report.Id}, {report.AppId}, {report.Name}");
 }
@@ -209,27 +171,13 @@ foreach (Report report in reports)
 
 ### Get the data from one report
 
-##### Synchronous
 ```C#
 var reportId = 61;
 var dataType = ReportDataType.ChartData;
 var dataFormat = DataFormat.Raw;
-ReportData reportData = httpHelper.GetReportData(reportId, dataType, dataFormat);
-Console.WriteLine(string.Join(", ", reportData.Columns));
-foreach (ReportDataRow row in reportData.Rows)
-{
-    Console.WriteLine(string.Join(", ", row.Cells));
-}
-```
-
-##### Asynchronous
-```C#
-var reportId = 61;
-var dataType = ReportDataType.ChartData;
-var dataFormat = DataFormat.Raw;
-ReportData reportData = await httpHelper.GetReportDataAsync(reportId, dataType, dataFormat);
-Console.WriteLine(string.Join(", ", reportData.Columns));
-foreach (ReportDataRow row in reportData.Rows)
+var getReportResponse = await onspringClient.GetReportAsync(reportId, dataType, dataFormat);
+Console.WriteLine(string.Join(", ", getReportResponse.Value.Columns));
+foreach (var row in getReportResponse.Value.Rows)
 {
     Console.WriteLine(string.Join(", ", row.Cells));
 }
@@ -237,132 +185,75 @@ foreach (ReportDataRow row in reportData.Rows)
 
 ### Get records
 
-##### Synchronous
-```C#
-var appId = 5;
-var filter = "not (38 lt 10 or 36 eq 'Smith') and 37 gt datetime'2014-03-01T00:00:00.0000000'";
-var recordIds = new[] {100, 101, 102};
-var fieldIds = new[] {36, 37, 38};
-var dataFormat = DataFormat.Formatted;
-var records = httpHelper.GetAppRecords(appId, filter, recordIds, fieldIds, dataFormat);
-foreach (ResultRecord record in records)
-{
-    Console.WriteLine($"AppId: {record.AppId}, RecordId: {record.RecordId}");
-    foreach (FieldValueWrapper wrapper in record.Values.WithFieldId())
-    {
-        Console.WriteLine($"FieldId: {wrapper.FieldId}, Type: {wrapper.Value.Type}");
-    }
-}
-```
+Returns a paged collection of records, which can be paged through using the `Onspring.API.SDK.Models.PagingRequest`.
 
-##### Asynchronous
 ```C#
-var appId = 5;
-var filter = "not (38 lt 10 or 36 eq 'Smith') and 37 gt datetime'2014-03-01T00:00:00.0000000'";
-var recordIds = new[] { 100, 101, 102 };
-var fieldIds = new[] { 36, 37, 38 };
-var dataFormat = DataFormat.Formatted;
-var records = await httpHelper.GetAppRecordsAsync(appId, filter, recordIds, fieldIds, dataFormat);
+var queryRequest = new QueryRecordsRequest
+{
+    AppId = 5,
+    Filter = "not (38 lt 10 or 36 eq 'Smith') and 37 gt datetime'2014-03-01T00:00:00.0000000'",
+    FieldIds = new List<int>{ 36, 37, 38 },
+    DataFormat = DataFormat.Formatted,
+};
+
+var queryResponse = await onspringClient.QueryRecordsAsync(queryRequest);
+var records = queryResponse.Value.Items;
 foreach (ResultRecord record in records)
 {
     Console.WriteLine($"AppId: {record.AppId}, RecordId: {record.RecordId}");
-    foreach (FieldValueWrapper wrapper in record.Values.WithFieldId())
+    foreach (RecordFieldValue fieldValue in record.FieldData)
     {
-        Console.WriteLine($"FieldId: {wrapper.FieldId}, Type: {wrapper.Value.Type}");
+        Console.WriteLine($"FieldId: {fieldValue.FieldId}, Type: {fieldValue.Type}");
     }
 }
 ```
 
 ### Get one record
 
-##### Synchronous
 ```C#
-var appId = 5;
-var recordId = 100;
-var fieldIds = new[] {36, 37, 38};
-var dataFormat = DataFormat.Raw;
-ResultRecord record = httpHelper.GetAppRecord(appId, recordId, fieldIds, dataFormat);
-foreach (FieldValueWrapper wrapper in record.Values.WithFieldId())
+var getRequest = new GetRecordRequest
 {
-    Console.WriteLine($"FieldId: {wrapper.FieldId}, Type: {wrapper.Value.Type}, Value: {GetResultValueString(wrapper.Value)}");
+    AppId = 5,
+    RecordId = 100,
+    FieldIds = new List<int>{36,37,38},
+    DataFormat = DataFormat.Raw,
+};
+var getResponse = await onspringClient.GetRecordAsync(getRequest);
+var record = getResponse.Value;
+
+foreach (var recordFieldValue in record.FieldData)
+{
+    Console.WriteLine($"FieldId: {recordFieldValue.FieldId}, Type: {recordFieldValue.Type}, Value: {GetResultValueString(recordFieldValue)}");
 }
 
-private string GetResultValueString(ResultValue value)
+private string GetResultValueString(RecordFieldValue value)
 {
     switch (value.Type)
     {
         case ResultValueType.String:
-            return value.AsString;
+            return value.AsString();
         case ResultValueType.Integer:
-            return $"{value.AsNullableInteger}";
+            return $"{value.AsNullableInteger()}";
         case ResultValueType.Decimal:
-            return $"{value.AsNullableDecimal}";
+            return $"{value.AsNullableDecimal()}";
         case ResultValueType.Date:
-            return $"{value.AsNullableDateTime}";
+            return $"{value.AsNullableDateTime()}";
         case ResultValueType.TimeSpan:
-            var data = value.AsTimeSpanData;
+            var data = value.AsTimeSpanData();
             return $"Quantity: {data.Quantity}, Increment: {data.Increment}, Recurrence: {data.Recurrence}, EndByDate: {data.EndByDate}, EndAfterOccurrences: {data.EndAfterOccurrences}";
         case ResultValueType.Guid:
-            return $"{value.AsNullableGuid}";
+            return $"{value.AsNullableGuid()}";
         case ResultValueType.StringList:
-            return string.Join(", ", value.AsStringList);
+            return string.Join(", ", value.AsStringList());
         case ResultValueType.IntegerList:
-            return string.Join(", ", value.AsIntegerList);
+            return string.Join(", ", value.AsIntegerList());
         case ResultValueType.GuidList:
-            return string.Join(", ", value.AsGuidList);
+            return string.Join(", ", value.AsGuidList());
         case ResultValueType.AttachmentList:
-            var attachmentFiles = value.AsAttachmentList.Select(f => $"FileId: {f.FileId}, FileName: {f.FileName}, Notes: {f.Notes}");
+            var attachmentFiles = value.AsAttachmentList().Select(f => $"FileId: {f.FileId}, FileName: {f.FileName}, Notes: {f.Notes}");
             return string.Join(", ", attachmentFiles);
         case ResultValueType.ScoringGroupList:
-            var scoringGroups = value.AsScoringGroupList.Select(g => $"ListValueId: {g.ListValueId}, Name: {g.Name}, Score: {g.Score}, MaximumScore: {g.MaximumScore}");
-            return string.Join(", ", scoringGroups);
-        default:
-            // e.g., future types not supported in this version
-            return $"Unsupported ResultValueType: {value.Type}";
-    }
-}
-```
-
-##### Asynchronous
-```C#
-var appId = 5;
-var recordId = 100;
-var fieldIds = new[] { 36, 37, 38 };
-var dataFormat = DataFormat.Raw;
-ResultRecord record = await httpHelper.GetAppRecordAsync(appId, recordId, fieldIds, dataFormat);
-foreach (FieldValueWrapper wrapper in record.Values.WithFieldId())
-{
-    Console.WriteLine($"FieldId: {wrapper.FieldId}, Type: {wrapper.Value.Type}, Value: {GetResultValueString(wrapper.Value)}");
-}
-
-private string GetResultValueString(ResultValue value)
-{
-    switch (value.Type)
-    {
-        case ResultValueType.String:
-            return value.AsString;
-        case ResultValueType.Integer:
-            return $"{value.AsNullableInteger}";
-        case ResultValueType.Decimal:
-            return $"{value.AsNullableDecimal}";
-        case ResultValueType.Date:
-            return $"{value.AsNullableDateTime}";
-        case ResultValueType.TimeSpan:
-            var data = value.AsTimeSpanData;
-            return $"Quantity: {data.Quantity}, Increment: {data.Increment}, Recurrence: {data.Recurrence}, EndByDate: {data.EndByDate}, EndAfterOccurrences: {data.EndAfterOccurrences}";
-        case ResultValueType.Guid:
-            return $"{value.AsNullableGuid}";
-        case ResultValueType.StringList:
-            return string.Join(", ", value.AsStringList);
-        case ResultValueType.IntegerList:
-            return string.Join(", ", value.AsIntegerList);
-        case ResultValueType.GuidList:
-            return string.Join(", ", value.AsGuidList);
-        case ResultValueType.AttachmentList:
-            var attachmentFiles = value.AsAttachmentList.Select(f => $"FileId: {f.FileId}, FileName: {f.FileName}, Notes: {f.Notes}");
-            return string.Join(", ", attachmentFiles);
-        case ResultValueType.ScoringGroupList:
-            var scoringGroups = value.AsScoringGroupList.Select(g => $"ListValueId: {g.ListValueId}, Name: {g.Name}, Score: {g.Score}, MaximumScore: {g.MaximumScore}");
+            var scoringGroups = value.AsScoringGroupList().Select(g => $"ListValueId: {g.ListValueId}, Name: {g.Name}, Score: {g.Score}, MaximumScore: {g.MaximumScore}");
             return string.Join(", ", scoringGroups);
         default:
             // e.g., future types not supported in this version
@@ -373,37 +264,19 @@ private string GetResultValueString(ResultValue value)
 
 ### Add a record
 
-##### Synchronous
 ```C#
-var appId = 5;
-var numberFieldId = 38;
-var dateFieldId = 37;
-var textFieldId = 36;
-FieldAddEditContainer fieldValues = new FieldAddEditContainer();
-fieldValues.Add(numberFieldId, 123.45);
-fieldValues.Add(dateFieldId, DateTime.UtcNow);
-fieldValues.Add(textFieldId, "text value");
-AddEditResult result = httpHelper.CreateAppRecord(appId, fieldValues);
-Console.WriteLine($"New Record Id is: {result.CreatedId}");
-foreach (string warning in result.Warnings)
+var record = new ResultRecord
 {
-	Console.WriteLine($"Warning: {warning}");
-}
-```
+    AppId = 5
+};
 
-##### Asynchronous
-```C#
-var appId = 5;
-var numberFieldId = 38;
-var dateFieldId = 37;
-var textFieldId = 36;
-FieldAddEditContainer fieldValues = new FieldAddEditContainer();
-fieldValues.Add(numberFieldId, 123.45);
-fieldValues.Add(dateFieldId, DateTime.UtcNow);
-fieldValues.Add(textFieldId, "text value");
-AddEditResult result = await httpHelper.CreateAppRecordAsync(appId, fieldValues);
-Console.WriteLine($"New Record Id is: {result.CreatedId}");
-foreach (string warning in result.Warnings)
+record.FieldData.Add(new IntegerFieldValue(38, 123));
+record.FieldData.Add(new DateFieldValue(37, DateTime.UtcNow));
+record.FieldData.Add(new StringFieldValue(36, "text value"));
+
+var saveResponse = await onspringClient.SaveRecordAsync(record);
+Console.WriteLine($"New Record Id is: {saveResponse.Value.Id}");
+foreach (string warning in saveResponse.Value.Warnings)
 {
     Console.WriteLine($"Warning: {warning}");
 }
@@ -411,36 +284,18 @@ foreach (string warning in result.Warnings)
 
 ### Update a record
 
-##### Synchronous
 ```C#
-var appId = 5;
-var recordId = 100;
-var numberFieldId = 38;
-var dateFieldId = 37;
-var textFieldId = 36;
-FieldAddEditContainer fieldValues = new FieldAddEditContainer();
-fieldValues.Add(numberFieldId, 678.90);
-fieldValues.Add(dateFieldId, DateTime.UtcNow);
-fieldValues.Add(textFieldId, "updated text value");
-AddEditResult result = httpHelper.UpdateAppRecord(appId, recordId, fieldValues);
-foreach (string warning in result.Warnings)
+var record = new ResultRecord
 {
-	Console.WriteLine($"Warning: {warning}");
-}
-```
+    AppId = 5,
+    RecordId = 100
+};
 
-##### Asynchronous
-```C#
-var appId = 5;
-var recordId = 100;
-var numberFieldId = 38;
-var dateFieldId = 37;
-var textFieldId = 36;
-FieldAddEditContainer fieldValues = new FieldAddEditContainer();
-fieldValues.Add(numberFieldId, 678.90);
-fieldValues.Add(dateFieldId, DateTime.UtcNow);
-fieldValues.Add(textFieldId, "updated text value");
-AddEditResult result = await httpHelper.UpdateAppRecordAsync(appId, recordId, fieldValues);
+record.FieldData.Add(new IntegerFieldValue(38, 378));
+record.FieldData.Add(new DateFieldValue(37, DateTime.UtcNow));
+record.FieldData.Add(new StringFieldValue(36, "updated text value"));
+
+var saveResponse = await onspringClient.SaveRecordAsync(record);
 foreach (string warning in result.Warnings)
 {
     Console.WriteLine($"Warning: {warning}");
@@ -449,109 +304,40 @@ foreach (string warning in result.Warnings)
 
 ### Delete a record
 
-##### Synchronous
 ```C#
 var appId = 5;
 var recordId = 100;
-DeleteResult result = httpHelper.DeleteAppRecord(appId, recordId);
-```
-
-##### Asynchronous
-```C#
-var appId = 5;
-var recordId = 100;
-DeleteResult result = await httpHelper.DeleteAppRecordAsync(appId, recordId);
+var deleteResponse = await onspringClient.DeleteRecordAsync(appId, recordId);
 ```
 
 ### Add an attachment or image file to a record
 
-If the file you want to add physically exists on disk, you can use the overload that accepts a filePath parameter:
+Create a stream that contains the file's contents:
 
-##### Synchronous
 ```C#
-var appId = 5;
-var recordId = 100;
-var attachmentFieldId = 50;
-var filePath = "C:\Users\Public\Documents\Contract.pdf";
-var contentType = "application/pdf";
-var fileNotes = "Initial revision";
-AddEditResult result = httpHelper.AddFileToRecord(appId, recordId, attachmentFieldId, filePath, contentType, fileNotes);
-Console.WriteLine($"New File Id is: {result.CreatedId}");
-```
-
-##### Asynchronous
-```C#
-var appId = 5;
-var recordId = 100;
-var attachmentFieldId = 50;
-var filePath = "C:\Users\Public\Documents\Contract.pdf";
-var contentType = "application/pdf";
-var fileNotes = "Initial revision";
-AddEditResult result = await httpHelper.AddFileToRecordAsync(appId, recordId, attachmentFieldId, filePath, contentType, fileNotes);
-Console.WriteLine($"New File Id is: {result.CreatedId}");
-```
-
-Otherwise, you can create a stream that contains the file's contents and use the other overload:
-
-##### Synchronous
-```C#
-var appId = 5;
-var recordId = 100;
-var attachmentFieldId = 50;
-var fileName = "Contract.pdf";
-var contentType = "application/pdf";
-var modifiedTime = DateTime.UtcNow;
-var fileNotes = "Initial revision";
-using (Stream stream = new MemoryStream())
+var filePath = "C:/temp/Contract.pdf";
+var saveFileRequest = new SaveFileRequest
 {
-    AddEditResult result = httpHelper.AddFileToRecord(appId, recordId, attachmentFieldId, stream, fileName, contentType, modifiedTime, fileNotes);
-    Console.WriteLine($"New File Id is: {result.CreatedId}");
-}
-```
+    FieldId = 50,
+    RecordId = 100,
+    FileStream = File.OpenRead(filePath),
+    FileName = Path.GetFileName(filePath),
+    ModifiedDate = DateTime.UtcNow,
+    Notes = "Initial revision",
+};
 
-##### Asynchronous
-```C#
-var appId = 5;
-var recordId = 100;
-var attachmentFieldId = 50;
-var fileName = "Contract.pdf";
-var contentType = "application/pdf";
-var modifiedTime = DateTime.UtcNow;
-var fileNotes = "Initial revision";
-using (Stream stream = new MemoryStream())
-{
-    AddEditResult result = await httpHelper.AddFileToRecordAsync(appId, recordId, attachmentFieldId, stream, fileName, contentType, modifiedTime, fileNotes);
-    Console.WriteLine($"New File Id is: {result.CreatedId}");
-}
+var saveResponse = await onspringClient.SaveFileAsync(saveFileRequest);
+Console.WriteLine($"New File Id is: {saveResponse.Value.Id}");
 ```
 
 ### Get an attachment or image file from a record
 
-##### Synchronous
 ```C#
-var appId = 5;
 var recordId = 100;
 var attachmentFieldId = 50;
 var fileId = 1234;
-using (FileResult result = httpHelper.GetFileFromRecord(appId, recordId, attachmentFieldId, fileId))
-{
-    Console.WriteLine($"FileName is: {result.FileName}");
-    Console.WriteLine($"ContentType: {result.ContentType}");
-    Console.WriteLine($"ContentLength: {result.ContentLength}");
-    using (var fileStream = new FileStream($"C:\Users\Public\Documents\{result.FileName}", FileMode.Create))
-    {
-       result.Stream.CopyTo(fileStream);
-    }
-} 
-```
-
-##### Asynchronous
-```C#           
-var appId = 5;
-var recordId = 100;
-var attachmentFieldId = 50;
-var fileId = 1234;
-using (FileResult result = await httpHelper.GetFileFromRecordAsync(appId, recordId, attachmentFieldId, fileId))
+var getFileResponse = await onspringClient.GetFileAsync(recordId, attachmentFieldId, fileId);
+using (var result = getFileResponse.Value)
 {
     Console.WriteLine($"FileName is: {result.FileName}");
     Console.WriteLine($"ContentType: {result.ContentType}");
