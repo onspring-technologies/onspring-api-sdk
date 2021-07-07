@@ -9,8 +9,9 @@
             Type = Enums.ResultValueType.Decimal;
         }
 
-        public DecimalFieldValue(decimal? value) : this()
+        public DecimalFieldValue(int fieldId, decimal? value) : this()
         {
+            FieldId = fieldId;
             Value = value;
         }
     }

@@ -6,13 +6,20 @@ namespace Onspring.API.SDK.Models
     {
         public List<AttachmentFile> Value { get; set; } = new List<AttachmentFile>();
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="AttachmentListFieldValue"/>.
+        /// </summary>
         public AttachmentListFieldValue()
         {
             Type = Enums.ResultValueType.AttachmentList;
         }
 
-        public AttachmentListFieldValue(List<AttachmentFile> value) : this()
+        /// <summary>
+        /// Initializes a new instance of <see cref="AttachmentListFieldValue"/>.
+        /// </summary>
+        public AttachmentListFieldValue(int fieldId, List<AttachmentFile> value) : this()
         {
+            FieldId = fieldId;
             Value = value;
         }
     }

@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Onspring.API.SDK.Tests.TestServer.Models
 {
+    [ExcludeFromCodeCoverage]
     public class ApiSaveFileRequest
     {
         /// <summary>

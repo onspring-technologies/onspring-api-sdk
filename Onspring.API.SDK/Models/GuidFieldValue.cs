@@ -11,8 +11,9 @@ namespace Onspring.API.SDK.Models
             Type = Enums.ResultValueType.Guid;
         }
 
-        public GuidFieldValue(Guid? value) : this()
+        public GuidFieldValue(int fieldId, Guid? value) : this()
         {
+            FieldId = fieldId;
             Value = value;
         }
     }

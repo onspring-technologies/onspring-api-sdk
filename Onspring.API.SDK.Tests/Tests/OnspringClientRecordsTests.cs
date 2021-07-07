@@ -3,6 +3,7 @@ using Onspring.API.SDK.Models;
 using Onspring.API.SDK.Tests.Infrastructure;
 using Onspring.API.SDK.Tests.Infrastructure.Helpers;
 using Onspring.API.SDK.Tests.Infrastructure.Http;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -38,21 +39,19 @@ namespace Onspring.API.SDK.Tests.Tests
         [TestMethod]
         public async Task CrudAsync()
         {
-            var record = GetTestRecord();
+            // Prepare initial record.
+            var record = TestDataFactory.GetFullyFilledOutRecord(_appIdWithRecords, default);
 
             // Insert
-            var saveRequest = new SaveRecordRequest
-            {
-                AppId = _appIdWithRecords,
-            };
-
-            var insertResponse = await _apiClient.SaveRecordAsync(saveRequest); // Used for single delete
-            var secondInsertResponse = await _apiClient.SaveRecordAsync(saveRequest); // Used for batch delete
+            var insertResponse = await _apiClient.SaveRecordAsync(record); // Used for single delete
+            var secondInsertResponse = await _apiClient.SaveRecordAsync(record); // Used for batch delete
             AssertHelper.AssertSuccess(insertResponse);
 
             // Update
-            saveRequest.RecordId = insertResponse.Value.Id;
-            var updateResponse = await _apiClient.SaveRecordAsync(saveRequest);
+            record.RecordId = insertResponse.Value.Id;
+            UpdateRecordFields(record);
+
+            var updateResponse = await _apiClient.SaveRecordAsync(record);
             AssertHelper.AssertSuccess(updateResponse);
 
             // Reads
@@ -63,7 +62,7 @@ namespace Onspring.API.SDK.Tests.Tests
             };
             var getResponse = await _apiClient.GetRecordAsync(getRequest);
             AssertHelper.AssertSuccess(getResponse);
-            AssertCasting(getResponse.Value);
+            AssertHelper.AssertCasting(getResponse.Value);
 
             // Get batch
             var getBatchRequest = new GetRecordsRequest
@@ -74,7 +73,7 @@ namespace Onspring.API.SDK.Tests.Tests
             };
             var batchGetResponse = await _apiClient.GetRecordsAsync(getBatchRequest);
             AssertHelper.AssertSuccess(batchGetResponse);
-            AssertCasting(batchGetResponse.Value.Items);
+            AssertHelper.AssertCasting(batchGetResponse.Value.Items);
 
             // Get by app
             var pagingRequest = new PagingRequest(1, 10);
@@ -84,7 +83,7 @@ namespace Onspring.API.SDK.Tests.Tests
             };
             var getByAppResponse = await _apiClient.GetRecordsForAppAsync(getByAppRequest);
             AssertHelper.AssertSuccess(getByAppResponse);
-            AssertCasting(getByAppResponse.Value.Items);
+            AssertHelper.AssertCasting(getByAppResponse.Value.Items);
 
             // Query
             var queryRequest = new QueryRecordsRequest
@@ -93,11 +92,11 @@ namespace Onspring.API.SDK.Tests.Tests
             };
             var queryResponse = await _apiClient.QueryRecordsAsync(queryRequest);
             AssertHelper.AssertSuccess(queryResponse);
-            AssertCasting(queryResponse.Value.Items);
+            AssertHelper.AssertCasting(queryResponse.Value.Items);
 
             // Delete
             // Single delete
-            var deleteResponse = await _apiClient.DeleteRecordAsync(saveRequest.AppId, insertResponse.Value.Id);
+            var deleteResponse = await _apiClient.DeleteRecordAsync(_appIdWithRecords, insertResponse.Value.Id);
             AssertHelper.AssertSuccess(deleteResponse);
 
             // Batch delete
@@ -106,70 +105,70 @@ namespace Onspring.API.SDK.Tests.Tests
             AssertHelper.AssertSuccess(batchDeleteResponse);
         }
 
-        private static ResultRecord GetTestRecord()
+        private static void UpdateRecordFields(ResultRecord record)
         {
-            return new ResultRecord
-            {
-            };
-        }
-
-        private static void AssertCasting(List<ResultRecord> records)
-        {
-            foreach (var record in records)
-            {
-                AssertCasting(record);
-            }
-        }
-
-        private static void AssertCasting(ResultRecord record)
-        {
-            if (record == null || record.FieldData.Any() == false)
-            {
-                return;
-            }
-
+            var random = new Random();
             foreach (var field in record.FieldData)
             {
                 switch (field.Type)
                 {
                     case Enums.ResultValueType.String:
-                        _ = field.AsString();
+                        field.SetString("My new string value.");
                         break;
                     case Enums.ResultValueType.Integer:
-                        _ = field.AsNullableInteger();
+                        field.SetInteger(random.Next());
                         break;
                     case Enums.ResultValueType.Decimal:
-                        _ = field.AsNullableDecimal();
+                        field.SetDecimal(random.Next());
                         break;
                     case Enums.ResultValueType.Date:
-                        _ = field.AsNullableDateTime();
+                        field.SetNullableDateTime(DateTime.UtcNow);
                         break;
                     case Enums.ResultValueType.TimeSpan:
-                        _ = field.AsTimeSpanData();
+                        field.SetTimeSpanData(new TimeSpanData
+                        {
+                            Increment = Enums.TimeSpanIncrement.Days,
+                        });
                         break;
                     case Enums.ResultValueType.Guid:
-                        _ = field.AsNullableGuid();
+                        field.SetNullableGuid(Guid.NewGuid());
                         break;
                     case Enums.ResultValueType.StringList:
-                        _ = field.AsStringList();
+                        field.SetStringList(new List<string> { Guid.NewGuid().ToString() });
                         break;
                     case Enums.ResultValueType.IntegerList:
-                        _ = field.AsIntegerList();
+                        field.SetIntegerList(new List<int> { random.Next(), random.Next(), random.Next(), });
                         break;
                     case Enums.ResultValueType.GuidList:
-                        _ = field.AsGuidList();
+                        field.SetGuidList(new List<Guid> { Guid.NewGuid() });
                         break;
                     case Enums.ResultValueType.AttachmentList:
-                        _ = field.AsAttachmentList();
+                        field.SetAttachmentList(new List<AttachmentFile>
+                        {
+                            new AttachmentFile
+                            {
+                                FileId = 1,
+                                FileName = "Update attachment list file name",
+                                Notes = "Updated notes."
+                            }
+                        });
                         break;
                     case Enums.ResultValueType.ScoringGroupList:
-                        _ = field.AsScoringGroupList();
+                        field.SetScoringGroupList(new List<ScoringGroup>
+                        {
+                            new ScoringGroup
+                            {
+                                ListValueId = Guid.NewGuid(),
+                                MaximumScore = 1m,
+                                Name = "Updated test scoring group",
+                                Score = 1m,
+                            }
+                        });
                         break;
                     case Enums.ResultValueType.FileList:
-                        _ = field.AsFileList();
+                        field.SetFileList(new List<int> { random.Next(), random.Next(), random.Next(), });
                         break;
                     default:
-                        Assert.Fail($"Unknown field type for casting: {field.Type}");
                         break;
                 }
             }

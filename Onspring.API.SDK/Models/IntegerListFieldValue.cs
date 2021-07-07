@@ -6,13 +6,20 @@ namespace Onspring.API.SDK.Models
     {
         public List<int> Value { get; set; } = new List<int>();
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="IntegerListFieldValue"/>.
+        /// </summary>
         public IntegerListFieldValue()
         {
             Type = Enums.ResultValueType.IntegerList;
         }
 
-        public IntegerListFieldValue(List<int> value) : this()
+        /// <summary>
+        /// Initializes a new instance of <see cref="IntegerListFieldValue"/>.
+        /// </summary>
+        public IntegerListFieldValue(int fieldId, List<int> value) : this()
         {
+            FieldId = fieldId;
             Value = value;
         }
     }

@@ -11,8 +11,9 @@ namespace Onspring.API.SDK.Models
             Type = Enums.ResultValueType.Date;
         }
 
-        public DateFieldValue(DateTime? value) : this()
+        public DateFieldValue(int fieldId, DateTime? value) : this()
         {
+            FieldId = fieldId;
             Value = value;
         }
     }

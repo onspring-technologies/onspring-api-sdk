@@ -308,7 +308,7 @@ namespace Onspring.API.SDK
         #region Records
 
         /// <summary>
-        /// Gets the records associatd to an app.
+        /// Gets the records associated to an app.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -369,12 +369,13 @@ namespace Onspring.API.SDK
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<ApiResponse<SaveRecordResponse>> SaveRecordAsync(SaveRecordRequest request)
+        public async Task<ApiResponse<SaveRecordResponse>> SaveRecordAsync(ResultRecord request)
         {
             Arg.IsNotNull(request, nameof(request));
 
             var path = UrlHelper.GetSaveRecordPath();
-            var apiResponse = await PutAsync<SaveRecordResponse>(path, request);
+            var saveRequest = request.ToSaveRequest();
+            var apiResponse = await PutAsync<SaveRecordResponse>(path, saveRequest);
             return apiResponse;
         }
 

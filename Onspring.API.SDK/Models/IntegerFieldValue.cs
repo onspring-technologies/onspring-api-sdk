@@ -9,8 +9,9 @@
             Type = Enums.ResultValueType.Integer;
         }
 
-        public IntegerFieldValue(int? value) : this()
+        public IntegerFieldValue(int fieldId, int? value) : this()
         {
+            FieldId = fieldId;
             Value = value;
         }
     }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Onspring.API.SDK.Models;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
@@ -50,6 +51,68 @@ namespace Onspring.API.SDK.Tests.Infrastructure.Helpers
                 Assert.IsTrue(pagedResponse.TotalRecords == 0, "Record total value was incorrect.");
                 Assert.IsTrue(pagedResponse.TotalPages == 0, "Page total value was incorrect.");
                 Assert.IsTrue(pagedResponse.PageSize == 0, "Page size value was incorrect.");
+            }
+        }
+
+        public static void AssertCasting(List<ResultRecord> records)
+        {
+            foreach (var record in records)
+            {
+                AssertCasting(record);
+            }
+        }
+
+        public static void AssertCasting(ResultRecord record)
+        {
+            if (record == null || record.FieldData.Any() == false)
+            {
+                return;
+            }
+
+            foreach (var field in record.FieldData)
+            {
+                switch (field.Type)
+                {
+                    case Enums.ResultValueType.String:
+                        _ = field.AsString();
+                        break;
+                    case Enums.ResultValueType.Integer:
+                        _ = field.AsNullableInteger();
+                        break;
+                    case Enums.ResultValueType.Decimal:
+                        _ = field.AsNullableDecimal();
+                        break;
+                    case Enums.ResultValueType.Date:
+                        _ = field.AsNullableDateTime();
+                        break;
+                    case Enums.ResultValueType.TimeSpan:
+                        _ = field.AsTimeSpanData();
+                        break;
+                    case Enums.ResultValueType.Guid:
+                        _ = field.AsNullableGuid();
+                        break;
+                    case Enums.ResultValueType.StringList:
+                        _ = field.AsStringList();
+                        break;
+                    case Enums.ResultValueType.IntegerList:
+                        _ = field.AsIntegerList();
+                        break;
+                    case Enums.ResultValueType.GuidList:
+                        _ = field.AsGuidList();
+                        break;
+                    case Enums.ResultValueType.AttachmentList:
+                        _ = field.AsAttachmentList();
+                        break;
+                    case Enums.ResultValueType.ScoringGroupList:
+                        _ = field.AsScoringGroupList();
+                        break;
+                    case Enums.ResultValueType.FileList:
+                        _ = field.AsFileList();
+                        break;
+                    default:
+                        Assert.Fail($"Unknown field type for casting: {field.Type}");
+                        break;
+                }
             }
         }
     }

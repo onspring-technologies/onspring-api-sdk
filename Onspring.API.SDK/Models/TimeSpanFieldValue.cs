@@ -9,8 +9,9 @@
             Type = Enums.ResultValueType.TimeSpan;
         }
 
-        public TimeSpanFieldValue(TimeSpanData value) : this()
+        public TimeSpanFieldValue(int fieldId, TimeSpanData value) : this()
         {
+            FieldId = fieldId;
             Value = value;
         }
     }

@@ -18,8 +18,9 @@ namespace Onspring.API.SDK.Models
             Type = Enums.ResultValueType.String;
         }
 
-        public StringFieldValue(string value) : this()
+        public StringFieldValue(int fieldId, string value) : this()
         {
+            FieldId = fieldId;
             Value = value;
         }
     }

@@ -13,7 +13,7 @@ namespace Onspring.API.SDK.Models
         public int AppId { get; set; }
 
         /// <summary>
-        /// Record identifier if the request is to update.
+        /// Record identifier, if the request is to update.
         /// </summary>
         public int? RecordId { get; set; }
 

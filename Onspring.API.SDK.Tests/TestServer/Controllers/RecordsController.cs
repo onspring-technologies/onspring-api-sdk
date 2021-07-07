@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Onspring.API.SDK.Enums;
 using Onspring.API.SDK.Models;
+using Onspring.API.SDK.Tests.Infrastructure;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Onspring.API.SDK.Tests.TestServer.Controllers
@@ -16,35 +16,12 @@ namespace Onspring.API.SDK.Tests.TestServer.Controllers
         [HttpGet("appId/{appId}")]
         public IActionResult GetByAppId(int appId, [FromQuery] string fieldIds = null, [FromQuery] DataFormat dataFormat = DataFormat.Raw, [FromQuery] PagingRequest pagingRequest = null)
         {
-            var records = new[]
-            {
-                new ResultRecord
-                {
-                    AppId = appId,
-                    RecordId = 1,
-                    FieldData =
-                    {
-                        new StringFieldValue("Test string value"),
-                        new IntegerFieldValue(123),
-                        new DecimalFieldValue(1.2m),
-                        new DateFieldValue(DateTime.UtcNow.AddDays(-1)),
-                        new TimeSpanFieldValue(new TimeSpanData()),
-                        new GuidFieldValue(Guid.NewGuid()),
-                        new StringListFieldValue(new List<string> {"Test StringList value" }),
-                        new IntegerListFieldValue(new List<int> { 321 }),
-                        new GuidListFieldValue(new List<Guid>{ Guid.NewGuid() }),
-                        new AttachmentListFieldValue(new List<AttachmentFile>{ new AttachmentFile() }),
-                        new ScoringGroupListFieldValue(new List<ScoringGroup>{ new ScoringGroup() }),
-                        new FileListFieldValue(new List<int> { 333 } ),
-                    }
-                },
-            };
-
+            var record = TestDataFactory.GetFullyFilledOutRecord(appId, 1);
             var getResponse = new GetPagedRecordsResponse
             {
             };
 
-            getResponse.Items.AddRange(records);
+            getResponse.Items.Add(record);
 
             return Ok(getResponse);
         }
@@ -52,7 +29,7 @@ namespace Onspring.API.SDK.Tests.TestServer.Controllers
         [HttpGet("appId/{appId}/recordId/{recordId}")]
         public IActionResult GetById(int appId, int recordId, [FromQuery] string fieldIds = null, [FromQuery] DataFormat dataFormat = DataFormat.Raw)
         {
-            var apiRecord = new ResultRecord();
+            var apiRecord = TestDataFactory.GetFullyFilledOutRecord(appId, recordId);
             return Ok(apiRecord);
         }
 
