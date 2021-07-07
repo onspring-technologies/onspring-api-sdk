@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Web;
 
 namespace Onspring.API.SDK.Helpers
 {
@@ -38,9 +37,7 @@ namespace Onspring.API.SDK.Helpers
         /// <returns></returns>
         public static string GetAppsPath(PagingRequest pagingRequest = null)
         {
-            var path = $"/apps?{pagingRequest.ToQueryStringParams()}";
-
-            return path;
+            return $"/apps?{pagingRequest.ToQueryStringParams()}";
         }
 
         /// <summary>
@@ -89,9 +86,7 @@ namespace Onspring.API.SDK.Helpers
         /// <returns></returns>
         public static string GetFieldsByAppIdPath(int appId, PagingRequest pagingRequest = null)
         {
-            var path = $"/fields/appId/{appId}?{pagingRequest.ToQueryStringParams()}";
-
-            return path;
+            return $"/fields/appId/{appId}?{pagingRequest.ToQueryStringParams()}";
         }
 
         /// <summary>
@@ -192,7 +187,7 @@ namespace Onspring.API.SDK.Helpers
             if (fieldIds != null && fieldIds.Any())
             {
                 var fields = string.Join(",", fieldIds);
-                path += $"&fieldIds={HttpUtility.UrlEncode(fields)}";
+                path += $"&fieldIds={WebUtility.UrlEncode(fields)}";
             }
 
             return path;
@@ -223,7 +218,7 @@ namespace Onspring.API.SDK.Helpers
         /// <returns></returns>
         public static string GetSaveRecordPath()
         {
-            return "/records/";
+            return "/records";
         }
 
         /// <summary>
@@ -266,9 +261,7 @@ namespace Onspring.API.SDK.Helpers
         /// <returns></returns>
         public static string GetReportByAppIdPath(int appId, PagingRequest pagingRequest = null)
         {
-            var path = $"/reports/appId/{appId}?{pagingRequest.ToQueryStringParams()}";
-
-            return path;
+            return $"/reports/appId/{appId}?{pagingRequest.ToQueryStringParams()}";
         }
     }
 }

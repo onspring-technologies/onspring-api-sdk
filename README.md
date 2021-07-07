@@ -55,6 +55,19 @@ const string apiKey = "000000ffffff000000ffffff/00000000-ffff-0000-ffff-00000000
 var onspringClient = new OnspringClient(apiKey, myHttpClient);
 ```
 
+### Not async ready?
+
+Although we strongly recommend using async for accessing the API, in the case that the calling code is synchronous, we offer a simple helper class `Onspring.API.SDK.Helpers.AsyncHelper`. This class allows C# to execute an asynchronous function in a synchronous context without deadlocking.
+
+
+Example assumes that you've have an `OnspringClient` (or `IOnspringClient`) instance prior to execution.
+
+```C#
+using Onspring.API.SDK.Helpers;
+
+bool canConnect = AsyncHelper.RunTask(() => onspringClient.CanConnectAsync());
+```
+
 
 ## Full API Documentation
 

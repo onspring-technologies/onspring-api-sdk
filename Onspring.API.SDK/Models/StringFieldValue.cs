@@ -6,18 +6,24 @@
 //  *  
 // */
 #endregion
-
 namespace Onspring.API.SDK.Models
 {
-    public class StringFieldValue : RecordFieldValue
+    /// <summary>
+    /// Represents a field value comprised of a string value.
+    /// </summary>
+    public class StringFieldValue : RecordFieldValue<string>
     {
-        public string Value { get; set; }
-
+        /// <summary>
+        /// Initializes a new instance of <see cref="StringFieldValue"/>.
+        /// </summary>
         public StringFieldValue()
         {
             Type = Enums.ResultValueType.String;
         }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="StringFieldValue"/>.
+        /// </summary>
         public StringFieldValue(int fieldId, string value) : this()
         {
             FieldId = fieldId;

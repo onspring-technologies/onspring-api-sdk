@@ -1,7 +1,7 @@
 ﻿using Onspring.API.SDK.Enums;
 using Onspring.API.SDK.Extensions;
 using Onspring.API.SDK.Helpers;
-using Onspring.API.SDK.Internals;
+using Onspring.API.SDK.Http;
 using Onspring.API.SDK.Models;
 using Onspring.API.SDK.Validation;
 using System;

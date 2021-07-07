@@ -2,16 +2,18 @@
 
 namespace Onspring.API.SDK.Models
 {
-    public class IntegerListFieldValue : RecordFieldValue
+    /// <summary>
+    /// Represents a field value comprised of a collection of int values.
+    /// </summary>
+    public class IntegerListFieldValue : RecordFieldValue<List<int>>
     {
-        public List<int> Value { get; set; } = new List<int>();
-
         /// <summary>
         /// Initializes a new instance of <see cref="IntegerListFieldValue"/>.
         /// </summary>
         public IntegerListFieldValue()
         {
             Type = Enums.ResultValueType.IntegerList;
+            Value = new List<int>();
         }
 
         /// <summary>

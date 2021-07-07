@@ -1,14 +1,21 @@
 ﻿namespace Onspring.API.SDK.Models
 {
-    public class IntegerFieldValue : RecordFieldValue
+    /// <summary>
+    /// Represents a field value comprised of a nullable int value.
+    /// </summary>
+    public class IntegerFieldValue : RecordFieldValue<int?>
     {
-        public int? Value { get; set; }
-
+        /// <summary>
+        /// Initializes a new instance of <see cref="IntegerFieldValue"/>.
+        /// </summary>
         public IntegerFieldValue()
         {
             Type = Enums.ResultValueType.Integer;
         }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="IntegerFieldValue"/>.
+        /// </summary>
         public IntegerFieldValue(int fieldId, int? value) : this()
         {
             FieldId = fieldId;

@@ -5,19 +5,15 @@ namespace Onspring.API.SDK.Models
     /// <summary>
     /// Represents a field value comprised of a collection of string values.
     /// </summary>
-    public class StringListFieldValue : RecordFieldValue
+    public class StringListFieldValue : RecordFieldValue<List<string>>
     {
-        /// <summary>
-        /// Gets or sets the collection of strings.
-        /// </summary>
-        public List<string> Value { get; set; } = new List<string>();
-
         /// <summary>
         /// Initializes a new instance of <see cref="StringListFieldValue"/>.
         /// </summary>
         public StringListFieldValue()
         {
             Type = Enums.ResultValueType.StringList;
+            Value = new List<string>();
         }
 
         /// <summary>

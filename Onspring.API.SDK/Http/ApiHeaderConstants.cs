@@ -1,9 +1,9 @@
-﻿namespace Onspring.API.SDK.Internals
+﻿namespace Onspring.API.SDK.Http
 {
     /// <summary>
     /// Constants for API Headers.
     /// </summary>
-    public static class ApiHeaderConstants
+    internal static class ApiHeaderConstants
     {
         /// <summary>
         /// Gets the header name for an API Key.

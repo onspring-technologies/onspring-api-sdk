@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Onspring.API.SDK.Internals
+namespace Onspring.API.SDK.Http
 {
     /// <summary>
     /// Factory used to generate <see cref="ApiResponse"/> instances.

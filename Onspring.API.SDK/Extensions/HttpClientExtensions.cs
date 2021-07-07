@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using Onspring.API.SDK.Internals;
+using Onspring.API.SDK.Http;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;

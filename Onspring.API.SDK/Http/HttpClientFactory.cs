@@ -2,7 +2,7 @@
 using System.Collections.Concurrent;
 using System.Net.Http;
 
-namespace Onspring.API.SDK.Internals
+namespace Onspring.API.SDK.Http
 {
     /// <summary>
     /// Internal factory used to managed HttpClient instances created.

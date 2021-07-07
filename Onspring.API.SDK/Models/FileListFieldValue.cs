@@ -2,10 +2,11 @@
 
 namespace Onspring.API.SDK.Models
 {
-    public class FileListFieldValue : RecordFieldValue
+    /// <summary>
+    /// Represents a field value comprised of a collection of file identifier values.
+    /// </summary>
+    public class FileListFieldValue : RecordFieldValue<List<int>>
     {
-        public List<int> Value { get; set; } = new List<int>();
-
         /// <summary>
         /// Initializes a new instance of <see cref="FileListFieldValue"/>.
         /// </summary>

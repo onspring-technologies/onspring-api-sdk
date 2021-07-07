@@ -17,8 +17,24 @@ namespace Onspring.API.SDK.Models
     /// </summary>
     public class RecordFieldValue
     {
+        /// <summary>
+        /// Gets or sets the type of value the record field contains.
+        /// </summary>
         public ResultValueType Type { get; set; }
+
+        /// <summary>
+        /// Gets or sets the field identifier.
+        /// </summary>
         public int FieldId { get; set; }
+    }
+
+    /// <inheritdoc />
+    public class RecordFieldValue<T> : RecordFieldValue
+    {
+        /// <summary>
+        /// Gets or sets the actual field's value.
+        /// </summary>
+        public T Value { get; set; }
     }
 
     /// <summary>
