@@ -37,6 +37,7 @@ namespace Onspring.API.SDK.Tests.Tests
                 RecordId = _recordId,
                 FileStream = File.OpenRead(filePath),
                 FileName = Path.GetFileName(filePath),
+                ContentType = "image/png",
                 ModifiedDate = DateTime.UtcNow,
                 Notes = "Test file."
             };

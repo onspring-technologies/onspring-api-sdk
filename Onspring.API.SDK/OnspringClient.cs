@@ -229,10 +229,13 @@ namespace Onspring.API.SDK
         {
             Arg.IsNotNull(request, nameof(request));
 
+            var streamContent = new StreamContent(request.FileStream);
+            streamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(request.ContentType);
+
             var path = UrlHelper.GetSaveFilePath();
             var multiPartContent = new MultipartFormDataContent
             {
-                { new StreamContent(request.FileStream), "file", request.FileName },
+                { streamContent, "file", request.FileName },
                 { new StringContent(request.RecordId.ToString()), nameof(request.RecordId) },
                 { new StringContent(request.FieldId.ToString()), nameof(request.FieldId) },
                 { new StringContent(request.Notes), nameof(request.Notes) },
