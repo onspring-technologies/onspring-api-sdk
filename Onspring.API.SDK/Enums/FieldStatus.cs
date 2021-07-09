@@ -6,7 +6,6 @@
 //  *  
 // */
 #endregion
-// ReSharper disable UnusedMember.Global
 namespace Onspring.API.SDK.Enums
 {
     public enum FieldStatus

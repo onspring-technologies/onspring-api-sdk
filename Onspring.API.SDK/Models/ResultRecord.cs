@@ -6,18 +6,15 @@
 //  *  
 // */
 #endregion
+
+using System.Collections.Generic;
+
 namespace Onspring.API.SDK.Models
 {
     public class ResultRecord
     {
-        public ResultRecord()
-        {
-            Values = new FieldValueContainer();
-        }
-
         public int AppId { get; set; }
         public int RecordId { get; set; }
-        public FieldValueContainer Values { get; private set; }
-
+        public List<RecordFieldValue> FieldData { get; set; } = new List<RecordFieldValue>();
     }
 }
