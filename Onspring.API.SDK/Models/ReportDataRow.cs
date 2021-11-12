@@ -12,6 +12,6 @@ namespace Onspring.API.SDK.Models
 {
     public class ReportDataRow
     {
-        public IReadOnlyList<object> Cells { get; set; }
+        public List<object> Cells { get; set; }
     }
 }

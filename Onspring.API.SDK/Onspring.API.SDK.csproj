@@ -1,21 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyTitle>Onspring.API.SDK</AssemblyTitle>
-    <Company>Onspring Technologies</Company>
-    <Product>Onspring.API.SDK</Product>
-    <Description>.NET SDK for interacting with the Onspring API</Description>
-    <Copyright>Copyright 2021 Onspring Technologies, LLC</Copyright>
-    <Version>3.0.0</Version>
-    <AssemblyVersion>3.0.0.0</AssemblyVersion>
-    <FileVersion>3.0.0.0</FileVersion>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
-    <Authors>Onspring Technologies</Authors>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageTags>Onspring; Onspring Technologies; Onspring SDK; Onspring API</PackageTags>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-  </ItemGroup>
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+		<AssemblyTitle>Onspring.API.SDK</AssemblyTitle>
+		<Company>Onspring Technologies</Company>
+		<Product>Onspring.API.SDK</Product>
+		<Description>.NET SDK for interacting with the Onspring API</Description>
+		<Copyright>Copyright 2021 Onspring Technologies, LLC</Copyright>
+		<Version>3.0.0-beta</Version>
+		<AssemblyVersion>3.0.0.0</AssemblyVersion>
+		<FileVersion>3.0.0.0</FileVersion>
+		<OutputPath>bin\$(Configuration)\</OutputPath>
+		<Authors>Onspring Technologies</Authors>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageTags>Onspring; Onspring Technologies; Onspring SDK; Onspring API</PackageTags>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+	</ItemGroup>
+
+	<PropertyGroup>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<NoWarn>$(NoWarn);1591</NoWarn>
+	</PropertyGroup>
 </Project>
