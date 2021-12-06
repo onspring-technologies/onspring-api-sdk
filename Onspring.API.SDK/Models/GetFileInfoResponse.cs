@@ -39,9 +39,9 @@ namespace Onspring.API.SDK.Models
         public string Owner { get; set; }
 
         /// <summary>
-        /// File's description.
+        /// File's notes.
         /// </summary>
-        public string Description { get; set; }
+        public string Notes { get; set; }
 
         /// <summary>
         /// URI to the file's data.

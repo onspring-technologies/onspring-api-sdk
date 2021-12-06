@@ -13,6 +13,7 @@ namespace Onspring.API.SDK.Models
 {
     public class ListField : Field
     {
+        public int ListId { get; set; }
         public Multiplicity Multiplicity { get; set; }
         public List<ListValue> Values { get; set; }
     }
