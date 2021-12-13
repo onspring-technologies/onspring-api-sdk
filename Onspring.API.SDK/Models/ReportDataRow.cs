@@ -12,6 +12,7 @@ namespace Onspring.API.SDK.Models
 {
     public class ReportDataRow
     {
+        public int RecordId { get; set; }
         public List<object> Cells { get; set; }
     }
 }
