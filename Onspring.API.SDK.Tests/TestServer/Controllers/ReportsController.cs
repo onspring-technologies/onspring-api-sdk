@@ -30,6 +30,7 @@ namespace Onspring.API.SDK.Tests.TestServer.Controllers
             {
                 report.Rows.Add(new ReportDataRow
                 {
+                    RecordId = 1,
                     Cells = new List<object>
                     {
                         "1",
@@ -40,6 +41,7 @@ namespace Onspring.API.SDK.Tests.TestServer.Controllers
 
                 report.Rows.Add(new ReportDataRow
                 {
+                    RecordId = 2,
                     Cells = new List<object>
                     {
                         "2",
@@ -52,11 +54,13 @@ namespace Onspring.API.SDK.Tests.TestServer.Controllers
             {
                 report.Rows.Add(new ReportDataRow
                 {
+                    RecordId = 1,
                     Cells = new List<object> { "1" }
                 });
 
                 report.Rows.Add(new ReportDataRow
                 {
+                    RecordId = 2,
                     Cells = new List<object> { "2" }
                 });
             }
