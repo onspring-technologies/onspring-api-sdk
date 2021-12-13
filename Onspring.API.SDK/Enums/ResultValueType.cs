@@ -21,5 +21,6 @@ namespace Onspring.API.SDK.Enums
         GuidList = 15,
         AttachmentList = 16,
         ScoringGroupList = 17,
+        FileList = 18,
     }
 }
