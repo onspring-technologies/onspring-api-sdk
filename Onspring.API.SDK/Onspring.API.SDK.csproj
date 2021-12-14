@@ -6,9 +6,9 @@
 		<Product>Onspring.API.SDK</Product>
 		<Description>.NET SDK for interacting with the Onspring API</Description>
 		<Copyright>Copyright 2021 Onspring Technologies, LLC</Copyright>
-		<Version>4.0.1-alpha</Version>
-		<AssemblyVersion>4.0.1.0</AssemblyVersion>
-		<FileVersion>4.0.1.0</FileVersion>
+		<Version>4.0.2</Version>
+		<AssemblyVersion>4.0.2.0</AssemblyVersion>
+		<FileVersion>4.0.2.0</FileVersion>
 		<OutputPath>bin\$(Configuration)\</OutputPath>
 		<Authors>Onspring Technologies</Authors>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
