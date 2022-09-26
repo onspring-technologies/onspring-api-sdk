@@ -71,7 +71,7 @@ bool canConnect = AsyncHelper.RunTask(() => onspringClient.CanConnectAsync());
 
 ## Full API Documentation
 
-When using the SDK, you do not need to be as concerned with the details covered in the full [Onspring API documentation](https://ss-usa.s3.amazonaws.com/c/308463180/media/99045cf01cc2f0ad1795036815/Admin%20Guide%20-%20API%20-%20Onspring.pdf).  However, you may wish to refer to it when determining which values to pass as parameters to some of the `OnspringClient` methods.
+When using the SDK, you do not need to be as concerned with the details covered in the full [Onspring API documentation](https://software.onspring.com/hubfs/Training/Admin%20Guide%20-%20v2%20API.pdf).  However, you may wish to refer to it when determining which values to pass as parameters to some of the `OnspringClient` methods.
 
 Each method on the `OnspringClient` aside from `CanConnectAsync` returns a wrapped response, allowing clients to decide how a response should be handled. This wrapper is the `ApiResponse` class and includes generic types to encompass the response body, if any. In the examples below, we're omitting the validation/error handling around that, however we recommend that each client adds resilience and error handling for potential unsuccessful responses. Please refer to the API documentation/swagger page to determine the possible responses.
 
