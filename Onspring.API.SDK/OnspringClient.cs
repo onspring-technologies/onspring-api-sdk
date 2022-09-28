@@ -258,6 +258,8 @@ namespace Onspring.API.SDK
                 Content = multiPartContent,
             };
 
+            httpRequest.Headers.Add(ApiHeaderConstants.ApiKeyName, ClientConfig.ApiKey);
+
             var httpResponse = await HttpClient.SendAsync(httpRequest);
 
             var apiResponse = await ApiResponseFactory.GetApiResponseAsync<CreatedWithIdResponse<int>>(httpResponse, ClientConfig.JsonSerializer);
