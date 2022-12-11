@@ -24,7 +24,7 @@ namespace Onspring.API.SDK.Tests.TestServer.Controllers
         [HttpPost("batch-get")]
         public IActionResult GetBatchById([FromBody, MinLength(1)] int[] fieldIds)
         {
-            var getFieldsResponse = new GetFieldsResponse
+            var getFieldsResponse = new
             {
                 Items = GetTestFields()
             };
@@ -38,7 +38,7 @@ namespace Onspring.API.SDK.Tests.TestServer.Controllers
             pagingRequest ??= new PagingRequest();
 
             var items = GetTestFields();
-            var getResponse = new GetPagedFieldsResponse
+            var getResponse = new
             {
                 Items = items.Take(pagingRequest.PageSize).ToList(),
                 PageNumber = pagingRequest.PageNumber,
@@ -49,33 +49,33 @@ namespace Onspring.API.SDK.Tests.TestServer.Controllers
             return Ok(getResponse);
         }
 
-        private static List<Field> GetTestFields()
+        private static List<object> GetTestFields()
         {
-            return new List<Field>
+            return new List<object>
             {
-                new Field
+                new
                 {
                     AppId = 1,
                     Id = 1,
                     IsRequired = true,
                     IsUnique  = true,
                     Name = "Regular field",
-                    Status = Enums.FieldStatus.Enabled,
-                    Type = Enums.FieldType.Text,
+                    Status = "Enabled",
+                    Type = "Text",
                 },
-                new ListField
+                new
                 {
                     AppId = 1,
                     Id = 1,
                     IsRequired = true,
                     IsUnique  = false,
                     Name = "List field",
-                    Status = Enums.FieldStatus.Enabled,
-                    Type = Enums.FieldType.List,
-                    Multiplicity = Enums.Multiplicity.MultiSelect,
-                    Values = new List<ListValue>
+                    Status = "Enabled",
+                    Type = "List",
+                    Multiplicity = "MultiSelect",
+                    Values = new List<object>
                     {
-                        new ListValue
+                        new
                         {
                             Color = "#ffffff",
                             Id = Guid.NewGuid(),
@@ -83,7 +83,7 @@ namespace Onspring.API.SDK.Tests.TestServer.Controllers
                             NumericValue = 1m,
                             SortOrder = 1,
                         },
-                        new ListValue
+                        new
                         {
                             Color = "#ffffff",
                             Id = Guid.NewGuid(),
@@ -93,38 +93,38 @@ namespace Onspring.API.SDK.Tests.TestServer.Controllers
                         },
                     },
                 },
-                new FormulaField
+                new
                 {
                     AppId = 1,
                     Id = 1,
                     IsRequired = true,
                     IsUnique  = false,
                     Name = "List field",
-                    Status = Enums.FieldStatus.Enabled,
-                    Type = Enums.FieldType.Formula,
-                    OutputType = Enums.FormulaOutputType.Date,
-                    Values = new List<ListValue>
+                    Status = "Enabled",
+                    Type = "Formula",
+                    OutputType = "List",
+                    Values = new List<object>
                     {
-                        new ListValue
+                        new
                         {
                             Color = "#ffffff",
                             Id = Guid.NewGuid(),
-                            Name = "First Formula",
+                            Name = "List Value",
                             NumericValue = 1m,
                             SortOrder = 1,
                         },
                     },
                 },
-                new ReferenceField
+                new
                 {
                     AppId = 1,
                     Id = 1,
                     IsRequired = true,
                     IsUnique  = false,
                     Name = "List field",
-                    Status = Enums.FieldStatus.Enabled,
-                    Type = Enums.FieldType.Reference,
-                    Multiplicity = Enums.Multiplicity.SingleSelect,
+                    Status = "Enabled",
+                    Type = "Reference",
+                    Multiplicity = "SingleSelect",
                 }
             };
         }
