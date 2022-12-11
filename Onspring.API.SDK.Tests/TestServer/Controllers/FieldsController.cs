@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 using Onspring.API.SDK.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace Onspring.API.SDK.Tests.TestServer.Controllers
 {
@@ -97,9 +100,9 @@ namespace Onspring.API.SDK.Tests.TestServer.Controllers
                 {
                     AppId = 1,
                     Id = 1,
-                    IsRequired = true,
+                    IsRequired = false,
                     IsUnique  = false,
-                    Name = "List field",
+                    Name = "List Formula Field",
                     Status = "Enabled",
                     Type = "Formula",
                     OutputType = "List",
@@ -114,6 +117,42 @@ namespace Onspring.API.SDK.Tests.TestServer.Controllers
                             SortOrder = 1,
                         },
                     },
+                },
+                new
+                {
+                    AppId = 1,
+                    Id = 1,
+                    IsRequired = false,
+                    IsUnique  = false,
+                    Name = "Date/Time Formula Field",
+                    Status = "Enabled",
+                    Type = "Formula",
+                    OutputType = "DateAndTime",
+                    Values = new List<object>(),
+                },
+                new
+                {
+                    AppId = 1,
+                    Id = 1,
+                    IsRequired = false,
+                    IsUnique  = false,
+                    Name = "Numeric Formula Field",
+                    Status = "Enabled",
+                    Type = "Formula",
+                    OutputType = "Numeric",
+                    Values = new List<object>(),
+                },
+                new
+                {
+                    AppId = 1,
+                    Id = 1,
+                    IsRequired = false,
+                    IsUnique  = false,
+                    Name = "Text Formula Field",
+                    Status = "Enabled",
+                    Type = "Formula",
+                    OutputType = "Text",
+                    Values = new List<object>(),
                 },
                 new
                 {
