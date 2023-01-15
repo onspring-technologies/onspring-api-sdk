@@ -13,6 +13,6 @@ namespace Onspring.API.SDK.Enums
         Text = 0,
         Numeric = 1,
         DateAndTime = 2,
-        List = 3,
+        ListValue = 3,
     }
 }
