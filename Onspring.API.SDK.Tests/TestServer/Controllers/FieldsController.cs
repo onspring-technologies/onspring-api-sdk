@@ -1,17 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
 using Onspring.API.SDK.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Xml.Linq;
 
 namespace Onspring.API.SDK.Tests.TestServer.Controllers
 {
-    [ApiController, Route("[controller]")]
+  [ApiController, Route("[controller]")]
     [ExcludeFromCodeCoverage]
     [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Just a test controller. Not an API that gets shipped.")]
     [SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Just a test controller. Not an API that gets shipped.")]
