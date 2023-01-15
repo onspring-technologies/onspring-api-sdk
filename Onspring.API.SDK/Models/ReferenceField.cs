@@ -13,5 +13,6 @@ namespace Onspring.API.SDK.Models
     public class ReferenceField: Field
     {
         public Multiplicity Multiplicity { get; set; }
+        public int ReferencedAppId { get; set; }
     }
 }
