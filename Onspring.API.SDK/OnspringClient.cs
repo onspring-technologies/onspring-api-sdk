@@ -71,6 +71,17 @@ namespace Onspring.API.SDK
             HttpClient = HttpClientFactory.GetHttpClient(clientConfig.BaseAddress);
         }
 
+        // ------------------------------------ Fluent Interface ------------------------------------
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="OnspringRequest"/> class, which provides a fluent interface for building a request to the Onspring API.
+        /// </summary>
+        /// <returns>A new <see cref="OnspringRequest"/> instance.</returns>
+        public OnspringRequest CreateRequest()
+        {
+            return new OnspringRequest(this);
+        }
+
         // ------------------------------------ Diagnostic ------------------------------------
 
         #region Diagnostic
