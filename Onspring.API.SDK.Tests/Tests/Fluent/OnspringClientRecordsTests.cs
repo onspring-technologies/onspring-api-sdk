@@ -1,12 +1,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Onspring.API.SDK.Models;
+using Onspring.API.SDK.Enums;
 using Onspring.API.SDK.Tests.Infrastructure;
 using Onspring.API.SDK.Tests.Infrastructure.Helpers;
 using Onspring.API.SDK.Tests.Infrastructure.Http;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Onspring.API.SDK.Tests.Tests.Fluent
@@ -38,7 +35,26 @@ namespace Onspring.API.SDK.Tests.Tests.Fluent
                 .ForPage(1)
                 .WithPageSize(50)
                 .WithFieldIds(new[] { 1, 2, 3 })
+                .WithFormat(DataFormat.Formatted)
                 .SendAsync();
+
+            AssertHelper.AssertSuccess(apiResponse);
+        }
+
+        [TestMethod]
+        public async Task GetRecordsByApp_WithOptions()
+        {
+            var apiResponse = await _apiClient
+                .CreateRequest()
+                .ToGetRecords()
+                .FromApp(_appIdWithRecords)
+                .SendAsync(opts =>
+                {
+                    opts.PageNumber = 50;
+                    opts.PageSize = 50;
+                    opts.DataFormat = DataFormat.Formatted;
+                    opts.FieldIds = new[] { 1, 2, 3 };
+                });
 
             AssertHelper.AssertSuccess(apiResponse);
         }

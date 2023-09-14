@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,6 +40,12 @@ namespace Onspring.API.SDK.Models.Fluent
             return this;
         }
 
+        public IGetRecordsByAppRequestBuilder WithFormat(DataFormat dataFormat)
+        {
+            _dataFormat = dataFormat;
+            return this;
+        }
+
         async public Task<ApiResponse<GetPagedRecordsResponse>> SendAsync()
         {
             return await _client.GetRecordsForAppAsync(
@@ -54,6 +61,33 @@ namespace Onspring.API.SDK.Models.Fluent
                     }
                 }
             );
+        }
+
+        async public Task<ApiResponse<GetPagedRecordsResponse>> SendAsync(Action<GetRecordsByAppRequestBuilderOptions> options)
+        {
+            var opts = new GetRecordsByAppRequestBuilderOptions();
+            options.Invoke(opts);
+            return await _client.GetRecordsForAppAsync(
+                new GetRecordsByAppRequest
+                {
+                    AppId = _appId,
+                    FieldIds = opts.FieldIds.ToList(),
+                    DataFormat = opts.DataFormat,
+                    PagingRequest = new PagingRequest
+                    {
+                        PageNumber = opts.PageNumber,
+                        PageSize = opts.PageSize,
+                    }
+                }
+            );
+        }
+
+        public class GetRecordsByAppRequestBuilderOptions
+        {
+            public IEnumerable<int> FieldIds = Enumerable.Empty<int>();
+            public DataFormat DataFormat = DataFormat.Raw;
+            public int PageNumber { get; set; } = 1;
+            public int PageSize = 50;
         }
     }
 }
