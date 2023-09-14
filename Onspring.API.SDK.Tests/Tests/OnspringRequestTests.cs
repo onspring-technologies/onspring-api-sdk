@@ -4,8 +4,8 @@ using Onspring.API.SDK.Models;
 
 namespace Onspring.API.SDK.Tests.Tests
 {
-  [TestClass, ExcludeFromCodeCoverage]
-  public class OnspringRequestTests
-  {
-  }
+    [TestClass, ExcludeFromCodeCoverage]
+    public class OnspringRequestTests
+    {
+    }
 }
