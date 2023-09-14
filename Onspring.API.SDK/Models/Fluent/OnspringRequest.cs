@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using Onspring.API.SDK.Interfaces.Fluent;
 
 namespace Onspring.API.SDK.Models.Fluent
