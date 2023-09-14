@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Onspring.API.SDK.Enums;
 using Onspring.API.SDK.Models;
-using static Onspring.API.SDK.Models.Fluent.GetRecordsByAppRequestBuilder;
+using Onspring.API.SDK.Models.Fluent;
 
 namespace Onspring.API.SDK.Interfaces.Fluent
 {
