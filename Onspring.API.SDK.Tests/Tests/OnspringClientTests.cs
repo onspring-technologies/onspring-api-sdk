@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Onspring.API.SDK.Models.Fluent;
 using Onspring.API.SDK.Tests.Infrastructure;
 using System;
 using System.Diagnostics.CodeAnalysis;
@@ -99,6 +100,14 @@ namespace Onspring.API.SDK.Tests.Tests
         public void InvalidConstructor_HttpClient_NoBaseAddress()
         {
             var _ = new OnspringClient(_testConfiguration.ApiKey, new HttpClient());
+        }
+
+        [TestMethod]
+        public void CreateRequest_WhenCalled_ItShouldReturnAnInstanceOfAnOnspringRequest()
+        {
+            var client = new OnspringClient(_testConfiguration.ApiKey, new HttpClient { BaseAddress = new Uri(_testConfiguration.BaseAddress) });
+            var request = client.CreateRequest();
+            Assert.IsInstanceOfType(request, typeof(OnspringRequest));
         }
     }
 }

@@ -2,6 +2,7 @@
 using Onspring.API.SDK.Extensions;
 using Onspring.API.SDK.Helpers;
 using Onspring.API.SDK.Http;
+using Onspring.API.SDK.Interfaces.Fluent;
 using Onspring.API.SDK.Models;
 using Onspring.API.SDK.Models.Fluent;
 using Onspring.API.SDK.Validation;
@@ -78,7 +79,7 @@ namespace Onspring.API.SDK
         /// Creates a new instance of the <see cref="OnspringRequest"/> class, which provides a fluent interface for building a request to the Onspring API.
         /// </summary>
         /// <returns>A new <see cref="OnspringRequest"/> instance.</returns>
-        public OnspringRequest CreateRequest()
+        public IOnspringRequest CreateRequest()
         {
             return new OnspringRequest(this);
         }
