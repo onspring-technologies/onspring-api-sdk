@@ -1,3 +1,4 @@
+using Microsoft.VisualBasic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Onspring.API.SDK.Enums;
 using Onspring.API.SDK.Tests.Infrastructure;
@@ -42,7 +43,7 @@ namespace Onspring.API.SDK.Tests.Tests.Fluent
         }
 
         [TestMethod]
-        public async Task GetRecordsByApp_WithOptions()
+        public async Task GetRecordsByApp_UsingOptions()
         {
             var apiResponse = await _apiClient
                 .CreateRequest()
@@ -57,6 +58,34 @@ namespace Onspring.API.SDK.Tests.Tests.Fluent
                 });
 
             AssertHelper.AssertSuccess(apiResponse);
+        }
+
+        [TestMethod]
+        public async Task GetRecordById()
+        {
+            var apiResponse = await _apiClient
+                .CreateRequest()
+                .ToGetRecords()
+                .FromApp(_appIdWithRecords)
+                .WithId(1)
+                .WithFieldIds(new[] { 1, 2, 3 })
+                .WithFormat(DataFormat.Formatted)
+                .SendAsync();
+        }
+
+        [TestMethod]
+        public async Task GetRecordById_UsingOptions()
+        {
+            var apiResponse = await _apiClient
+                .CreateRequest()
+                .ToGetRecords()
+                .FromApp(_appIdWithRecords)
+                .WithId(1)
+                .SendAsync(options =>
+                {
+                    options.FieldIds = new[] { 1, 2, 3 };
+                    options.DataFormat = DataFormat.Formatted;
+                });
         }
     }
 }
