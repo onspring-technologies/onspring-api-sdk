@@ -1,102 +1,20 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Onspring.API.SDK.Enums;
 using Onspring.API.SDK.Interfaces.Fluent;
 
 namespace Onspring.API.SDK.Models.Fluent
 {
-    public class OnspringRequest :
-        IOnspringRequest,
-        IGetRecordsRequestBuilder,
-        IGetRecordsByAppRequestBuilder
+    public class OnspringRequest : IOnspringRequest
     {
         private readonly IOnspringClient _client;
-        private int _appId;
-        private IEnumerable<int> _fieldIds = Enumerable.Empty<int>();
-        private DataFormat _dataFormat = DataFormat.Raw;
-        private int _pageNumber = 1;
-        private int _pageSize = 50;
-
         internal OnspringRequest(IOnspringClient client)
         {
             _client = client;
         }
 
-        #region records
-
         public IGetRecordsRequestBuilder ToGetRecords()
         {
-            return this;
+            return new GetRecordsRequestBuilder(_client);
         }
-
-        public IGetRecordsByAppRequestBuilder FromApp(int appId)
-        {
-            _appId = appId;
-            return this;
-        }
-
-        public IGetRecordsByAppRequestBuilder ForPage(int pageNumber)
-        {
-            _pageNumber = pageNumber;
-            return this;
-        }
-
-        public IGetRecordsByAppRequestBuilder WithPageSize(int pageSize)
-        {
-            _pageSize = pageSize;
-            return this;
-        }
-
-        public IGetRecordsByAppRequestBuilder WithFieldIds(IEnumerable<int> fieldIds)
-        {
-            _fieldIds = fieldIds;
-            return this;
-        }
-
-        public IGetRecordsByAppRequestBuilder WithFormat(DataFormat dataFormat)
-        {
-            _dataFormat = dataFormat;
-            return this;
-        }
-
-        async public Task<ApiResponse<GetPagedRecordsResponse>> SendAsync()
-        {
-            return await _client.GetRecordsForAppAsync(
-                new GetRecordsByAppRequest
-                {
-                    AppId = _appId,
-                    FieldIds = _fieldIds.ToList(),
-                    DataFormat = _dataFormat,
-                    PagingRequest = new PagingRequest
-                    {
-                        PageNumber = _pageNumber,
-                        PageSize = _pageSize
-                    }
-                }
-            );
-        }
-
-        async public Task<ApiResponse<GetPagedRecordsResponse>> SendAsync(Action<GetRecordsByAppRequestBuilderOptions> options)
-        {
-            var opts = new GetRecordsByAppRequestBuilderOptions();
-            options.Invoke(opts);
-            return await _client.GetRecordsForAppAsync(
-                new GetRecordsByAppRequest
-                {
-                    AppId = _appId,
-                    FieldIds = opts.FieldIds.ToList(),
-                    DataFormat = opts.DataFormat,
-                    PagingRequest = new PagingRequest
-                    {
-                        PageNumber = opts.PageNumber,
-                        PageSize = opts.PageSize,
-                    }
-                }
-            );
-        }
-
-        #endregion
     }
 }
