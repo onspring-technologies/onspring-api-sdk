@@ -1,4 +1,4 @@
-namespace Onspring.API.SDK.Models
+namespace Onspring.API.SDK.Models.Fluent
 {
   public class OnspringRequest
   {
