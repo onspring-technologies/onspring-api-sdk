@@ -1,0 +1,3 @@
+{
+  "dotnet-test-explorer.testArguments": "--settings runsettings/internal.runsettings"
+}
