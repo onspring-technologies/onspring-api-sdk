@@ -1,6 +1,6 @@
-using Microsoft.VisualBasic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Onspring.API.SDK.Enums;
+using Onspring.API.SDK.Models;
 using Onspring.API.SDK.Tests.Infrastructure;
 using Onspring.API.SDK.Tests.Infrastructure.Helpers;
 using Onspring.API.SDK.Tests.Infrastructure.Http;
@@ -29,35 +29,39 @@ namespace Onspring.API.SDK.Tests.Tests.Fluent
         [TestMethod]
         public async Task GetRecordsByApp()
         {
+            var pagingRequest = new PagingRequest(1, 10);
             var apiResponse = await _apiClient
                 .CreateRequest()
                 .ToGetRecords()
                 .FromApp(_appIdWithRecords)
-                .ForPage(1)
-                .WithPageSize(50)
+                .ForPage(pagingRequest.PageNumber)
+                .WithPageSize(pagingRequest.PageSize)
                 .WithFieldIds(new[] { 1, 2, 3 })
                 .WithFormat(DataFormat.Formatted)
                 .SendAsync();
 
             AssertHelper.AssertSuccess(apiResponse);
+            AssertHelper.AssertCasting(apiResponse.Value.Items);
         }
 
         [TestMethod]
         public async Task GetRecordsByApp_UsingOptions()
         {
+            var pagingRequest = new PagingRequest(1, 10);
             var apiResponse = await _apiClient
                 .CreateRequest()
                 .ToGetRecords()
                 .FromApp(_appIdWithRecords)
                 .SendAsync(opts =>
                 {
-                    opts.PageNumber = 50;
-                    opts.PageSize = 50;
+                    opts.PageNumber = pagingRequest.PageNumber;
+                    opts.PageSize = pagingRequest.PageSize;
                     opts.DataFormat = DataFormat.Formatted;
                     opts.FieldIds = new[] { 1, 2, 3 };
                 });
 
             AssertHelper.AssertSuccess(apiResponse);
+            AssertHelper.AssertCasting(apiResponse.Value.Items);
         }
 
         [TestMethod]
@@ -71,6 +75,9 @@ namespace Onspring.API.SDK.Tests.Tests.Fluent
                 .WithFieldIds(new[] { 1, 2, 3 })
                 .WithFormat(DataFormat.Formatted)
                 .SendAsync();
+
+            AssertHelper.AssertSuccess(apiResponse);
+            AssertHelper.AssertCasting(apiResponse.Value);
         }
 
         [TestMethod]
@@ -86,6 +93,43 @@ namespace Onspring.API.SDK.Tests.Tests.Fluent
                     options.FieldIds = new[] { 1, 2, 3 };
                     options.DataFormat = DataFormat.Formatted;
                 });
+
+            AssertHelper.AssertSuccess(apiResponse);
+            AssertHelper.AssertCasting(apiResponse.Value);
+        }
+
+        [TestMethod]
+        public async Task GetRecordsByIds()
+        {
+            var apiResponse = await _apiClient
+                .CreateRequest()
+                .ToGetRecords()
+                .FromApp(_appIdWithRecords)
+                .WithIds(new[] { 1, 2, 3 })
+                .WithFieldIds(new[] { 1, 2, 3 })
+                .WithFormat(DataFormat.Formatted)
+                .SendAsync();
+
+            AssertHelper.AssertSuccess(apiResponse);
+            AssertHelper.AssertCasting(apiResponse.Value.Items);
+        }
+
+        [TestMethod]
+        public async Task GetRecordsByIds_UsingOptions()
+        {
+            var apiResponse = await _apiClient
+                .CreateRequest()
+                .ToGetRecords()
+                .FromApp(_appIdWithRecords)
+                .WithIds(new[] { 1, 2, 3 })
+                .SendAsync(options =>
+                {
+                    options.DataFormat = DataFormat.Formatted;
+                    options.FieldIds = new[] { 1, 2, 3 };
+                });
+
+            AssertHelper.AssertSuccess(apiResponse);
+            AssertHelper.AssertCasting(apiResponse.Value.Items);
         }
     }
 }

@@ -16,5 +16,6 @@ namespace Onspring.API.SDK.Interfaces.Fluent
         IGetRecordsByAppRequestBuilder WithFieldIds(IEnumerable<int> fieldIds);
         IGetRecordsByAppRequestBuilder WithFormat(DataFormat dataFormat);
         IGetRecordByIdRequestBuilder WithId(int recordId);
+        IGetRecordsByIdsRequestBuilder WithIds(IEnumerable<int> recordIds);
     }
 }

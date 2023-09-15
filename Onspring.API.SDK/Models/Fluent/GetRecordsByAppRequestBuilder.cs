@@ -51,6 +51,11 @@ namespace Onspring.API.SDK.Models.Fluent
             return new GetRecordByIdRequestBuilder(_client, _appId, recordId);
         }
 
+        public IGetRecordsByIdsRequestBuilder WithIds(IEnumerable<int> recordIds)
+        {
+            return new GetRecordsByIdsRequestBuilder(_client, _appId, recordIds);
+        }
+
         async public Task<ApiResponse<GetPagedRecordsResponse>> SendAsync()
         {
             return await _client.GetRecordsForAppAsync(
