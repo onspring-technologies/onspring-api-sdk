@@ -1,3 +1,4 @@
 {
-  "dotnet-test-explorer.testArguments": "--settings runsettings/internal.runsettings"
+  "dotnet-test-explorer.testArguments": "--settings runsettings/internal.runsettings",
+  "omnisharp.testRunSettings": "C:\\Users\\sfree\\software_projects\\onspring-api-sdk\\Onspring.API.SDK.Tests\\bin\\Debug\\net7\\runsettings\\internal.runsettings"
 }
