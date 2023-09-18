@@ -10,27 +10,27 @@ namespace Onspring.API.SDK.Models.Fluent
     public class GetRecordByIdRequestBuilder : IGetRecordByIdRequestBuilder
     {
         private readonly IOnspringClient _client;
-        private readonly int _appId;
-        private readonly int _recordId;
-        private IEnumerable<int> _fieldIds = Enumerable.Empty<int>();
-        private DataFormat _dataFormat = DataFormat.Raw;
+        public int AppId { get; private set; }
+        public int RecordId { get; private set; }
+        public IEnumerable<int> FieldIds { get; private set; } = Enumerable.Empty<int>();
+        public DataFormat Format { get; private set; } = DataFormat.Raw;
 
-        public GetRecordByIdRequestBuilder(IOnspringClient client, int appId, int recordId)
+        internal GetRecordByIdRequestBuilder(IOnspringClient client, int appId, int recordId)
         {
             _client = client;
-            _appId = appId;
-            _recordId = recordId;
+            AppId = appId;
+            RecordId = recordId;
         }
 
         public IGetRecordByIdRequestBuilder WithFieldIds(IEnumerable<int> fieldIds)
         {
-            _fieldIds = fieldIds;
+            FieldIds = fieldIds;
             return this;
         }
 
         public IGetRecordByIdRequestBuilder WithFormat(DataFormat dataFormat)
         {
-            _dataFormat = dataFormat;
+            Format = dataFormat;
             return this;
         }
 
@@ -39,10 +39,10 @@ namespace Onspring.API.SDK.Models.Fluent
             return await _client.GetRecordAsync(
                 new GetRecordRequest
                 {
-                    AppId = _appId,
-                    RecordId = _recordId,
-                    FieldIds = _fieldIds.ToList(),
-                    DataFormat = _dataFormat,
+                    AppId = AppId,
+                    RecordId = RecordId,
+                    FieldIds = FieldIds.ToList(),
+                    DataFormat = Format,
                 }
             );
         }
@@ -54,10 +54,10 @@ namespace Onspring.API.SDK.Models.Fluent
             return await _client.GetRecordAsync(
                 new GetRecordRequest
                 {
-                    AppId = _appId,
-                    RecordId = _recordId,
+                    AppId = AppId,
+                    RecordId = RecordId,
                     FieldIds = opts.FieldIds.ToList(),
-                    DataFormat = opts.DataFormat,
+                    DataFormat = opts.Format,
                 }
             );
         }
