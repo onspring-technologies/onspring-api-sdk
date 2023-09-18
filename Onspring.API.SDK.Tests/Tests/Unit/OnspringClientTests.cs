@@ -1,7 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Onspring.API.SDK.Models.Fluent;
 
-namespace Onspring.API.SDK.Tests.Unit
+namespace Onspring.API.SDK.Tests.Tests.Unit
 {
     [TestClass]
     public class OnspringClientTests
