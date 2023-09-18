@@ -7,7 +7,7 @@ using Onspring.API.SDK.Tests.Infrastructure.Http;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
-namespace Onspring.API.SDK.Tests.Tests.Fluent
+namespace Onspring.API.SDK.Tests.Tests.Integration.Fluent
 {
     [TestClass, ExcludeFromCodeCoverage]
     public class OnspringClientRecordsTests
@@ -52,11 +52,11 @@ namespace Onspring.API.SDK.Tests.Tests.Fluent
                 .CreateRequest()
                 .ToGetRecords()
                 .FromApp(_appIdWithRecords)
+                .ForPage(1)
                 .SendAsync(opts =>
                 {
-                    opts.PageNumber = pagingRequest.PageNumber;
                     opts.PageSize = pagingRequest.PageSize;
-                    opts.DataFormat = DataFormat.Formatted;
+                    opts.Format = DataFormat.Formatted;
                     opts.FieldIds = new[] { 1, 2, 3 };
                 });
 
@@ -91,7 +91,7 @@ namespace Onspring.API.SDK.Tests.Tests.Fluent
                 .SendAsync(options =>
                 {
                     options.FieldIds = new[] { 1, 2, 3 };
-                    options.DataFormat = DataFormat.Formatted;
+                    options.Format = DataFormat.Formatted;
                 });
 
             AssertHelper.AssertSuccess(apiResponse);
@@ -124,12 +124,21 @@ namespace Onspring.API.SDK.Tests.Tests.Fluent
                 .WithIds(new[] { 1, 2, 3 })
                 .SendAsync(options =>
                 {
-                    options.DataFormat = DataFormat.Formatted;
+                    options.Format = DataFormat.Formatted;
                     options.FieldIds = new[] { 1, 2, 3 };
                 });
 
             AssertHelper.AssertSuccess(apiResponse);
             AssertHelper.AssertCasting(apiResponse.Value.Items);
+        }
+
+        [TestMethod]
+        public async Task QueryRecords()
+        {
+            var apiResponse = _apiClient
+                .CreateRequest()
+                .ToGetRecords()
+                .FromApp(_appIdWithRecords);
         }
     }
 }
