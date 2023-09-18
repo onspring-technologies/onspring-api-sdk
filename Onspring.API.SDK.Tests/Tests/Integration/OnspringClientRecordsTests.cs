@@ -6,10 +6,9 @@ using Onspring.API.SDK.Tests.Infrastructure.Http;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace Onspring.API.SDK.Tests.Tests
+namespace Onspring.API.SDK.Tests.Tests.Integration
 {
     [TestClass, ExcludeFromCodeCoverage]
     public class OnspringClientRecordsTests

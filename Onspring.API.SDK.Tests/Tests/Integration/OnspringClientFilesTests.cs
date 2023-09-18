@@ -8,7 +8,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Onspring.API.SDK.Tests.Tests
+namespace Onspring.API.SDK.Tests.Tests.Integration
 {
     [TestClass, ExcludeFromCodeCoverage]
     public class OnspringClientFilesTests

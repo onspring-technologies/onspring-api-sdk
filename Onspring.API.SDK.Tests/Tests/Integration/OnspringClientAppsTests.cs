@@ -7,7 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Onspring.API.SDK.Tests.Tests
+namespace Onspring.API.SDK.Tests.Tests.Integration
 {
     [TestClass, ExcludeFromCodeCoverage]
     public class OnspringClientAppsTests

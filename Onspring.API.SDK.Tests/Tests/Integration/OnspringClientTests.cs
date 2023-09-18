@@ -5,7 +5,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 
-namespace Onspring.API.SDK.Tests.Tests
+namespace Onspring.API.SDK.Tests.Tests.Integration
 {
     [TestClass, ExcludeFromCodeCoverage]
     public class OnspringClientTests

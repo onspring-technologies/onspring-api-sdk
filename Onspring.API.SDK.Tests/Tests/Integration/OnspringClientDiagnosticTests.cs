@@ -4,7 +4,7 @@ using Onspring.API.SDK.Tests.Infrastructure.Http;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
-namespace Onspring.API.SDK.Tests.Tests
+namespace Onspring.API.SDK.Tests.Tests.Integration
 {
     [TestClass, ExcludeFromCodeCoverage]
     public class OnspringClientDiagnosticTests
