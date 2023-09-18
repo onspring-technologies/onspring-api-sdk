@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NSubstitute;
 using Onspring.API.SDK.Interfaces.Fluent;
 using Onspring.API.SDK.Models.Fluent;
 
@@ -8,14 +9,13 @@ namespace Onspring.API.SDK.Tests.Tests.Unit.Fluent
     [TestClass, ExcludeFromCodeCoverage]
     public class GetRecordsRequestBuilderTests
     {
-        private static IGetRecordsRequestBuilder _builder;
+        private static GetRecordsRequestBuilder _builder;
 
         [ClassInitialize]
         public static void ClassInit(TestContext testContext)
         {
-            _builder = new OnspringClient("https://api.onspring.com", "key")
-                .CreateRequest()
-                .ToGetRecords();
+            var apiClientMock = Substitute.For<IOnspringClient>();
+            _builder = new GetRecordsRequestBuilder(apiClientMock);
         }
 
         [TestMethod]
