@@ -10,27 +10,27 @@ namespace Onspring.API.SDK.Models.Fluent
     public class GetRecordsByIdsRequestBuilder : IGetRecordsByIdsRequestBuilder
     {
         private readonly IOnspringClient _client;
-        private readonly int _appId;
-        private readonly IEnumerable<int> _recordIds;
-        private IEnumerable<int> _fieldIds = Enumerable.Empty<int>();
-        private DataFormat _dataFormat = DataFormat.Raw;
+        public int AppId { get; private set; }
+        public IEnumerable<int> RecordIds { get; private set; }
+        public IEnumerable<int> FieldIds { get; private set; } = Enumerable.Empty<int>();
+        public DataFormat Format { get; private set; } = DataFormat.Raw;
 
-        public GetRecordsByIdsRequestBuilder(IOnspringClient client, int appId, IEnumerable<int> recordIds)
+        internal GetRecordsByIdsRequestBuilder(IOnspringClient client, int appId, IEnumerable<int> recordIds)
         {
             _client = client;
-            _appId = appId;
-            _recordIds = recordIds;
+            AppId = appId;
+            RecordIds = recordIds;
         }
 
         public IGetRecordsByIdsRequestBuilder WithFieldIds(IEnumerable<int> fieldIds)
         {
-            _fieldIds = fieldIds;
+            FieldIds = fieldIds;
             return this;
         }
 
         public IGetRecordsByIdsRequestBuilder WithFormat(DataFormat dataFormat)
         {
-            _dataFormat = dataFormat;
+            Format = dataFormat;
             return this;
         }
 
@@ -39,10 +39,10 @@ namespace Onspring.API.SDK.Models.Fluent
             return await _client.GetRecordsAsync(
                 new GetRecordsRequest
                 {
-                    AppId = _appId,
-                    RecordIds = _recordIds.ToList(),
-                    FieldIds = _fieldIds.ToList(),
-                    DataFormat = _dataFormat,
+                    AppId = AppId,
+                    RecordIds = RecordIds.ToList(),
+                    FieldIds = FieldIds.ToList(),
+                    DataFormat = Format,
                 }
             );
         }
@@ -54,10 +54,10 @@ namespace Onspring.API.SDK.Models.Fluent
             return await _client.GetRecordsAsync(
                 new GetRecordsRequest
                 {
-                    AppId = _appId,
-                    RecordIds = _recordIds.ToList(),
+                    AppId = AppId,
+                    RecordIds = RecordIds.ToList(),
                     FieldIds = opts.FieldIds.ToList(),
-                    DataFormat = opts.DataFormat,
+                    DataFormat = opts.Format,
                 }
             );
         }
