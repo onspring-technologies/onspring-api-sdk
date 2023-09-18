@@ -1,9 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Onspring.API.SDK.Models.Fluent;
 
 namespace Onspring.API.SDK.Tests.Tests.Unit
 {
-    [TestClass]
+    [TestClass, ExcludeFromCodeCoverage]
     public class OnspringClientTests
     {
         [TestMethod]
