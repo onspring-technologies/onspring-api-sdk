@@ -10,7 +10,8 @@ namespace Onspring.API.SDK.Tests.Unit.Fluent
         [ClassInitialize]
         public static void ClassInit()
         {
-            _onspringRequest = new OnspringClient("https://api.onspring.com", "key").CreateRequest();
+            _onspringRequest = new OnspringClient("https://api.onspring.com", "key")
+                .CreateRequest();
         }
 
         [TestMethod]
