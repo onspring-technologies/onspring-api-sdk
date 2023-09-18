@@ -5,19 +5,24 @@ namespace Onspring.API.SDK.Models
 {
     public class Filter
     {
-        public int FieldId { get; private set; }
-        public FilterOperator Operator { get; private set; }
-        public object Value { get; private set; }
+        public int FieldId { get; set; }
+        public FilterOperator Operator { get; set; }
+        public object Value
+        {
+            get { return Value; }
+            set
+            {
+                if (value == null && Operator != null && Operator != FilterOperator.IsNull && Operator != FilterOperator.NotNull)
+                {
+                    throw new ArgumentException("Value cannot be null for this operator");
+                }
+            }
+        }
 
         internal Filter() { }
 
         public Filter(int fieldId, FilterOperator filterOperator, object value)
         {
-            if (value == null && filterOperator != FilterOperator.IsNull && filterOperator != FilterOperator.NotNull)
-            {
-                throw new ArgumentException("Value cannot be null for this operator");
-            }
-
             FieldId = fieldId;
             Operator = filterOperator;
             Value = value;
