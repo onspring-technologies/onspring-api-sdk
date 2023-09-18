@@ -1,7 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Onspring.API.SDK.Models.Fluent;
 
-namespace Onspring.API.SDK.Tests.Unit.Fluent
+namespace Onspring.API.SDK.Tests.Tests.Unit.Fluent
 {
     public class GetRecordsRequestBuilderTests
     {
