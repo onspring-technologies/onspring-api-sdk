@@ -76,10 +76,10 @@ namespace Onspring.API.SDK
         // ------------------------------------ Fluent Interface ------------------------------------
 
         /// <summary>
-        /// Creates a new instance of the <see cref="OnspringRequest"/> class, which provides a fluent interface for building a request to the Onspring API.
+        /// Creates a new Onspring request which exposes a fluent interface for making a request to the Onspring API.
         /// </summary>
-        /// <returns>A new <see cref="OnspringRequest"/> instance.</returns>
-        public IOnspringRequest CreateRequest()
+        /// <returns>An instance of <see cref="OnspringRequest"/>.</returns>
+        public OnspringRequest CreateRequest()
         {
             return new OnspringRequest(this);
         }
