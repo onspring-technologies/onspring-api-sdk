@@ -1,5 +1,7 @@
+using System.Runtime.CompilerServices;
 using Onspring.API.SDK.Interfaces.Fluent;
 
+[assembly: InternalsVisibleTo("Onspring.API.SDK.Tests")]
 namespace Onspring.API.SDK.Models.Fluent
 {
     public class OnspringRequest : IOnspringRequest
