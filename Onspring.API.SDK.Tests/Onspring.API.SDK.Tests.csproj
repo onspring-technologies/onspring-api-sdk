@@ -24,6 +24,7 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="NSubstitute" Version="5.1.0" />
+		<PackageReference Include="ReportGenerator" Version="5.1.25" />
 	</ItemGroup>
 
 	<PropertyGroup>
