@@ -10,7 +10,7 @@ namespace Onspring.API.SDK.Tests.Tests.Unit.Fluent
         private static GetRecordsRequestBuilder _builder;
 
         [ClassInitialize]
-        public static void ClassInit()
+        public static void ClassInit(TestContext testContext)
         {
             _builder = new OnspringClient("https://api.onspring.com", "key")
                 .CreateRequest()
