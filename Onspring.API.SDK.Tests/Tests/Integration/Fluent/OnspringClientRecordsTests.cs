@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Onspring.API.SDK.Enums;
 using Onspring.API.SDK.Models;
@@ -135,10 +136,44 @@ namespace Onspring.API.SDK.Tests.Tests.Integration.Fluent
         [TestMethod]
         public async Task QueryRecords()
         {
-            var apiResponse = _apiClient
+            var apiResponse = await _apiClient
                 .CreateRequest()
                 .ToGetRecords()
-                .FromApp(_appIdWithRecords);
+                .FromApp(_appIdWithRecords)
+                .WithFilter($"{1} eq {1}")
+                .ForPageNumber(1)
+                .WithPageSize(50)
+                .WithFieldIds(new[] { 1, 2, 3 })
+                .WithFormat(DataFormat.Formatted)
+                .SendAsync();
+
+            AssertHelper.AssertSuccess(apiResponse);
+            AssertHelper.AssertCasting(apiResponse.Value.Items);
+        }
+
+        [TestMethod]
+        public async Task QueryRecords_UsingOptions()
+        {
+            var apiResponse = await _apiClient
+                .CreateRequest()
+                .ToGetRecords()
+                .FromApp(_appIdWithRecords)
+                .WithFilter(filter =>
+                {
+                    filter.FieldId = 1;
+                    filter.Operator = FilterOperator.Equal;
+                    filter.Value = 1;
+                })
+                .SendAsync(options =>
+                {
+                    options.PageNumber = 1;
+                    options.PageSize = 50;
+                    options.FieldIds = new[] { 1, 2, 3 };
+                    options.Format = DataFormat.Formatted;
+                });
+
+            AssertHelper.AssertSuccess(apiResponse);
+            AssertHelper.AssertCasting(apiResponse.Value.Items);
         }
     }
 }
