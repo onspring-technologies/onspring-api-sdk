@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Onspring.API.SDK.Enums;
 using Onspring.API.SDK.Models;
-using Onspring.API.SDK.Models.Fluent;
 
 namespace Onspring.API.SDK.Interfaces.Fluent
 {
     public interface IGetRecordsByAppRequestBuilder
     {
+        int AppId { get; }
         IGetRecordsByAppPagedRequestBuilder ForPage(int pageNumber);
         IGetRecordByIdRequestBuilder WithId(int recordId);
         IGetRecordsByIdsRequestBuilder WithIds(IEnumerable<int> recordIds);

@@ -11,7 +11,7 @@ namespace Onspring.API.SDK.Models.Fluent
             _client = client;
         }
 
-        public GetRecordsRequestBuilder ToGetRecords()
+        public IGetRecordsRequestBuilder ToGetRecords()
         {
             return new GetRecordsRequestBuilder(_client);
         }

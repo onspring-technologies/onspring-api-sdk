@@ -11,7 +11,7 @@ namespace Onspring.API.SDK.Models.Fluent
             _client = client;
         }
 
-        public GetRecordsByAppRequestBuilder FromApp(int appId)
+        public IGetRecordsByAppRequestBuilder FromApp(int appId)
         {
             return new GetRecordsByAppRequestBuilder(_client, appId);
         }

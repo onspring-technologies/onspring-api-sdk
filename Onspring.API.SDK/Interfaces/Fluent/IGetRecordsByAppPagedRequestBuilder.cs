@@ -9,6 +9,11 @@ namespace Onspring.API.SDK.Interfaces.Fluent
 {
     public interface IGetRecordsByAppPagedRequestBuilder
     {
+        int AppId { get; }
+        int PageNumber { get; }
+        IEnumerable<int> FieldIds { get; }
+        DataFormat Format { get; }
+        int PageSize { get; }
         Task<ApiResponse<GetPagedRecordsResponse>> SendAsync();
         Task<ApiResponse<GetPagedRecordsResponse>> SendAsync(Action<GetRecordsByAppPagedRequestBuilderOptions> options);
         IGetRecordsByAppPagedRequestBuilder WithPageSize(int pageSize);
