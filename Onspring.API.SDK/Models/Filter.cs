@@ -7,15 +7,20 @@ namespace Onspring.API.SDK.Models
     {
         public int FieldId { get; set; }
         public FilterOperator Operator { get; set; }
+
+        private object filterValue;
+
         public object Value
         {
-            get { return Value; }
+            get { return filterValue; }
             set
             {
                 if (value == null && Operator != null && Operator != FilterOperator.IsNull && Operator != FilterOperator.NotNull)
                 {
                     throw new ArgumentException("Value cannot be null for this operator");
                 }
+
+                filterValue = value;
             }
         }
 
