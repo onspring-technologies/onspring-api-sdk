@@ -33,6 +33,10 @@
 		<CoverletOutputFormat>opencover</CoverletOutputFormat>
 	</PropertyGroup>
 
+	<Target Name="GenerateHtmlCoverageReport" AfterTargets="VSTest">
+		<Exec Command="ReportGenerator -reports:./TestResults/coverage/$(MSBuildProjectName)/*.xml -targetdir:./TestResults/coverage/$(MSBuildProjectName)/report/ -reporttypes:Html_Dark" />
+	</Target>
+
 	<PropertyGroup>
 		<RunSettingsFilePath>$(MSBuildProjectDirectory)\runsettings\internal.runsettings</RunSettingsFilePath>
 	</PropertyGroup>
