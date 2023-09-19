@@ -89,10 +89,10 @@ namespace Onspring.API.SDK.Tests.Tests.Unit.Fluent
                 .Returns(apiResponse);
 
             var result = await _builder
-            .SendAsync(options =>
-            {
-                options.Format = DataFormat.Raw;
-            });
+                .SendAsync(options =>
+                {
+                    options.Format = DataFormat.Raw;
+                });
 
             Assert.AreEqual(apiResponse, result);
         }
