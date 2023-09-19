@@ -9,6 +9,12 @@ namespace Onspring.API.SDK.Interfaces.Fluent
 {
     public interface IQueryRecordsByAppPagedRequestBuilder
     {
+        int AppId { get; }
+        string Filter { get; }
+        int PageNumber { get; }
+        int PageSize { get; }
+        IEnumerable<int> FieldIds { get; }
+        DataFormat Format { get; }
         Task<ApiResponse<GetPagedRecordsResponse>> SendAsync();
         Task<ApiResponse<GetPagedRecordsResponse>> SendAsync(Action<QueryRecordsByAppPagedRequestBuilderOptions> options);
         IQueryRecordsByAppPagedRequestBuilder ForPageNumber(int pageNumber);
