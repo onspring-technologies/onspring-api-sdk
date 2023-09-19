@@ -42,7 +42,7 @@ namespace Onspring.API.SDK.Models
 
             if (Value is DateTime dateTime)
             {
-                return $"{FieldId} {Operator} datetime'{dateTime:yyyy-MM-ddTHH:mm:ss.fff}'";
+                return $"{FieldId} {Operator} datetime'{dateTime:O}'";
             }
 
             if (Value is string stringValue)
