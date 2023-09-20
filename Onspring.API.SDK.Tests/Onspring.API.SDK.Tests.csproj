@@ -33,7 +33,7 @@
 		<CoverletOutputFormat>opencover</CoverletOutputFormat>
 	</PropertyGroup>
 
-	<Target Name="GenerateHtmlCoverageReport" AfterTargets="VSTest">
+	<Target Name="GenerateHtmlCoverageReport" AfterTargets="GenerateCoverageResultAfterTest">
 		<Exec Command="$(UserProfile)\.nuget\packages\reportgenerator\5.1.25\tools\net7.0\ReportGenerator -reports:./TestResults/coverage/$(MSBuildProjectName)/*.xml -targetdir:./TestResults/coverage/$(MSBuildProjectName)/report/ -reporttypes:Html_Dark" />
 	</Target>
 
