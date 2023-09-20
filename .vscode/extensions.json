@@ -4,7 +4,6 @@
     "formulahendry.dotnet-test-explorer",
     "EditorConfig.EditorConfig",
     "oderwat.indent-rainbow",
-    "aliasadidev.nugetpackagemanagergui",
-    "github.vscode-github-actions"
+    "aliasadidev.nugetpackagemanagergui"
   ]
 }
