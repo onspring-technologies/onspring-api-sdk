@@ -13,7 +13,7 @@ namespace Onspring.API.SDK.Models.Fluent
 
         public IDeleteRecordsRequestBuilder ToDeleteRecords()
         {
-            throw new NotImplementedException();
+            return new DeleteRecordsRequestBuilder(_client);
         }
 
         public IGetRecordsRequestBuilder ToGetRecords()
