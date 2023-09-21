@@ -174,5 +174,31 @@ namespace Onspring.API.SDK.Tests.Tests.Integration.Fluent
             AssertHelper.AssertSuccess(apiResponse);
             AssertHelper.AssertCasting(apiResponse.Value.Items);
         }
+
+        [TestMethod]
+        public async Task DeleteRecord()
+        {
+            var apiResponse = await _apiClient
+                .CreateRequest()
+                .ToDeleteRecords()
+                .FromApp(1)
+                .WithId(1)
+                .SendAsync();
+
+            AssertHelper.AssertSuccess(apiResponse);
+        }
+
+        [TestMethod]
+        public async Task DeleteRecords()
+        {
+            var apiResponse = await _apiClient
+                .CreateRequest()
+                .ToDeleteRecords()
+                .FromApp(1)
+                .WithIds(new[] { 1, 2, 3 })
+                .SendAsync();
+
+            AssertHelper.AssertSuccess(apiResponse);
+        }
     }
 }
