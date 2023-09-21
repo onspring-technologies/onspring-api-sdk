@@ -18,6 +18,38 @@ namespace Onspring.API.SDK.Tests.Tests.Unit.Fluent
             _builder = new DeleteRecordsByAppRequestBuilder(_client, 1);
         }
 
-        // TODO: Write tests
+        [TestMethod]
+        public void Constructor_WhenCalled_ItShouldReturnAnInstanceWithPropertiesSet()
+        {
+            var appId = 1;
+            var builder = new DeleteRecordsByAppRequestBuilder(_client, appId);
+
+            Assert.IsInstanceOfType<DeleteRecordsByAppRequestBuilder>(builder);
+            Assert.AreEqual(appId, builder.AppId);
+        }
+
+        [TestMethod]
+        public void WithId_WhenCalled_ItShouldReturnCorrectBuilderInstanceWithPropertiesSet()
+        {
+            var recordId = 1;
+
+            var builder = _builder.WithId(recordId);
+
+            Assert.IsInstanceOfType<DeleteRecordByIdRequestBuilder>(builder);
+            Assert.AreEqual(_builder.AppId, builder.AppId);
+            Assert.AreEqual(recordId, builder.RecordId);
+        }
+
+        [TestMethod]
+        public void WithIds_WhenCalled_ItShouldReturnCorrectBuilderInstanceWithPropertiesSet()
+        {
+            var recordIds = new[] { 1, 2, 3 };
+
+            var builder = _builder.WithIds(recordIds);
+
+            Assert.IsInstanceOfType<DeleteRecordsByIdsRequestBuilder>(builder);
+            Assert.AreEqual(_builder.AppId, builder.AppId);
+            Assert.AreEqual(recordIds, builder.RecordIds);
+        }
     }
 }
