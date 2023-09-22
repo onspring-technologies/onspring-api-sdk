@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Onspring.API.SDK.Enums;
@@ -6,6 +7,7 @@ using Onspring.API.SDK.Models.Fluent;
 
 namespace Onspring.API.SDK.Tests.Tests.Unit.Fluent
 {
+    [TestClass, ExcludeFromCodeCoverage]
     public class GetReportRequestBuilderTests
     {
         private static IOnspringClient _client;
