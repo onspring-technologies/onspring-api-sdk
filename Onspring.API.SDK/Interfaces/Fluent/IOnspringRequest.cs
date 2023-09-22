@@ -6,5 +6,7 @@ namespace Onspring.API.SDK.Interfaces.Fluent
         IGetRecordsRequestBuilder ToGetRecords();
         IDeleteRecordsRequestBuilder ToDeleteRecords();
         ISaveRecordRequestBuilder ToSaveRecord();
+        IGetReportsRequestBuilder ToGetReports();
+        IGetReportDataRequestBuilder ToGetReportData();
     }
 }
