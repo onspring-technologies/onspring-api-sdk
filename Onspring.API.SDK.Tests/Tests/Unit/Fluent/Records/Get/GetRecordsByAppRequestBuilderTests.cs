@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Onspring.API.SDK.Enums;
+using Onspring.API.SDK.Interfaces.Fluent;
 using Onspring.API.SDK.Models;
 using Onspring.API.SDK.Models.Fluent;
 
@@ -36,7 +37,7 @@ namespace Onspring.API.SDK.Tests.Tests.Unit.Fluent
 
             var pagedBuilder = builder.ForPage(pageNumber);
 
-            Assert.IsInstanceOfType<GetRecordsByAppPagedRequestBuilder>(pagedBuilder);
+            Assert.IsInstanceOfType<IGetRecordsByAppPagedRequestBuilder>(pagedBuilder);
             Assert.AreEqual(appId, pagedBuilder.AppId);
             Assert.AreEqual(pageNumber, pagedBuilder.PageNumber);
         }
@@ -50,7 +51,7 @@ namespace Onspring.API.SDK.Tests.Tests.Unit.Fluent
 
             var recordByIdBuilder = builder.WithId(recordId);
 
-            Assert.IsInstanceOfType<GetRecordByIdRequestBuilder>(recordByIdBuilder);
+            Assert.IsInstanceOfType<IGetRecordByIdRequestBuilder>(recordByIdBuilder);
             Assert.AreEqual(appId, recordByIdBuilder.AppId);
             Assert.AreEqual(recordId, recordByIdBuilder.RecordId);
         }
@@ -64,7 +65,7 @@ namespace Onspring.API.SDK.Tests.Tests.Unit.Fluent
 
             var recordsByIdsBuilder = builder.WithIds(recordIds);
 
-            Assert.IsInstanceOfType<GetRecordsByIdsRequestBuilder>(recordsByIdsBuilder);
+            Assert.IsInstanceOfType<IGetRecordsByIdsRequestBuilder>(recordsByIdsBuilder);
             Assert.AreEqual(appId, recordsByIdsBuilder.AppId);
             Assert.AreEqual(recordIds, recordsByIdsBuilder.RecordIds);
         }
@@ -78,7 +79,7 @@ namespace Onspring.API.SDK.Tests.Tests.Unit.Fluent
 
             var queryRecordsBuilder = builder.WithFilter(filter.ToString());
 
-            Assert.IsInstanceOfType<QueryRecordsByAppPagedRequestBuilder>(queryRecordsBuilder);
+            Assert.IsInstanceOfType<IQueryRecordsByAppPagedRequestBuilder>(queryRecordsBuilder);
             Assert.AreEqual(appId, queryRecordsBuilder.AppId);
             Assert.AreEqual(filter.ToString(), queryRecordsBuilder.Filter);
         }
@@ -97,7 +98,7 @@ namespace Onspring.API.SDK.Tests.Tests.Unit.Fluent
                 f.Value = filter.Value;
             });
 
-            Assert.IsInstanceOfType<QueryRecordsByAppPagedRequestBuilder>(queryRecordsBuilder);
+            Assert.IsInstanceOfType<IQueryRecordsByAppPagedRequestBuilder>(queryRecordsBuilder);
             Assert.AreEqual(appId, queryRecordsBuilder.AppId);
             Assert.AreEqual(filter.ToString(), queryRecordsBuilder.Filter);
         }

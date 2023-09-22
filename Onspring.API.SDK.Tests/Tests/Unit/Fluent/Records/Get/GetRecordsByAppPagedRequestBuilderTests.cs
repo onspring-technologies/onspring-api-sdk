@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Onspring.API.SDK.Enums;
+using Onspring.API.SDK.Interfaces.Fluent;
 using Onspring.API.SDK.Models;
 using Onspring.API.SDK.Models.Fluent;
 
@@ -30,7 +31,7 @@ namespace Onspring.API.SDK.Tests.Tests.Unit.Fluent
             var pageNumber = 1;
             var builder = new GetRecordsByAppPagedRequestBuilder(_client, appId, pageNumber);
 
-            Assert.IsInstanceOfType<GetRecordsByAppPagedRequestBuilder>(builder);
+            Assert.IsInstanceOfType<IGetRecordsByAppPagedRequestBuilder>(builder);
             Assert.AreEqual(appId, builder.AppId);
             Assert.AreEqual(pageNumber, builder.PageNumber);
             Assert.AreEqual(Enumerable.Empty<int>(), builder.FieldIds);

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Onspring.API.SDK.Enums;
+using Onspring.API.SDK.Interfaces.Fluent;
 using Onspring.API.SDK.Models;
 using Onspring.API.SDK.Models.Fluent;
 
@@ -30,7 +31,7 @@ namespace Onspring.API.SDK.Tests.Tests.Unit.Fluent
             var recordIds = new[] { 1, 2, 3 };
             var builder = new GetRecordsByIdsRequestBuilder(_client, appId, recordIds);
 
-            Assert.IsInstanceOfType<GetRecordsByIdsRequestBuilder>(builder);
+            Assert.IsInstanceOfType<IGetRecordsByIdsRequestBuilder>(builder);
             Assert.AreEqual(appId, builder.AppId);
             Assert.AreEqual(recordIds, builder.RecordIds);
             Assert.AreEqual(Enumerable.Empty<int>(), builder.FieldIds);

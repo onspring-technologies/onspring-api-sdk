@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using Onspring.API.SDK.Interfaces.Fluent;
 using Onspring.API.SDK.Models;
 using Onspring.API.SDK.Models.Fluent;
 
@@ -27,7 +28,7 @@ namespace Onspring.API.SDK.Tests.Tests.Unit.Fluent
             var recordId = 1;
             var builder = new DeleteRecordByIdRequestBuilder(_client, appId, recordId);
 
-            Assert.IsInstanceOfType<DeleteRecordByIdRequestBuilder>(builder);
+            Assert.IsInstanceOfType<IDeleteRecordByIdRequestBuilder>(builder);
             Assert.AreEqual(appId, builder.AppId);
             Assert.AreEqual(recordId, builder.RecordId);
         }
