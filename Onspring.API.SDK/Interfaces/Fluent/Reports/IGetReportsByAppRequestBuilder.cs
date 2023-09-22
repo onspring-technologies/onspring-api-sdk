@@ -11,10 +11,8 @@ namespace Onspring.API.SDK.Interfaces.Fluent
         int AppId { get; }
         int PageNumber { get; }
         int PageSize { get; }
-        DataFormat Format { get; }
         IGetReportsByAppRequestBuilder ForPageNumber(int pageNumber);
         IGetReportsByAppRequestBuilder WithPageSize(int pageNumber);
-        IGetReportsByAppRequestBuilder WithFormat(DataFormat format);
         Task<ApiResponse<GetReportsForAppResponse>> SendAsync();
         Task<ApiResponse<GetReportsForAppResponse>> SendAsync(Action<GetReportsByAppRequestBuilderOptions> options);
     }

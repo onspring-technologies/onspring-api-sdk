@@ -13,15 +13,13 @@ namespace Onspring.API.SDK.Models.Fluent
         ISaveRecordByIdWithValuesRequestBuilder
     {
         private readonly IOnspringClient _client;
+        public int AppId { get; private set; }
+        public int? RecordId { get; private set; }
 
         internal SaveRecordRequestBuilder(IOnspringClient client)
         {
             _client = client;
         }
-
-        public int AppId { get; private set; }
-
-        public int? RecordId { get; private set; }
 
         public IEnumerable<RecordFieldValue> Values { get; private set; }
 

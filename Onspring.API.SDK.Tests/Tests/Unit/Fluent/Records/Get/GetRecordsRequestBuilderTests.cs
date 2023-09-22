@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using Onspring.API.SDK.Interfaces.Fluent;
 using Onspring.API.SDK.Models.Fluent;
 
 namespace Onspring.API.SDK.Tests.Tests.Unit.Fluent
@@ -23,7 +24,7 @@ namespace Onspring.API.SDK.Tests.Tests.Unit.Fluent
             var appId = 1;
             var builder = _builder.FromApp(appId);
 
-            Assert.IsInstanceOfType<GetRecordsByAppRequestBuilder>(builder);
+            Assert.IsInstanceOfType<IGetRecordsByAppRequestBuilder>(builder);
             Assert.AreEqual(appId, builder.AppId);
         }
     }

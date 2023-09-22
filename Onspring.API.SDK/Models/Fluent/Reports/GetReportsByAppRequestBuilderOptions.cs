@@ -4,8 +4,7 @@ namespace Onspring.API.SDK.Models.Fluent
 {
     public class GetReportsByAppRequestBuilderOptions
     {
-        public int PageNumber { get; set; }
-        public int PageSize { get; set; }
-        public DataFormat Format { get; set; }
+        public int PageNumber { get; set; } = 1;
+        public int PageSize { get; set; } = 50;
     }
 }
