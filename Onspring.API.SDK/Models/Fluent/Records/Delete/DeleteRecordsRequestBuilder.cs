@@ -6,7 +6,7 @@ namespace Onspring.API.SDK.Models.Fluent
     {
         private readonly IOnspringClient _client;
 
-        public DeleteRecordsRequestBuilder(IOnspringClient client)
+        internal DeleteRecordsRequestBuilder(IOnspringClient client)
         {
             _client = client;
         }
