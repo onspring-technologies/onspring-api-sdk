@@ -20,5 +20,10 @@ namespace Onspring.API.SDK.Models.Fluent
         {
             return new GetRecordsRequestBuilder(_client);
         }
+
+        public ISaveRecordRequestBuilder ToSaveRecord()
+        {
+            return new SaveRecordRequestBuilder(_client);
+        }
     }
 }

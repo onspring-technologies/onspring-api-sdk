@@ -200,5 +200,37 @@ namespace Onspring.API.SDK.Tests.Tests.Integration.Fluent
 
             AssertHelper.AssertSuccess(apiResponse);
         }
+
+        [TestMethod]
+        public async Task AddRecord()
+        {
+            var record = TestDataFactory.GetFullyFilledOutRecord(_appIdWithRecords, 1);
+
+            var apiResponse = await _apiClient
+                .CreateRequest()
+                .ToSaveRecord()
+                .InApp(record.AppId)
+                .WithId(null)
+                .WithValues(record.FieldData)
+                .SendAsync();
+
+            AssertHelper.AssertSuccess(apiResponse);
+        }
+
+        [TestMethod]
+        public async Task UpdateRecord()
+        {
+            var record = TestDataFactory.GetFullyFilledOutRecord(_appIdWithRecords, 1);
+
+            var apiResponse = await _apiClient
+                .CreateRequest()
+                .ToSaveRecord()
+                .InApp(record.AppId)
+                .WithId(record.RecordId)
+                .WithValues(record.FieldData)
+                .SendAsync();
+
+            AssertHelper.AssertSuccess(apiResponse);
+        }
     }
 }
