@@ -45,5 +45,10 @@ namespace Onspring.API.SDK.Models.Fluent
         {
             return new SaveListValueRequestBuilder(_client);
         }
+
+        public IDeleteListValueRequestBuilder ToDeleteListValue()
+        {
+            return new DeleteListValueRequestBuilder(_client);
+        }
     }
 }

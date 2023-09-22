@@ -57,5 +57,18 @@ namespace Onspring.API.SDK.Tests.Tests.Integration.Fluent
             AssertHelper.AssertSuccess(apiResponse);
             Assert.AreEqual(testId, apiResponse.Value.Id);
         }
+
+        [TestMethod]
+        public async Task DeleteListValue()
+        {
+            var apiResponse = await _apiClient
+                .CreateRequest()
+                .ToDeleteListValue()
+                .InList(1)
+                .WithId(Guid.NewGuid())
+                .SendAsync();
+
+            AssertHelper.AssertSuccess(apiResponse);
+        }
     }
 }
