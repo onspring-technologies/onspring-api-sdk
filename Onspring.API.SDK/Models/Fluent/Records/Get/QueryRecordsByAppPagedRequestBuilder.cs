@@ -32,7 +32,7 @@ namespace Onspring.API.SDK.Models.Fluent
 
         public IQueryRecordsByAppPagedRequestBuilder WithPageSize(int pageSize)
         {
-            PageNumber = pageSize;
+            PageSize = pageSize;
             return this;
         }
 
