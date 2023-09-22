@@ -11,9 +11,9 @@ namespace Onspring.API.SDK.Models.Fluent
             _client = client;
         }
 
-        public IDeleteRecordsRequestBuilder ToDeleteRecords()
+        public IConnectionRequestBuilder ToCheckConnection()
         {
-            return new DeleteRecordsRequestBuilder(_client);
+            return new ConnectionRequestBuilder(_client);
         }
 
         public IGetRecordsRequestBuilder ToGetRecords()
@@ -24,6 +24,11 @@ namespace Onspring.API.SDK.Models.Fluent
         public ISaveRecordRequestBuilder ToSaveRecord()
         {
             return new SaveRecordRequestBuilder(_client);
+        }
+
+        public IDeleteRecordsRequestBuilder ToDeleteRecords()
+        {
+            return new DeleteRecordsRequestBuilder(_client);
         }
     }
 }
