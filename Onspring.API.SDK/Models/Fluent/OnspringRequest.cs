@@ -33,7 +33,7 @@ namespace Onspring.API.SDK.Models.Fluent
 
         public IGetReportsByAppRequestBuilder ToGetReports()
         {
-            return new GetReportsByAppRequestBuilder(_client);
+            return new GetReportsRequestBuilder(_client);
         }
 
         public IGetReportRequestBuilder ToGetReportData()

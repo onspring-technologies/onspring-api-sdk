@@ -1,20 +1,25 @@
 using System;
 using System.Threading.Tasks;
-using Onspring.API.SDK.Enums;
 using Onspring.API.SDK.Interfaces.Fluent;
 
 namespace Onspring.API.SDK.Models.Fluent
 {
-    public class GetReportsByAppRequestBuilder : IGetReportsByAppRequestBuilder
+    public class GetReportsRequestBuilder : IGetReportsRequestBuilder, IGetReportsByAppRequestBuilder
     {
         private readonly IOnspringClient _client;
         public int AppId { get; private set; }
-        public int PageNumber { get; private set; } = 1;
-        public int PageSize { get; private set; } = 50;
+        public int PageNumber { get; private set; }
+        public int PageSize { get; private set; }
 
-        internal GetReportsByAppRequestBuilder(IOnspringClient client)
+        internal GetReportsRequestBuilder(IOnspringClient client)
         {
             _client = client;
+        }
+
+        public IGetReportsByAppRequestBuilder FromApp(int appId)
+        {
+            AppId = appId;
+            return this;
         }
 
         public IGetReportsByAppRequestBuilder ForPageNumber(int pageNumber)
@@ -23,9 +28,9 @@ namespace Onspring.API.SDK.Models.Fluent
             return this;
         }
 
-        public IGetReportsByAppRequestBuilder WithPageSize(int pageNumber)
+        public IGetReportsByAppRequestBuilder WithPageSize(int pageSize)
         {
-            PageNumber = pageNumber;
+            PageSize = pageSize;
             return this;
         }
 
@@ -34,12 +39,11 @@ namespace Onspring.API.SDK.Models.Fluent
             return await _client.GetReportsForAppAsync(AppId, new PagingRequest(PageNumber, PageSize));
         }
 
-        public async Task<ApiResponse<GetReportsForAppResponse>> SendAsync(Action<GetReportsByAppRequestBuilderOptions> options)
+        public async Task<ApiResponse<GetReportsForAppResponse>> SendAsync(Action<GetReportsRequestBuilderOptions> options)
         {
-            var opts = new GetReportsByAppRequestBuilderOptions();
+            var opts = new GetReportsRequestBuilderOptions();
             options.Invoke(opts);
             return await _client.GetReportsForAppAsync(AppId, new PagingRequest(opts.PageNumber, opts.PageSize));
         }
-
     }
 }

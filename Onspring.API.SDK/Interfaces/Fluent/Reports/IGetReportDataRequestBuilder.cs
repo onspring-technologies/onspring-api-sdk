@@ -14,6 +14,6 @@ namespace Onspring.API.SDK.Interfaces.Fluent
         IGetReportDataRequestBuilder WithFormat(DataFormat format);
         IGetReportDataRequestBuilder WithDataType(ReportDataType dataType);
         Task<ApiResponse<ReportData>> SendAsync();
-        Task<ApiResponse<ReportData>> SendAsync(Action<GetReportDataRequestBuilderOptions> options);
+        Task<ApiResponse<ReportData>> SendAsync(Action<GetReportBuilderOptions> options);
     }
 }
