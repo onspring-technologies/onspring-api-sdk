@@ -40,5 +40,10 @@ namespace Onspring.API.SDK.Models.Fluent
         {
             return new GetReportRequestBuilder(_client);
         }
+
+        public ISaveListValueRequestBuilder ToSaveListValue()
+        {
+            return new SaveListValueRequestBuilder(_client);
+        }
     }
 }
