@@ -8,7 +8,7 @@ namespace Onspring.API.SDK.Interfaces.Fluent
         ISaveRecordRequestBuilder ToSaveRecord();
         IGetReportsByAppRequestBuilder ToGetReports();
         IGetReportRequestBuilder ToGetReportData();
-        // TODO: ToSaveListValue()
+        ISaveListValueRequestBuilder ToSaveListValue();
         // TODO: ToDeleteListValue()
         // TODO: ToGetFile()
         // TODO: ToGetFileInfo()
