@@ -1,5 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using Onspring.API.SDK.Enums;
 using Onspring.API.SDK.Interfaces.Fluent;
 using Onspring.API.SDK.Models.Fluent;
 
@@ -20,9 +21,14 @@ namespace Onspring.API.SDK.Tests.Tests.Unit.Fluent
         [TestMethod]
         public void FromReport_WhenCalled_ItShouldReturnBuilderInstanceWithPropertiesSet()
         {
-            var result = _builder.FromReport(1);
+            var reportId = 1;
 
-            Assert.IsInstanceOfType<IGetReportDataRequestBuilder>(result);
+            var builder = _builder.FromReport(reportId);
+
+            Assert.IsInstanceOfType<IGetReportDataRequestBuilder>(builder);
+            Assert.AreEqual(reportId, builder.ReportId);
+            Assert.AreEqual(DataFormat.Raw, builder.Format);
+            Assert.AreEqual(ReportDataType.ReportData, builder.DataType);
         }
     }
 }
