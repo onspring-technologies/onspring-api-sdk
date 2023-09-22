@@ -13,7 +13,6 @@ namespace Onspring.API.SDK.Tests.Tests.Integration
     {
         private const int _appIdWithReports = 1;
         private const int _reportId = 1;
-
         private static OnspringClient _apiClient;
 
         [ClassInitialize]
