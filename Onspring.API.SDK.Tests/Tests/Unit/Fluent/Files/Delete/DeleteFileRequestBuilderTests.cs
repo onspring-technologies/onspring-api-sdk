@@ -9,19 +9,19 @@ using Onspring.API.SDK.Models.Fluent;
 namespace Onspring.API.SDK.Tests.Tests.Integration.Fluent
 {
     [TestClass, ExcludeFromCodeCoverage]
-    public class GetFileRequestBuilderTests
+    public class DeleteFileRequestBuilderTests
     {
         private static readonly int _recordId = 1;
         private static readonly int _fieldId = 1;
         private static readonly int _fileId = 1;
         private static IOnspringClient _client;
-        private static GetFileRequestBuilder _builder;
+        private static DeleteFileRequestBuilder _builder;
 
         [ClassInitialize]
         public static void ClassInit(TestContext testContext)
         {
             _client = Substitute.For<IOnspringClient>();
-            _builder = new GetFileRequestBuilder(_client);
+            _builder = new DeleteFileRequestBuilder(_client);
         }
 
         [TestMethod]
@@ -51,14 +51,10 @@ namespace Onspring.API.SDK.Tests.Tests.Integration.Fluent
         [TestMethod]
         public async Task SendAsync_WhenCalled_ItShouldReturnAnApiResponse()
         {
-            var apiResponse = new ApiResponse<GetFileResponse>
-            {
-                StatusCode = HttpStatusCode.OK,
-                Value = new GetFileResponse(),
-            };
+            var apiResponse = new ApiResponse();
 
             _client
-                .GetFileAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<int>())
+                .DeleteFileAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<int>())
                 .Returns(apiResponse);
 
             var result = await _builder.SendAsync();
