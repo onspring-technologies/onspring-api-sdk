@@ -9,19 +9,19 @@ namespace Onspring.API.SDK.Tests.Tests.Unit.Fluent
     [TestClass, ExcludeFromCodeCoverage]
     public class OnspringRequestTests
     {
-        private static OnspringRequest _onspringRequest;
+        private static OnspringRequestBuilder _builder;
 
         [ClassInitialize]
         public static void ClassInit(TestContext testContext)
         {
             var apiClientMock = Substitute.For<IOnspringClient>();
-            _onspringRequest = new OnspringRequest(apiClientMock);
+            _builder = new OnspringRequestBuilder(apiClientMock);
         }
 
         [TestMethod]
         public void ToGetRecords_WhenCalled_ShouldReturnBuilderInstance()
         {
-            var builder = _onspringRequest.ToGetRecords();
+            var builder = _builder.ToGetRecords();
 
             Assert.IsInstanceOfType<IGetRecordsRequestBuilder>(builder);
         }
@@ -29,7 +29,7 @@ namespace Onspring.API.SDK.Tests.Tests.Unit.Fluent
         [TestMethod]
         public void ToCheckConnection_WhenCalled_ShouldReturnBuilderInstance()
         {
-            var builder = _onspringRequest.ToCheckConnection();
+            var builder = _builder.ToCheckConnection();
 
             Assert.IsInstanceOfType<IConnectionRequestBuilder>(builder);
         }
@@ -37,7 +37,7 @@ namespace Onspring.API.SDK.Tests.Tests.Unit.Fluent
         [TestMethod]
         public void ToSaveRecord_WhenCalled_ShouldReturnBuilderInstance()
         {
-            var builder = _onspringRequest.ToSaveRecord();
+            var builder = _builder.ToSaveRecord();
 
             Assert.IsInstanceOfType<ISaveRecordRequestBuilder>(builder);
         }
@@ -45,7 +45,7 @@ namespace Onspring.API.SDK.Tests.Tests.Unit.Fluent
         [TestMethod]
         public void ToDeleteRecords_WhenCalled_ShouldReturnBuilderInstance()
         {
-            var builder = _onspringRequest.ToDeleteRecords();
+            var builder = _builder.ToDeleteRecords();
 
             Assert.IsInstanceOfType<IDeleteRecordsRequestBuilder>(builder);
         }
@@ -53,7 +53,7 @@ namespace Onspring.API.SDK.Tests.Tests.Unit.Fluent
         [TestMethod]
         public void ToGetReports_WhenCalled_ShouldReturnBuilderInstance()
         {
-            var builder = _onspringRequest.ToGetReports();
+            var builder = _builder.ToGetReports();
 
             Assert.IsInstanceOfType<IGetReportsByAppRequestBuilder>(builder);
         }
@@ -61,7 +61,7 @@ namespace Onspring.API.SDK.Tests.Tests.Unit.Fluent
         [TestMethod]
         public void ToGetReportData_WhenCalled_ShouldReturnBuilderInstance()
         {
-            var builder = _onspringRequest.ToGetReportData();
+            var builder = _builder.ToGetReportData();
 
             Assert.IsInstanceOfType<IGetReportRequestBuilder>(builder);
         }

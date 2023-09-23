@@ -16,8 +16,8 @@ namespace Onspring.API.SDK
         /// <summary>
         /// Creates a new Onspring Request which exposes a fluent interface for making a request to the Onspring API.
         /// </summary>
-        /// <returns>An instance that implements the <see cref="IOnspringRequest"/> interface.</returns>
-        IOnspringRequest CreateRequest();
+        /// <returns>An instance that implements the <see cref="IOnspringRequestBuilder"/> interface.</returns>
+        IOnspringRequestBuilder CreateRequest();
 
         /// <summary>
         /// Determines if the API is reachable.

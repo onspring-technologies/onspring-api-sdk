@@ -1,6 +1,6 @@
 namespace Onspring.API.SDK.Interfaces.Fluent
 {
-    public interface IOnspringRequest
+    public interface IOnspringRequestBuilder
     {
         IConnectionRequestBuilder ToCheckConnection();
         IGetRecordsRequestBuilder ToGetRecords();

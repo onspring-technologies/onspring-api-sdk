@@ -107,7 +107,7 @@ namespace Onspring.API.SDK.Tests.Tests.Integration
         {
             var client = new OnspringClient(_testConfiguration.ApiKey, new HttpClient { BaseAddress = new Uri(_testConfiguration.BaseAddress) });
             var request = client.CreateRequest();
-            Assert.IsInstanceOfType(request, typeof(OnspringRequest));
+            Assert.IsInstanceOfType(request, typeof(OnspringRequestBuilder));
         }
     }
 }
