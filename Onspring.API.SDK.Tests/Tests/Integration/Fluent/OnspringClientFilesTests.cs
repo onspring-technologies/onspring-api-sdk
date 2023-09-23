@@ -1,4 +1,6 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Onspring.API.SDK.Tests.Infrastructure;
@@ -58,6 +60,27 @@ namespace Onspring.API.SDK.Tests.Tests.Integration.Fluent
                 .FromRecord(1)
                 .InField(1)
                 .WithId(1)
+                .SendAsync();
+
+            AssertHelper.AssertSuccess(apiResponse);
+        }
+
+        [TestMethod]
+        public async Task AddFile()
+        {
+            var filePath = TestHelper.GetDefaultImagePath();
+            var fileStream = File.OpenRead(filePath);
+
+            var apiResponse = await _apiClient
+                .CreateRequest()
+                .ToAddFile()
+                .ToRecord(1)
+                .InField(1)
+                .WithName("image")
+                .WithStream(fileStream)
+                .WithType("image/png")
+                .WithNotes("This is a test file")
+                .WithModifiedDate(DateTime.UtcNow)
                 .SendAsync();
 
             AssertHelper.AssertSuccess(apiResponse);

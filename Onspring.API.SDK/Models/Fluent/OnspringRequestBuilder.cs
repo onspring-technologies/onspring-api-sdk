@@ -65,5 +65,10 @@ namespace Onspring.API.SDK.Models.Fluent
         {
             return new DeleteFileRequestBuilder(_client);
         }
+
+        public IAddFileRequestBuilder ToAddFile()
+        {
+            return new AddFileRequestBuilder(_client);
+        }
     }
 }
