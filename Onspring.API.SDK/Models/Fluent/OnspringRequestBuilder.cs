@@ -2,11 +2,11 @@ using Onspring.API.SDK.Interfaces.Fluent;
 
 namespace Onspring.API.SDK.Models.Fluent
 {
-    public class OnspringRequest : IOnspringRequest
+    public class OnspringRequestBuilder : IOnspringRequestBuilder
     {
         private readonly IOnspringClient _client;
 
-        internal OnspringRequest(IOnspringClient client)
+        internal OnspringRequestBuilder(IOnspringClient client)
         {
             _client = client;
         }

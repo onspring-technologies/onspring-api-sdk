@@ -76,9 +76,9 @@ namespace Onspring.API.SDK
         // ------------------------------------ Fluent Interface ------------------------------------
 
         /// <inheritdoc />
-        public IOnspringRequest CreateRequest()
+        public IOnspringRequestBuilder CreateRequest()
         {
-            return new OnspringRequest(this);
+            return new OnspringRequestBuilder(this);
         }
 
         // ------------------------------------ Diagnostic ------------------------------------

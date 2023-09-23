@@ -13,7 +13,7 @@ namespace Onspring.API.SDK.Tests.Tests.Unit
             var client = new OnspringClient("https://api.onspring.com", "key");
             var request = client.CreateRequest();
 
-            Assert.IsInstanceOfType<OnspringRequest>(request);
+            Assert.IsInstanceOfType<OnspringRequestBuilder>(request);
         }
     }
 }
