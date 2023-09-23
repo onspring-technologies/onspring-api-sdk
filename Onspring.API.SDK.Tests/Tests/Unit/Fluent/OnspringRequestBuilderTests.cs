@@ -65,5 +65,21 @@ namespace Onspring.API.SDK.Tests.Tests.Unit.Fluent
 
             Assert.IsInstanceOfType<IGetReportRequestBuilder>(builder);
         }
+
+        [TestMethod]
+        public void ToGetFile_WhenCalled_ShouldReturnBuilderInstance()
+        {
+            var builder = _builder.ToGetFile();
+
+            Assert.IsInstanceOfType<IGetFileRequestBuilder>(builder);
+        }
+
+        [TestMethod]
+        public void ToGetFileInfo_WhenCalled_ShouldReturnBuilderInstance()
+        {
+            var builder = _builder.ToGetFileInfo();
+
+            Assert.IsInstanceOfType<IGetFileInfoRequestBuilder>(builder);
+        }
     }
 }

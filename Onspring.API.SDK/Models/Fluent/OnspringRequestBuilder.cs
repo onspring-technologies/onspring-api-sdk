@@ -55,5 +55,10 @@ namespace Onspring.API.SDK.Models.Fluent
         {
             return new GetFileRequestBuilder(_client);
         }
+
+        public IGetFileInfoRequestBuilder ToGetFileInfo()
+        {
+            return new GetFileInfoRequestBuilder(_client);
+        }
     }
 }
