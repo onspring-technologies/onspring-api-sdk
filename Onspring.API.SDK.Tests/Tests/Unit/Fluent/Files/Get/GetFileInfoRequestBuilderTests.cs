@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -7,6 +8,7 @@ using Onspring.API.SDK.Models.Fluent;
 
 namespace Onspring.API.SDK.Tests.Tests.Integration.Fluent
 {
+    [TestClass, ExcludeFromCodeCoverage]
     public class GetFileInfoRequestBuilderTests
     {
         private static readonly int _recordId = 1;

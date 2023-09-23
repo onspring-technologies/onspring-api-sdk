@@ -60,5 +60,10 @@ namespace Onspring.API.SDK.Models.Fluent
         {
             return new GetFileInfoRequestBuilder(_client);
         }
+
+        public IDeleteFileRequestBuilder ToDeleteFile()
+        {
+            return new DeleteFileRequestBuilder(_client);
+        }
     }
 }

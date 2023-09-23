@@ -34,5 +34,33 @@ namespace Onspring.API.SDK.Tests.Tests.Integration.Fluent
 
             AssertHelper.AssertSuccess(apiResponse);
         }
+
+        [TestMethod]
+        public async Task GetFileInfo()
+        {
+            var apiResponse = await _apiClient
+                .CreateRequest()
+                .ToGetFileInfo()
+                .FromRecord(1)
+                .InField(1)
+                .WithId(1)
+                .SendAsync();
+
+            AssertHelper.AssertSuccess(apiResponse);
+        }
+
+        [TestMethod]
+        public async Task DeleteFile()
+        {
+            var apiResponse = await _apiClient
+                .CreateRequest()
+                .ToDeleteFile()
+                .FromRecord(1)
+                .InField(1)
+                .WithId(1)
+                .SendAsync();
+
+            AssertHelper.AssertSuccess(apiResponse);
+        }
     }
 }
