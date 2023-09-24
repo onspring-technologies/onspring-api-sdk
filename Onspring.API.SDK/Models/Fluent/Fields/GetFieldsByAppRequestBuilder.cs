@@ -4,6 +4,10 @@ using Onspring.API.SDK.Interfaces.Fluent;
 
 namespace Onspring.API.SDK.Models.Fluent
 {
+    /// <summary>
+    /// Represents a builder for constructing requests to retrieve fields by app.
+    /// </summary>
+    /// <inheritdoc/>
     public class GetFieldsByAppRequestBuilder : IGetFieldsByAppRequestBuilder
     {
         private readonly IOnspringClient _client;
@@ -11,6 +15,11 @@ namespace Onspring.API.SDK.Models.Fluent
         public int PageNumber { get; private set; } = 1;
         public int PageSize { get; private set; } = 50;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GetFieldsByAppRequestBuilder"/> class.
+        /// </summary>
+        /// <param name="client">The <see cref="IOnspringClient"/> to use for the request.</param>
+        /// <param name="appId">The ID of the app to retrieve fields for.</param>
         internal GetFieldsByAppRequestBuilder(IOnspringClient client, int appId)
         {
             _client = client;
