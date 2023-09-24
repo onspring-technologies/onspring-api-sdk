@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Onspring.API.SDK.Interfaces.Fluent;
 using Onspring.API.SDK.Models.Fluent;
 
 namespace Onspring.API.SDK.Tests.Tests.Unit
@@ -13,7 +14,7 @@ namespace Onspring.API.SDK.Tests.Tests.Unit
             var client = new OnspringClient("https://api.onspring.com", "key");
             var request = client.CreateRequest();
 
-            Assert.IsInstanceOfType<OnspringRequestBuilder>(request);
+            Assert.IsInstanceOfType<IOnspringRequestBuilder>(request);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Onspring.API.SDK.Interfaces.Fluent;
 using Onspring.API.SDK.Models.Fluent;
 using Onspring.API.SDK.Tests.Infrastructure;
 using System;
@@ -107,7 +108,7 @@ namespace Onspring.API.SDK.Tests.Tests.Integration
         {
             var client = new OnspringClient(_testConfiguration.ApiKey, new HttpClient { BaseAddress = new Uri(_testConfiguration.BaseAddress) });
             var request = client.CreateRequest();
-            Assert.IsInstanceOfType(request, typeof(OnspringRequestBuilder));
+            Assert.IsInstanceOfType<IOnspringRequestBuilder>(request);
         }
     }
 }
