@@ -26,32 +26,28 @@ namespace Onspring.API.SDK.Interfaces.Fluent
         /// Specifies the record ID to retrieve.
         /// </summary>
         /// <param name="recordId">The ID of the record to retrieve.</param>
-        /// <returns>A builder for further configuration of the request.</returns>
-        /// <see cref="IGetRecordByIdRequestBuilder"/>
+        /// <returns>A builder <see cref="IGetRecordByIdRequestBuilder"/> for further configuration of the request.</returns>
         IGetRecordByIdRequestBuilder WithId(int recordId);
 
         /// <summary>
         /// Specifies the IDs of the records to retrieve.
         /// </summary>
         /// <param name="recordIds">The IDs of the records to retrieve.</param>
-        /// <returns>A builder for further configuration of the request.</returns>
-        /// <see cref="IGetRecordsByIdsRequestBuilder"/>
+        /// <returns>A builder <see cref="IGetRecordsByIdsRequestBuilder"/> for further configuration of the request.</returns>
         IGetRecordsByIdsRequestBuilder WithIds(IEnumerable<int> recordIds);
 
         /// <summary>
         /// Specifies the filter to be used to query records.
         /// </summary>
         /// <param name="filter">The filter to be used to query record</param>
-        /// <returns>A builder for further configuration of the request.</returns>
-        /// <see cref="IQueryRecordsByAppPagedRequestBuilder"/>
+        /// <returns>A builder <see cref="IQueryRecordsByAppPagedRequestBuilder"/> for further configuration of the request.</returns>
         IQueryRecordsByAppPagedRequestBuilder WithFilter(string filter);
 
         /// <summary>
         /// Specifies the filter to be used to query records.
         /// </summary>
-        /// <param name="filter">An action <see cref="Action{Filter}"/> that constructs the filter to be used to query record</param>
-        /// <returns>A builder for further configuration of the request.</returns>
-        /// <see cref="IQueryRecordsByAppPagedRequestBuilder"/>
+        /// <param name="filter">An action that constructs the filter to be used to query record</param>
+        /// <returns>A builder <see cref="IQueryRecordsByAppPagedRequestBuilder"/> for further configuration of the request.</returns>
         IQueryRecordsByAppPagedRequestBuilder WithFilter(Action<Filter> filter);
     }
 }
