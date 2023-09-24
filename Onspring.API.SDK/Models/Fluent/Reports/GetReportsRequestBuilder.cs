@@ -22,7 +22,7 @@ namespace Onspring.API.SDK.Models.Fluent
             return this;
         }
 
-        public IGetReportsByAppRequestBuilder ForPageNumber(int pageNumber)
+        public IGetReportsByAppRequestBuilder ForPage(int pageNumber)
         {
             PageNumber = pageNumber;
             return this;

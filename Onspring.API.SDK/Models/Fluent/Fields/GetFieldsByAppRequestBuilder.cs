@@ -17,7 +17,7 @@ namespace Onspring.API.SDK.Models.Fluent
             AppId = appId;
         }
 
-        public IGetFieldsByAppRequestBuilder ForPageNumber(int pageNumber)
+        public IGetFieldsByAppRequestBuilder ForPage(int pageNumber)
         {
             PageNumber = pageNumber;
             return this;

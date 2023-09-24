@@ -140,7 +140,7 @@ namespace Onspring.API.SDK.Tests.Tests.Integration.Fluent
                 .ToGetRecords()
                 .FromApp(_appIdWithRecords)
                 .WithFilter($"{1} eq {1}")
-                .ForPageNumber(1)
+                .ForPage(1)
                 .WithPageSize(50)
                 .WithFieldIds(new[] { 1, 2, 3 })
                 .WithFormat(DataFormat.Formatted)

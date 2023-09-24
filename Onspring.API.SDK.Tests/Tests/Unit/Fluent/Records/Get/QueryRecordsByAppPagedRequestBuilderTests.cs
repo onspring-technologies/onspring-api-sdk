@@ -39,11 +39,11 @@ namespace Onspring.API.SDK.Tests.Tests.Unit.Fluent
         }
 
         [TestMethod]
-        public void ForPageNumber_WhenCalled_ItShouldSetPageNumberProperty()
+        public void ForPage_WhenCalled_ItShouldSetPageNumberProperty()
         {
             var pageNumber = 2;
 
-            _builder.ForPageNumber(pageNumber);
+            _builder.ForPage(pageNumber);
 
             Assert.AreEqual(pageNumber, _builder.PageNumber);
         }
