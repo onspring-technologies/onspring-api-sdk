@@ -7,6 +7,7 @@ namespace Onspring.API.SDK.Models.Fluent
     /// <summary>
     /// Represents a builder for constructing requests to get records by app.
     /// </summary>
+    /// <inheritdoc/>
     public class GetRecordsByAppRequestBuilder : IGetRecordsByAppRequestBuilder
     {
         private readonly IOnspringClient _client;
