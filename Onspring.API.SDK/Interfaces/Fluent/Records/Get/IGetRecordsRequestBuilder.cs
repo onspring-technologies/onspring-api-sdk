@@ -9,8 +9,7 @@ namespace Onspring.API.SDK.Interfaces.Fluent
         /// Specifies the app from which to retrieve records.
         /// </summary>
         /// <param name="appId">The unique identifier of the app.</param>
-        /// <returns>A builder for further configuration of the request.</returns>
-        /// <see cref="IGetRecordsByAppRequestBuilder"/>
+        /// <returns>A builder <see cref="IGetRecordsByAppRequestBuilder"/> for further configuration of the request.</returns>
         IGetRecordsByAppRequestBuilder FromApp(int appId);
     }
 }

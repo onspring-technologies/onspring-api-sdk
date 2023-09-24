@@ -45,18 +45,14 @@ namespace Onspring.API.SDK.Interfaces.Fluent
         /// <summary>
         /// Sends the request asynchronously.
         /// </summary>
-        /// <returns>An awaitable task that returns an API response when complete.</returns>
-        /// <see cref="ApiResponse{T}"/> 
-        /// <see cref="GetPagedRecordsResponse"/> 
+        /// <returns>An awaitable task that returns an API response <see cref="ApiResponse{GetPagedRecordsResponse}"/> when complete.</returns>
         Task<ApiResponse<GetPagedRecordsResponse>> SendAsync();
 
         /// <summary>
         /// Sends the request asynchronously with the specified options.
         /// </summary>
-        /// <param name="options">The options to use when sending the request.</param>
-        /// <returns>An awaitable task that returns an API response when complete.</returns>
-        /// <see cref="ApiResponse{T}"/> 
-        /// <see cref="GetPagedRecordsResponse"/> 
+        /// <param name="options">An action that constructs the options to use when sending the request.</param>
+        /// <returns>An awaitable task that returns an API response <see cref="ApiResponse{GetPagedRecordsResponse}"/> when complete.</returns>
         Task<ApiResponse<GetPagedRecordsResponse>> SendAsync(Action<QueryRecordsByAppPagedRequestBuilderOptions> options);
 
         /// <summary>
