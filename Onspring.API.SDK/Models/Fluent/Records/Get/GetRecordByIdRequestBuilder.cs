@@ -7,6 +7,10 @@ using Onspring.API.SDK.Interfaces.Fluent;
 
 namespace Onspring.API.SDK.Models.Fluent
 {
+    /// <summary>
+    /// Represents a builder for constructing requests to get a record by ID.
+    /// </summary>
+    /// <inheritdoc/>
     public class GetRecordByIdRequestBuilder : IGetRecordByIdRequestBuilder
     {
         private readonly IOnspringClient _client;
@@ -15,6 +19,12 @@ namespace Onspring.API.SDK.Models.Fluent
         public IEnumerable<int> FieldIds { get; private set; } = Enumerable.Empty<int>();
         public DataFormat Format { get; private set; } = DataFormat.Raw;
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="GetRecordByIdRequestBuilder"/> class.
+        /// </summary>
+        /// <param name="client">The <see cref="IOnspringClient"/> used to send the request.</param>
+        /// <param name="appId">The unique identifier of the app from which to retrieve records.</param>
+        /// <param name="recordId">The ID of the record to retrieve.</param>
         internal GetRecordByIdRequestBuilder(IOnspringClient client, int appId, int recordId)
         {
             _client = client;
