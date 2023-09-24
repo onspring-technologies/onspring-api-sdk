@@ -1,7 +1,7 @@
+using Onspring.API.SDK.Models;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Onspring.API.SDK.Models;
 
 namespace Onspring.API.SDK.Interfaces.Fluent
 {

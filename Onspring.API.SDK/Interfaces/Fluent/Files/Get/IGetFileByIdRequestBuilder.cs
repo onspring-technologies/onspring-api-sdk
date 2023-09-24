@@ -1,5 +1,5 @@
-using System.Threading.Tasks;
 using Onspring.API.SDK.Models;
+using System.Threading.Tasks;
 
 namespace Onspring.API.SDK.Interfaces.Fluent
 {
