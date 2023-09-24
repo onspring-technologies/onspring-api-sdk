@@ -89,7 +89,7 @@ The examples that follow assume you have created an `OnspringClient` as describe
 
 ### Fluent Interface
 
-The `OnspringClient` provides a method named `CreateRequest` which returns an `IOnspringRequestBuilder` instance. This builder exposes a fluent interface for building a request to the Onspring API. This interface is intended to provide a more readable way to build a request and provide better discoverability of the ways in which the API can be used.
+The `OnspringClient` provides a method named `CreateRequest` which returns an `IOnspringRequestBuilder` instance. This builder exposes the same methods that are exposed by the `IOnspringClient` interface, but through a fluent API. This interface is intended to provide a more readable way to build a request and provide better discoverability of the ways in which the SDK can be used to make requests.
 
 ```C#
 var apiResponse = await _apiClient
