@@ -89,7 +89,7 @@ The examples that follow assume you have created an `OnspringClient` as describe
 
 ### Fluent Interface
 
-The `OnspringClient` provides a method named `CreateRequest` which returns an `IOnspringRequestBuilder` instance. This builder exposes the same methods that are exposed by the `IOnspringClient` interface, but through a fluent API. This interface is intended to provide a more readable way to build a request and provide better discoverability of the ways in which the SDK can be used to make requests.
+The `OnspringClient` provides a method named `CreateRequest` which returns an instance that implements the `IOnspringRequestBuilder` interface. This builder exposes the same methods that are exposed by the `IOnspringClient` interface, but through a fluent API. This interface is intended to provide a more readable way to build a request and provide better discoverability of the ways in which the SDK can be used to make requests.
 
 ```C#
 var apiResponse = await _apiClient
@@ -102,7 +102,7 @@ var apiResponse = await _apiClient
     .SendAsync();
 ```
 
-When using this interface you should find that each successful chained method walks you down the proper path to make a successful request as the ability to send the request is not exposed until you've provided all required information for making a request.
+When using this interface you should find that each successful chained method walks you down the proper path to make a successful request as the ability to send the request is not exposed until you've provided all required information for making the request.
 
 ### Verify connectivity
 
