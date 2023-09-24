@@ -17,7 +17,7 @@ namespace Onspring.API.SDK.Interfaces.Fluent
         DataFormat Format { get; }
         Task<ApiResponse<GetPagedRecordsResponse>> SendAsync();
         Task<ApiResponse<GetPagedRecordsResponse>> SendAsync(Action<QueryRecordsByAppPagedRequestBuilderOptions> options);
-        IQueryRecordsByAppPagedRequestBuilder ForPageNumber(int pageNumber);
+        IQueryRecordsByAppPagedRequestBuilder ForPage(int pageNumber);
         IQueryRecordsByAppPagedRequestBuilder WithPageSize(int pageSize);
         IQueryRecordsByAppPagedRequestBuilder WithFieldIds(IEnumerable<int> fieldIds);
         IQueryRecordsByAppPagedRequestBuilder WithFormat(DataFormat dataFormat);

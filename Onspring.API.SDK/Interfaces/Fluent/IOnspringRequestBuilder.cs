@@ -15,6 +15,6 @@ namespace Onspring.API.SDK.Interfaces.Fluent
         IDeleteFileRequestBuilder ToDeleteFile();
         IAddFileRequestBuilder ToAddFile();
         IGetFieldsRequestBuilder ToGetFields();
-        // TODO: ToGetApps()
+        IGetAppsRequestBuilder ToGetApps();
     }
 }

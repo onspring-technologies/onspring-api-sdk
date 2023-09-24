@@ -75,5 +75,10 @@ namespace Onspring.API.SDK.Models.Fluent
         {
             return new GetFieldsRequestBuilder(_client);
         }
+
+        public IGetAppsRequestBuilder ToGetApps()
+        {
+            return new GetAppsRequestBuilder(_client);
+        }
     }
 }

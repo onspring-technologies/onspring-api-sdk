@@ -1,19 +1,13 @@
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Onspring.API.SDK.Tests.Infrastructure;
-using Onspring.API.SDK.Tests.Infrastructure.Helpers;
 using Onspring.API.SDK.Tests.Infrastructure.Http;
+using Onspring.API.SDK.Tests.Infrastructure;
+using System.Threading.Tasks;
+using Onspring.API.SDK.Tests.Infrastructure.Helpers;
 
 namespace Onspring.API.SDK.Tests.Tests.Integration.Fluent
 {
-    [TestClass, ExcludeFromCodeCoverage]
-    public class OnspringClientFieldTests
+    public class OnspringClientAppsTests
     {
-        private const int _appIdWithFields = 1;
-        private static readonly int[] _fields = new[] { 1, 2, 3, 4, 5 };
-
         private static OnspringClient _apiClient;
 
         [ClassInitialize]
@@ -26,55 +20,38 @@ namespace Onspring.API.SDK.Tests.Tests.Integration.Fluent
         }
 
         [TestMethod]
-        public async Task GetField()
+        public async Task GetApp()
         {
             var apiResponse = await _apiClient
                 .CreateRequest()
-                .ToGetFields()
-                .WithId(_fields.First())
+                .ToGetApps()
+                .WithId(1)
                 .SendAsync();
 
             AssertHelper.AssertSuccess(apiResponse);
         }
 
         [TestMethod]
-        public async Task GetFields()
+        public async Task GetAppsByIds()
         {
             var apiResponse = await _apiClient
                 .CreateRequest()
-                .ToGetFields()
-                .WithIds(_fields)
+                .ToGetApps()
+                .WithIds(new[] { 1, 2, 3 })
                 .SendAsync();
 
             AssertHelper.AssertSuccess(apiResponse);
         }
 
         [TestMethod]
-        public async Task GetFieldsFromApp()
+        public async Task GetApps()
         {
             var apiResponse = await _apiClient
                 .CreateRequest()
-                .ToGetFields()
-                .FromApp(_appIdWithFields)
+                .ToGetApps()
                 .ForPage(1)
-                .WithPageSize(50)
+                .WithPageSize(25)
                 .SendAsync();
-
-            AssertHelper.AssertSuccess(apiResponse);
-        }
-
-        [TestMethod]
-        public async Task GetFieldsFromApp_WithOptions()
-        {
-            var apiResponse = await _apiClient
-                .CreateRequest()
-                .ToGetFields()
-                .FromApp(_appIdWithFields)
-                .SendAsync(options =>
-                {
-                    options.PageNumber = 1;
-                    options.PageSize = 25;
-                });
 
             AssertHelper.AssertSuccess(apiResponse);
         }

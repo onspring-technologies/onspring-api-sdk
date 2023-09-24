@@ -24,7 +24,7 @@ namespace Onspring.API.SDK.Models.Fluent
             Filter = filter;
         }
 
-        public IQueryRecordsByAppPagedRequestBuilder ForPageNumber(int pageNumber)
+        public IQueryRecordsByAppPagedRequestBuilder ForPage(int pageNumber)
         {
             PageNumber = pageNumber;
             return this;
