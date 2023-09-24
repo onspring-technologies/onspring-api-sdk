@@ -10,16 +10,16 @@ Install the SDK using Nuget
 
 ## API Key
 
-In order to successfully interact with the Onspring API, you must use an API key.  API keys may be obtained by an Onspring user with permissions to read API Keys for your instance, using the following instructions: 
+In order to successfully interact with the Onspring API, you must use an API key. API keys may be obtained by an Onspring user with permissions to read API Keys for your instance, using the following instructions:
 
-1.	Within Onspring, navigate to Administration | Security | API Keys.  
-2.	On the list page, add a new API Key (requires Create permissions) or click an existing API Key to view its details.  
-3.	On the details page for an API Key, expand the **Developer Information** section.  Copy the **X-ApiKey Header** value from this section.
+1. Within Onspring, navigate to Administration | Security | API Keys.
+2. On the list page, add a new API Key (requires Create permissions) or click an existing API Key to view its details.
+3. On the details page for an API Key, expand the **Developer Information** section. Copy the **X-ApiKey Header** value from this section.
 
 #### Important
 
-- An API Key must have a **Status** of *Enabled* (available on the details page) in order to be used.
-- Each API Key has an associated **Role** that controls the permissions for requests made using that API Key.  An Onspring administrator may configure those permissions as they would any other Role in Onspring.  If the API Key does not have sufficient permissions to perform the requested action, an error will be returned.
+- An API Key must have a **Status** of _Enabled_ (available on the details page) in order to be used.
+- Each API Key has an associated **Role** that controls the permissions for requests made using that API Key. An Onspring administrator may configure those permissions as they would any other Role in Onspring. If the API Key does not have sufficient permissions to perform the requested action, an error will be returned.
 
 ## Sample Projects
 
@@ -28,7 +28,7 @@ In order to successfully interact with the Onspring API, you must use an API key
 
 ## Start Coding
 
-The most common way to use the SDK is to create an `OnspringClient` instance and call its methods.  Its constructor requires two parameters:
+The most common way to use the SDK is to create an `OnspringClient` instance and call its methods. Its constructor requires two parameters:
 
 - `baseUrl` - currently this should always be: **`https://api.onspring.com/`**
 - `apiKey` - the value obtained by following the steps in the **API Key** section
@@ -59,7 +59,6 @@ var onspringClient = new OnspringClient(apiKey, myHttpClient);
 
 Although we strongly recommend using async for accessing the API, in the case that the calling code is synchronous, we offer a simple helper class `Onspring.API.SDK.Helpers.AsyncHelper`. This class allows C# to execute an asynchronous function in a synchronous context without deadlocking.
 
-
 Example assumes that you've have an `OnspringClient` (or `IOnspringClient`) instance prior to execution.
 
 ```C#
@@ -68,10 +67,9 @@ using Onspring.API.SDK.Helpers;
 bool canConnect = AsyncHelper.RunTask(() => onspringClient.CanConnectAsync());
 ```
 
-
 ## Full API Documentation
 
-When using the SDK, you do not need to be as concerned with the details covered in the full [Onspring API documentation](https://software.onspring.com/hubfs/Training/Admin%20Guide%20-%20v2%20API.pdf).  However, you may wish to refer to it when determining which values to pass as parameters to some of the `OnspringClient` methods.
+When using the SDK, you do not need to be as concerned with the details covered in the full [Onspring API documentation](https://software.onspring.com/hubfs/Training/Admin%20Guide%20-%20v2%20API.pdf). However, you may wish to refer to it when determining which values to pass as parameters to some of the `OnspringClient` methods.
 
 Each method on the `OnspringClient` aside from `CanConnectAsync` returns a wrapped response, allowing clients to decide how a response should be handled. This wrapper is the `ApiResponse` class and includes generic types to encompass the response body, if any. In the examples below, we're omitting the validation/error handling around that, however we recommend that each client adds resilience and error handling for potential unsuccessful responses. Please refer to the API documentation/swagger page to determine the possible responses.
 
@@ -82,11 +80,29 @@ The `OnspringClient` is thread-safe and can be used as a singleton or transient.
 ## Upgrading SDK
 
 Already using a previous version of the SDK? Check out our migration guides below.
+
 - [2.x to 3.0](./docs/migrations/2-to-30.md)
 
 ## Example Code
 
 The examples that follow assume you have created an `OnspringClient` as described in the **Start Coding** section.
+
+### Fluent Interface
+
+The `OnspringClient` provides a method named `CreateRequest` which returns an instance that implements the `IOnspringRequestBuilder` interface. This builder exposes the same methods that are exposed by the `IOnspringClient` interface, but through a fluent API. This interface is intended to provide a more readable way to build a request and provide better discoverability of the ways in which the SDK can be used to make requests.
+
+```C#
+var apiResponse = await _apiClient
+    .CreateRequest()
+    .ToGetRecords()
+    .FromApp(_appIdWithRecords)
+    .WithId(1)
+    .WithFieldIds(new[] { 1, 2, 3 })
+    .WithFormat(DataFormat.Formatted)
+    .SendAsync();
+```
+
+When using this interface you should find that each successful chained method walks you down the proper path to make a successful request as the ability to send the request is not exposed until you've provided all required information for making the request.
 
 ### Verify connectivity
 
@@ -99,6 +115,7 @@ bool canConnect = await onspringClient.CanConnectAsync();
 Returns a paged collection of apps/surveys, which can be paged through using the `Onspring.API.SDK.Models.PagingRequest`.
 
 ##### Basic
+
 ```C#
 var apps = await onspringClient.GetAppsAsync();
 foreach (App app in apps)
@@ -108,6 +125,7 @@ foreach (App app in apps)
 ```
 
 ##### Paged
+
 Async and synchronous methods allow use of `Onspring.API.SDK.Models.PagingRequest`.
 
 ```C#

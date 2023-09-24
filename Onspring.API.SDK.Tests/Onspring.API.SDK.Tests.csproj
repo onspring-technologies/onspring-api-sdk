@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net5.0</TargetFramework>
+		<TargetFramework>net7.0</TargetFramework>
 
 		<IsPackable>false</IsPackable>
 	</PropertyGroup>
@@ -11,34 +11,50 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="5.0.7" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
-		<PackageReference Include="MSTest.TestAdapter" Version="2.2.5" />
-		<PackageReference Include="MSTest.TestFramework" Version="2.2.5" />
-		<PackageReference Include="coverlet.collector" Version="3.0.3">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		<PackageReference Include="coverlet.msbuild" Version="6.0.0">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.11" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.2" />
+		<PackageReference Include="MSTest.TestAdapter" Version="3.1.1" />
+		<PackageReference Include="MSTest.TestFramework" Version="3.1.1" />
+		<PackageReference Include="coverlet.collector" Version="6.0.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="NSubstitute" Version="5.1.0" />
+		<PackageReference Include="ReportGenerator" Version="5.1.25" />
 	</ItemGroup>
+
+	<PropertyGroup>
+		<CollectCoverage>true</CollectCoverage>
+		<CoverletOutput>./TestResults/coverage/$(MSBuildProjectName)/</CoverletOutput>
+		<CoverletOutputFormat>opencover</CoverletOutputFormat>
+	</PropertyGroup>
+
+	<Target Name="GenerateHtmlCoverageReport" AfterTargets="GenerateCoverageResultAfterTest">
+		<Exec Command="$(UserProfile)\.nuget\packages\reportgenerator\5.1.25\tools\net7.0\ReportGenerator -reports:./TestResults/coverage/$(MSBuildProjectName)/*.xml -targetdir:./TestResults/coverage/$(MSBuildProjectName)/report/ -reporttypes:Html_Dark" />
+	</Target>
 
 	<PropertyGroup>
 		<RunSettingsFilePath>$(MSBuildProjectDirectory)\runsettings\internal.runsettings</RunSettingsFilePath>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Onspring.API.SDK\Onspring.API.SDK.csproj" />
+		<ProjectReference Include="..\Onspring.API.SDK\Onspring.API.SDK.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Update="Resources\Onspring-Logo.png">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
-	  <None Update="runsettings\external.runsettings">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
-	  <None Update="runsettings\internal.runsettings">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
+		<None Update="Resources\Onspring-Logo.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="runsettings\external.runsettings">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="runsettings\internal.runsettings">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 
 </Project>
