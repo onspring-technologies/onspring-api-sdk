@@ -4,11 +4,19 @@ using Onspring.API.SDK.Interfaces.Fluent;
 
 namespace Onspring.API.SDK.Models.Fluent
 {
+    /// <summary>
+    /// Represents a builder for constructing requests to get records by app.
+    /// </summary>
     public class GetRecordsByAppRequestBuilder : IGetRecordsByAppRequestBuilder
     {
         private readonly IOnspringClient _client;
         public int AppId { get; private set; }
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="GetRecordsByAppRequestBuilder"/> class.
+        /// </summary>
+        /// <param name="client">The <see cref="IOnspringClient"/> used to send the request.</param>
+        /// <param name="appId">The unique identifier of the app from which to retrieve records.</param>
         internal GetRecordsByAppRequestBuilder(IOnspringClient client, int appId)
         {
             _client = client;

@@ -8,7 +8,7 @@ using Onspring.API.SDK.Models.Fluent;
 namespace Onspring.API.SDK.Interfaces.Fluent
 {
     /// <summary>
-    /// Builds a request to query records by application.
+    /// Represents a builder for constructing requests to query records from an app.
     /// </summary>
     public interface IQueryRecordsByAppPagedRequestBuilder
     {

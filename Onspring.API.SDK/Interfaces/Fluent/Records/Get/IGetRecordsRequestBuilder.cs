@@ -10,6 +10,7 @@ namespace Onspring.API.SDK.Interfaces.Fluent
         /// </summary>
         /// <param name="appId">The unique identifier of the app.</param>
         /// <returns>A builder for further configuration of the request.</returns>
+        /// <see cref="IGetRecordsByAppRequestBuilder"/>
         IGetRecordsByAppRequestBuilder FromApp(int appId);
     }
 }
