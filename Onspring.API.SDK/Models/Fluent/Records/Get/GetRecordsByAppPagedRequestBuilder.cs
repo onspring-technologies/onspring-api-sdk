@@ -7,7 +7,11 @@ using Onspring.API.SDK.Interfaces.Fluent;
 
 namespace Onspring.API.SDK.Models.Fluent
 {
-    public partial class GetRecordsByAppPagedRequestBuilder : IGetRecordsByAppPagedRequestBuilder
+    /// <summary>
+    /// Represents a builder for constructing requests to get records by an app.
+    /// </summary>
+    /// <inheritdoc/>
+    public class GetRecordsByAppPagedRequestBuilder : IGetRecordsByAppPagedRequestBuilder
     {
         private readonly IOnspringClient _client;
         public int AppId { get; private set; }
@@ -16,6 +20,12 @@ namespace Onspring.API.SDK.Models.Fluent
         public DataFormat Format { get; private set; } = DataFormat.Raw;
         public int PageSize { get; private set; } = 50;
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="GetRecordsByAppPagedRequestBuilder"/> class.
+        /// </summary>
+        /// <param name="client">The <see cref="IOnspringClient"/> used to send the request.</param>
+        /// <param name="appId">The unique identifier of the app from which to retrieve records.</param>
+        /// <param name="pageNumber">The page number to retrieve.</param>
         internal GetRecordsByAppPagedRequestBuilder(IOnspringClient client, int appId, int pageNumber)
         {
             _client = client;
