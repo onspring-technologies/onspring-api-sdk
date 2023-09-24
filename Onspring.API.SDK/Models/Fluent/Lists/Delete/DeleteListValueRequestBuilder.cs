@@ -4,6 +4,10 @@ using Onspring.API.SDK.Interfaces.Fluent;
 
 namespace Onspring.API.SDK.Models.Fluent
 {
+    /// <summary>
+    /// Represents a builder for constructing requests to delete a list value.
+    /// </summary>
+    /// <inheritdoc/>
     public class DeleteListValueRequestBuilder :
         IDeleteListValueRequestBuilder,
         IDeleteListValueInListRequestBuilder,
@@ -13,7 +17,10 @@ namespace Onspring.API.SDK.Models.Fluent
         public int ListId { get; private set; }
         public Guid Id { get; private set; }
 
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeleteListValueRequestBuilder"/> class.
+        /// </summary>
+        /// <param name="client">The <see cref="IOnspringClient"/> to use for the request.</param>
         internal DeleteListValueRequestBuilder(IOnspringClient client)
         {
             _client = client;
