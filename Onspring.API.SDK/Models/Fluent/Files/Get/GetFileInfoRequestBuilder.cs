@@ -3,6 +3,9 @@ using Onspring.API.SDK.Interfaces.Fluent;
 
 namespace Onspring.API.SDK.Models.Fluent
 {
+    /// <summary>
+    /// Represents a builder for constructing requests to retrieve information about a file.
+    /// </summary>
     public class GetFileInfoRequestBuilder :
         IGetFileInfoRequestBuilder,
         IGetFileInfoFromRecordRequestBuilder,
@@ -14,6 +17,10 @@ namespace Onspring.API.SDK.Models.Fluent
         public int FieldId { get; private set; }
         public int FileId { get; private set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GetFileInfoRequestBuilder"/> class.
+        /// </summary>
+        /// <param name="client">The <see cref="IOnspringClient"/> to use for the request.</param>
         internal GetFileInfoRequestBuilder(IOnspringClient client)
         {
             _client = client;
