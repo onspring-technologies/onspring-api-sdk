@@ -1,9 +1,8 @@
-using System;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Onspring.API.SDK.Enums;
 using Onspring.API.SDK.Models;
+using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Onspring.API.SDK.Tests.Tests.Unit
 {

@@ -1,8 +1,8 @@
-using System.Diagnostics.CodeAnalysis;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Onspring.API.SDK.Tests.Infrastructure;
 using Onspring.API.SDK.Tests.Infrastructure.Http;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 
 namespace Onspring.API.SDK.Tests.Tests.Integration.Fluent
 {
