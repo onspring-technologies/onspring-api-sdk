@@ -39,7 +39,7 @@ namespace Onspring.API.SDK.Interfaces.Fluent
         ISaveListValueWithNameRequestBuilder WithNumericValue(decimal value);
 
         /// <summary>
-        /// Sends the request asynchronously.
+        /// Asynchronously sends the request to save the list value.
         /// </summary>
         /// <returns>An awaitable task that returns an <see cref="ApiResponse{SaveListItemResponse}"/> when complete.</returns>
         Task<ApiResponse<SaveListItemResponse>> SendAsync();
