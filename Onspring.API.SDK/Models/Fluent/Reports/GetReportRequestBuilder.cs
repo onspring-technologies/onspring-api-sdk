@@ -1,7 +1,7 @@
-using System;
-using System.Threading.Tasks;
 using Onspring.API.SDK.Enums;
 using Onspring.API.SDK.Interfaces.Fluent;
+using System;
+using System.Threading.Tasks;
 
 namespace Onspring.API.SDK.Models.Fluent
 {
