@@ -87,6 +87,23 @@ Already using a previous version of the SDK? Check out our migration guides belo
 
 The examples that follow assume you have created an `OnspringClient` as described in the **Start Coding** section.
 
+### Fluent Interface
+
+The `OnspringClient` provides a method named `CreateRequest` which returns an `IOnspringRequestBuilder` instance. This builder exposes a fluent interface for building a request to the Onspring API. This interface is intended to provide a more readable way to build a request and provide better discoverability of the ways in which the API can be used.
+
+```C#
+var apiResponse = await _apiClient
+    .CreateRequest()
+    .ToGetRecords()
+    .FromApp(_appIdWithRecords)
+    .WithId(1)
+    .WithFieldIds(new[] { 1, 2, 3 })
+    .WithFormat(DataFormat.Formatted)
+    .SendAsync();
+```
+
+When using this interface you should find that each successful chained method walks you down the proper path to make a successful request as the ability to send the request is not exposed until you've provided all required information for making a request.
+
 ### Verify connectivity
 
 ```C#
