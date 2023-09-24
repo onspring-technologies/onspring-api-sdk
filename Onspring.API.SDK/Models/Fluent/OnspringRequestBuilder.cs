@@ -2,11 +2,18 @@ using Onspring.API.SDK.Interfaces.Fluent;
 
 namespace Onspring.API.SDK.Models.Fluent
 {
+    /// <summary>
+    /// Represents a builder for constructing Onspring API requests.
+    /// </summary>
     /// <inheritdoc/>
     public class OnspringRequestBuilder : IOnspringRequestBuilder
     {
         private readonly IOnspringClient _client;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OnspringRequestBuilder"/> class.
+        /// </summary>
+        /// <param name="client">The Onspring client to use for making API requests.</param>
         internal OnspringRequestBuilder(IOnspringClient client)
         {
             _client = client;
