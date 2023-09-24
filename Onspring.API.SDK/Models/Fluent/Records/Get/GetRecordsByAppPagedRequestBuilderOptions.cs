@@ -1,6 +1,6 @@
+using Onspring.API.SDK.Enums;
 using System.Collections.Generic;
 using System.Linq;
-using Onspring.API.SDK.Enums;
 
 namespace Onspring.API.SDK.Models.Fluent
 {
