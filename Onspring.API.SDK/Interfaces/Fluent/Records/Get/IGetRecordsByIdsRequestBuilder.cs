@@ -8,7 +8,7 @@ using Onspring.API.SDK.Models.Fluent;
 namespace Onspring.API.SDK.Interfaces.Fluent
 {
     /// <summary>
-    /// A builder for constructing requests to get records by IDs.
+    /// Represents a builder for constructing requests to get records by IDs.
     /// </summary>
     public interface IGetRecordsByIdsRequestBuilder
     {
@@ -35,18 +35,14 @@ namespace Onspring.API.SDK.Interfaces.Fluent
         /// <summary>
         /// Sends the request asynchronously.
         /// </summary>
-        /// <returns>An awaitable task that returns an API response when complete.</returns>
-        /// <see cref="ApiResponse{T}"/>
-        /// <see cref="GetRecordsResponse"/>
+        /// <returns>An awaitable task that returns an API response <see cref="ApiResponse{GetRecordsResponse}"/> when complete.</returns>
         Task<ApiResponse<GetRecordsResponse>> SendAsync();
 
         /// <summary>
         /// Sends the request asynchronously with the specified options.
         /// </summary>
         /// <param name="options">The options to use when sending the request.</param>
-        /// <returns>An awaitable task that returns an API response when complete.</returns>
-        /// <see cref="ApiResponse{T}"/>
-        /// <see cref="GetRecordsResponse"/>
+        /// <returns>An awaitable task that returns an API response <see cref="ApiResponse{GetRecordsResponse}"/> when complete.</returns>
         Task<ApiResponse<GetRecordsResponse>> SendAsync(Action<GetRecordsByIdsRequestBuilderOptions> options);
 
         /// <summary>
