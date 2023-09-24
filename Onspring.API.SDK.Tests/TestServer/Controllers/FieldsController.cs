@@ -161,6 +161,17 @@ namespace Onspring.API.SDK.Tests.TestServer.Controllers
                     Status = "Enabled",
                     Type = "Reference",
                     Multiplicity = "SingleSelect",
+                },
+                new
+                {
+                    AppId = 1,
+                    Id = 1,
+                    IsRequired = false,
+                    IsUnique  = false,
+                    Name = "Delegation",
+                    Status = "Enabled",
+                    Type = "SurveyDelegation",
+                    Multiplicity = "SingleSelect",
                 }
             };
         }
