@@ -1,9 +1,9 @@
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Onspring.API.SDK.Interfaces.Fluent;
 using Onspring.API.SDK.Models.Fluent;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Onspring.API.SDK.Tests.Tests.Unit.Fluent
 {

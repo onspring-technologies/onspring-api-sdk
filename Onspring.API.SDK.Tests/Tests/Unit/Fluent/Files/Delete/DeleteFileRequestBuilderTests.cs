@@ -1,10 +1,9 @@
-using System.Diagnostics.CodeAnalysis;
-using System.Net;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Onspring.API.SDK.Models;
 using Onspring.API.SDK.Models.Fluent;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 
 namespace Onspring.API.SDK.Tests.Tests.Integration.Fluent
 {

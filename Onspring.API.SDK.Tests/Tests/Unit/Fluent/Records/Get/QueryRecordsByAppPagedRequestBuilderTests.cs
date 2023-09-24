@@ -1,12 +1,12 @@
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Onspring.API.SDK.Enums;
 using Onspring.API.SDK.Models;
 using Onspring.API.SDK.Models.Fluent;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace Onspring.API.SDK.Tests.Tests.Unit.Fluent
 {
