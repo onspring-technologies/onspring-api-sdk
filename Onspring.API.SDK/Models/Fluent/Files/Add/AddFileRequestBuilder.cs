@@ -5,6 +5,10 @@ using Onspring.API.SDK.Interfaces.Fluent;
 
 namespace Onspring.API.SDK.Models.Fluent
 {
+    /// <summary>
+    /// Represents a builder for constructing requests to add a file.
+    /// </summary>
+    /// <inheritdoc/>
     public class AddFileRequestBuilder :
         IAddFileRequestBuilder,
         IAddFileToRecordRequestBuilder,
@@ -24,6 +28,10 @@ namespace Onspring.API.SDK.Models.Fluent
         public string Notes { get; private set; }
         public DateTime? ModifiedDate { get; private set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AddFileRequestBuilder"/> class.
+        /// </summary>
+        /// <param name="client">The <see cref="IOnspringClient"/> to use for the request.</param>
         internal AddFileRequestBuilder(IOnspringClient client)
         {
             _client = client;
