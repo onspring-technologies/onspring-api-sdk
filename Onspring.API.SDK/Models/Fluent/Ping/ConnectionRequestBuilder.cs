@@ -3,6 +3,7 @@ using Onspring.API.SDK.Interfaces.Fluent;
 
 namespace Onspring.API.SDK.Models.Fluent
 {
+    /// <inheritdoc/>
     public class ConnectionRequestBuilder : IConnectionRequestBuilder
     {
         private readonly IOnspringClient _client;

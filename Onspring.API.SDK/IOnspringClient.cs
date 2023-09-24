@@ -1,7 +1,6 @@
 ﻿using Onspring.API.SDK.Enums;
 using Onspring.API.SDK.Interfaces.Fluent;
 using Onspring.API.SDK.Models;
-using Onspring.API.SDK.Models.Fluent;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
