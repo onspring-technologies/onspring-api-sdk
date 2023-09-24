@@ -18,8 +18,7 @@ namespace Onspring.API.SDK.Interfaces.Fluent
         /// Specifies the page number to retrieve.
         /// </summary>
         /// <param name="pageNumber">The page number to retrieve. Must be greater than zero.</param>
-        /// <returns>A builder for further configuration of the request.</returns>
-        /// <see cref="IGetRecordsByAppPagedRequestBuilder"/>
+        /// <returns>A builder <see cref="IGetRecordsByAppPagedRequestBuilder"/> for further configuration of the request.</returns>
         IGetRecordsByAppPagedRequestBuilder ForPage(int pageNumber);
 
         /// <summary>
