@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,6 +5,10 @@ using Onspring.API.SDK.Interfaces.Fluent;
 
 namespace Onspring.API.SDK.Models.Fluent
 {
+    /// <summary>
+    /// Represents a builder for constructing requests to save a record.
+    /// </summary>
+    /// <inheritdoc/>
     public class SaveRecordRequestBuilder :
         ISaveRecordRequestBuilder,
         ISaveRecordInAppRequestBuilder,
@@ -16,6 +19,10 @@ namespace Onspring.API.SDK.Models.Fluent
         public int AppId { get; private set; }
         public int? RecordId { get; private set; }
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="SaveRecordRequestBuilder"/> class.
+        /// </summary>
+        /// <param name="client">The <see cref="IOnspringClient"/> used to send the request.</param>
         internal SaveRecordRequestBuilder(IOnspringClient client)
         {
             _client = client;
