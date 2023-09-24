@@ -9,7 +9,7 @@ namespace Onspring.API.SDK.Interfaces.Fluent
     public interface IDeleteRecordsByAppRequestBuilder
     {
         /// <summary>
-        /// Specifies the ID of the app from which to delete records.
+        /// Gets the ID of the app from which to delete records.
         /// </summary>
         int AppId { get; }
 
