@@ -4,6 +4,10 @@ using Onspring.API.SDK.Interfaces.Fluent;
 
 namespace Onspring.API.SDK.Models.Fluent
 {
+    /// <summary>
+    /// Represents a builder for constructing requests to get reports.
+    /// </summary>
+    /// <inheritdoc/>
     public class GetReportsRequestBuilder : IGetReportsRequestBuilder, IGetReportsByAppRequestBuilder
     {
         private readonly IOnspringClient _client;
@@ -11,6 +15,10 @@ namespace Onspring.API.SDK.Models.Fluent
         public int PageNumber { get; private set; }
         public int PageSize { get; private set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GetReportsRequestBuilder"/> class.
+        /// </summary>
+        /// <param name="client">The <see cref="IOnspringClient"/> to use for the request.</param>
         internal GetReportsRequestBuilder(IOnspringClient client)
         {
             _client = client;
