@@ -35,14 +35,14 @@ namespace Onspring.API.SDK.Interfaces.Fluent
         /// <summary>
         /// Sends the request asynchronously.
         /// </summary>
-        /// <returns>An awaitable task that returns an API response <see cref="ApiResponse{GetRecordsResponse}"/> when complete.</returns>
+        /// <returns>An awaitable task that returns an <see cref="ApiResponse{GetRecordsResponse}"/> when complete.</returns>
         Task<ApiResponse<GetRecordsResponse>> SendAsync();
 
         /// <summary>
         /// Sends the request asynchronously with the specified options.
         /// </summary>
         /// <param name="options">The options to use when sending the request.</param>
-        /// <returns>An awaitable task that returns an API response <see cref="ApiResponse{GetRecordsResponse}"/> when complete.</returns>
+        /// <returns>An awaitable task that returns an <see cref="ApiResponse{GetRecordsResponse}"/> when complete.</returns>
         Task<ApiResponse<GetRecordsResponse>> SendAsync(Action<GetRecordsByIdsRequestBuilderOptions> options);
 
         /// <summary>

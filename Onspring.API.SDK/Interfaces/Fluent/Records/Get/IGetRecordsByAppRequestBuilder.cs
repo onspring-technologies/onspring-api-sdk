@@ -18,7 +18,7 @@ namespace Onspring.API.SDK.Interfaces.Fluent
         /// Specifies the page number to retrieve.
         /// </summary>
         /// <param name="pageNumber">The page number to retrieve. Must be greater than zero.</param>
-        /// <returns>A builder <see cref="IGetRecordsByAppPagedRequestBuilder"/> for further configuration of the request.</returns>
+        /// <returns>A <see cref="IGetRecordsByAppPagedRequestBuilder"/> for further configuration of the request.</returns>
         IGetRecordsByAppPagedRequestBuilder ForPage(int pageNumber);
 
         /// <summary>
@@ -39,14 +39,14 @@ namespace Onspring.API.SDK.Interfaces.Fluent
         /// Specifies the filter to be used to query records.
         /// </summary>
         /// <param name="filter">The filter to be used to query record</param>
-        /// <returns>A builder <see cref="IQueryRecordsByAppPagedRequestBuilder"/> for further configuration of the request.</returns>
+        /// <returns>A <see cref="IQueryRecordsByAppPagedRequestBuilder"/> for further configuration of the request.</returns>
         IQueryRecordsByAppPagedRequestBuilder WithFilter(string filter);
 
         /// <summary>
         /// Specifies the filter to be used to query records.
         /// </summary>
         /// <param name="filter">An action that constructs the filter to be used to query record</param>
-        /// <returns>A builder <see cref="IQueryRecordsByAppPagedRequestBuilder"/> for further configuration of the request.</returns>
+        /// <returns>A <see cref="IQueryRecordsByAppPagedRequestBuilder"/> for further configuration of the request.</returns>
         IQueryRecordsByAppPagedRequestBuilder WithFilter(Action<Filter> filter);
     }
 }
