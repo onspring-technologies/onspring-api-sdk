@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using Onspring.API.SDK.Models;
+using System.Collections.Generic;
 
 namespace Onspring.API.SDK.Interfaces.Fluent
 {
