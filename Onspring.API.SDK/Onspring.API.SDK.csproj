@@ -17,14 +17,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.0" />
 		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	</ItemGroup>
-
-  <ItemGroup>
-    <InternalsVisibleTo Include="$(AssemblyName).Tests" />
-  </ItemGroup>
 
 	<PropertyGroup>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
