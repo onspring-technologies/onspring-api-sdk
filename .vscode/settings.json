@@ -1,3 +1,5 @@
 {
-  "dotnet-test-explorer.testArguments": "--settings runsettings/internal.runsettings"
+  "editor.formatOnSave": true,
+  "dotnet.defaultSolution": "./Onspring.API.SDK.sln",
+  "dotnet.unitTests.runSettingsPath": "./Onspring.API.SDK.Tests/runsettings/internal.runsettings",
 }
