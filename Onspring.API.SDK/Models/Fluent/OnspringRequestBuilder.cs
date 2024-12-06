@@ -39,7 +39,7 @@ namespace Onspring.API.SDK.Models.Fluent
             return new DeleteRecordsRequestBuilder(_client);
         }
 
-        public IGetReportsByAppRequestBuilder ToGetReports()
+        public IGetReportsRequestBuilder ToGetReports()
         {
             return new GetReportsRequestBuilder(_client);
         }

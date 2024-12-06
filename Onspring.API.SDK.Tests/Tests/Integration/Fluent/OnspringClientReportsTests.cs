@@ -1,5 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Onspring.API.SDK.Enums;
+using Onspring.API.SDK.Models;
 using Onspring.API.SDK.Tests.Infrastructure;
 using Onspring.API.SDK.Tests.Infrastructure.Helpers;
 using Onspring.API.SDK.Tests.Infrastructure.Http;
@@ -22,6 +23,40 @@ namespace Onspring.API.SDK.Tests.Tests.Integration.Fluent
             var httpClient = HttpClientFactory.GetHttpClient(testConfiguration);
 
             _apiClient = new OnspringClient(testConfiguration.ApiKey, httpClient);
+        }
+
+        [TestMethod]
+        public async Task GetReportsForAppAsync()
+        {
+            var pagingRequest = new PagingRequest(1, 10);
+
+            var getResponse = await _apiClient.CreateRequest()
+                .ToGetReports()
+                .FromApp(_appIdWithReports)
+                .ForPage(pagingRequest.PageNumber)
+                .WithPageSize(pagingRequest.PageSize)
+                .SendAsync();
+            
+            AssertHelper.AssertSuccess(getResponse);
+            AssertHelper.AssertPaging(pagingRequest, getResponse.Value);
+        }
+
+        [TestMethod]
+        public async Task GetReportsForAppAsync_WithOptions()
+        {
+            var pagingRequest = new PagingRequest(1, 10);
+            
+            var getResponse = await _apiClient.CreateRequest()
+                .ToGetReports()
+                .FromApp(_appIdWithReports)
+                .SendAsync(options =>
+                {
+                    options.PageNumber = pagingRequest.PageNumber;
+                    options.PageSize = pagingRequest.PageSize;
+                });
+            
+            AssertHelper.AssertSuccess(getResponse);
+            AssertHelper.AssertPaging(pagingRequest, getResponse.Value);
         }
 
         [TestMethod]
