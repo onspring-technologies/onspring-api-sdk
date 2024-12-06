@@ -33,7 +33,7 @@ namespace Onspring.API.SDK.Interfaces.Fluent
         /// Creates a builder for retrieving reports from Onspring.
         /// </summary>
         /// <returns>A builder instance for retrieving reports that implements the <see cref="IGetReportsRequestBuilder"/> interface.</returns>
-        IGetReportsByAppRequestBuilder ToGetReports();
+        IGetReportsRequestBuilder ToGetReports();
 
         /// <summary>
         /// Creates a builder for retrieving report data from Onspring.
