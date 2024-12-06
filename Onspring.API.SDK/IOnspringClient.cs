@@ -65,6 +65,13 @@ namespace Onspring.API.SDK
         /// <summary>
         /// Gets all accessible apps.
         /// </summary>
+        /// <param name="pageSize">The number of apps to return per page.</param>
+        /// <returns>An async enumerable of <see cref="ApiResponse{T}"/> where T is <see cref="GetPagedAppsResponse"/>.</returns>
+        IAsyncEnumerable<ApiResponse<GetPagedAppsResponse>> GetAllApps(int pageSize = 50);
+
+        /// <summary>
+        /// Gets all accessible apps.
+        /// </summary>
         /// <param name="pagingRequest"></param>
         /// <returns></returns>
         Task<ApiResponse<GetPagedAppsResponse>> GetAppsAsync(PagingRequest pagingRequest = null);
@@ -75,6 +82,7 @@ namespace Onspring.API.SDK
         /// <param name="appIds"></param>
         /// <returns></returns>
         Task<ApiResponse<GetAppsResponse>> GetAppsAsync(IEnumerable<int> appIds);
+
 
         /// <summary>
         /// Gets the requested field.
@@ -182,5 +190,6 @@ namespace Onspring.API.SDK
         /// <param name="request"></param>
         /// <returns></returns>
         Task<ApiResponse<SaveRecordResponse>> SaveRecordAsync(ResultRecord request);
+
     }
 }

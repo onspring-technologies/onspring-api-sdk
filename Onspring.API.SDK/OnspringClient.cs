@@ -103,6 +103,25 @@ namespace Onspring.API.SDK
 
         #region Apps
 
+        public async IAsyncEnumerable<ApiResponse<GetPagedAppsResponse>> GetAllApps(int pageSize = 50)
+        {
+            var initialResponse = await GetAppsAsync(new PagingRequest(1, pageSize));
+
+            yield return initialResponse;
+
+            var totalPages = initialResponse.Value.TotalPages;
+            var nextPage = initialResponse.Value.PageNumber + 1;
+
+            while (nextPage <= totalPages)
+            {
+                var pagingRequest = new PagingRequest(nextPage, pageSize);
+                var response = await GetAppsAsync(pagingRequest);
+                nextPage++;
+
+                yield return response;
+            }
+        }
+
         /// <summary>
         /// Gets all accessible apps.
         /// </summary>
