@@ -33,36 +33,64 @@ namespace Onspring.API.SDK.Tests.Infrastructure
             };
         }
 
-        public static List<GetPagedAppsResponse> GetPagesOfApps(int totalApps, int pageSize)
+        public static List<GetPagedAppsResponse> GetPagesOfApps(int totalApps, int pageSize) => GetPages(
+            totalApps,
+            pageSize,
+            i => new App { Id = i, Name = "App" },
+            (pageNumber, totalPages, totalRecords, items) => new GetPagedAppsResponse
+            {
+                PageNumber = pageNumber,
+                TotalPages = totalPages,
+                TotalRecords = totalRecords,
+                Items = items
+            }
+        );
+
+        public static List<GetPagedFieldsResponse> GetPagesOfFields(int totalFields, int pageSize) => GetPages(
+            totalFields,
+            pageSize,
+            i => new Field { Id = i, Name = "Field" },
+            (pageNumber, totalPages, totalRecords, items) => new GetPagedFieldsResponse
+            {
+                PageNumber = pageNumber,
+                TotalPages = totalPages,
+                TotalRecords = totalRecords,
+                Items = items
+            }
+        );
+
+        public static List<TResponse> GetPages<TItem, TResponse>(
+            int totalItems,
+            int pageSize,
+            Func<int, TItem> createItem,
+            Func<int, int, int, List<TItem>, TResponse> createResponse
+        ) where TResponse : class
         {
-            var pages = new List<GetPagedAppsResponse>();
-            var totalPages = (int)Math.Ceiling((double)totalApps / pageSize);
+            var pages = new List<TResponse>();
+            var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
 
             for (var i = 1; i <= totalPages; i++)
             {
-                var page = new GetPagedAppsResponse
-                {
-                    PageNumber = i,
-                    TotalPages = totalPages,
-                    TotalRecords = totalApps,
-                    Items = []
-                };
+                var items = new List<TItem>();
 
                 for (var j = 1; j <= pageSize; j++)
                 {
-                    var app = new App
-                    {
-                        Id = (i - 1) * pageSize + j,
-                        Name = "App"
-                    };
+                    var itemIndex = (i - 1) * pageSize + j;
 
-                    page.Items.Add(app);
+                    if (itemIndex > totalItems)
+                    {
+                        break;
+                    }
+
+                    items.Add(createItem(itemIndex));
                 }
 
-                pages.Add(page);
+                var response = createResponse(i, totalPages, totalItems, items);
+                pages.Add(response);
             }
 
             return pages;
         }
+
     }
 }
