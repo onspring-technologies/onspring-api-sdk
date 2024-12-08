@@ -127,7 +127,7 @@ namespace Onspring.API.SDK.Tests.Tests.Integration
                     {
                         Href = testAddress,
                         Id = 1,
-                        Name = $"Test App",
+                        Name = "Test App",
                     },
                 ]
             };
@@ -143,7 +143,7 @@ namespace Onspring.API.SDK.Tests.Tests.Integration
                     {
                         Href = testAddress,
                         Id = 2,
-                        Name = $"Test App",
+                        Name = "Test App",
                     },
                 ]
             };
@@ -159,7 +159,7 @@ namespace Onspring.API.SDK.Tests.Tests.Integration
                     {
                         Href = testAddress,
                         Id = 3,
-                        Name = $"Test App",
+                        Name = "Test App",
                     },
                 ]
             };
@@ -191,6 +191,112 @@ namespace Onspring.API.SDK.Tests.Tests.Integration
             var apiClient = new OnspringClient("test", mockHttpClient);
 
             var appsResponse = apiClient.GetAllAppsAsync();
+
+            var responsePages = new List<GetPagedAppsResponse>();
+
+            await foreach (var response in appsResponse)
+            {
+                AssertHelper.AssertSuccess(response);
+                responsePages.Add(response.Value);
+            }
+
+            Assert.AreEqual(3, responsePages.Count);
+
+            Assert.AreEqual(pageOneResponse.PageNumber, responsePages[0].PageNumber);
+            Assert.AreEqual(pageOneResponse.Items.Count, responsePages[0].Items.Count);
+            Assert.AreEqual(pageOneResponse.Items[0].Id, responsePages[0].Items[0].Id);
+
+            Assert.AreEqual(pageTwoResponse.PageNumber, responsePages[1].PageNumber);
+            Assert.AreEqual(pageTwoResponse.Items.Count, responsePages[1].Items.Count);
+            Assert.AreEqual(pageTwoResponse.Items[0].Id, responsePages[1].Items[0].Id);
+
+            Assert.AreEqual(pageThreeResponse.PageNumber, responsePages[2].PageNumber);
+            Assert.AreEqual(pageThreeResponse.Items.Count, responsePages[2].Items.Count);
+            Assert.AreEqual(pageThreeResponse.Items[0].Id, responsePages[2].Items[0].Id);
+        }
+
+        [TestMethod]
+        public async Task GetAllAppsAsync_WhenUsingSpecificPageSize_ReturnsAllApps()
+        {
+            var testAddress = "https://localhost";
+
+            var mockHttp = new MockHttpMessageHandler();
+
+            var pageOneResponse = new GetPagedAppsResponse
+            {
+                PageNumber = 1,
+                TotalPages = 3,
+                TotalRecords = 3,
+                Items =
+                [
+                    new()
+                    {
+                        Href = testAddress,
+                        Id = 1,
+                        Name = "Test App",
+                    },
+                ]
+            };
+
+            var pageTwoResponse = new GetPagedAppsResponse
+            {
+                PageNumber = 2,
+                TotalPages = 3,
+                TotalRecords = 3,
+                Items =
+                [
+                    new()
+                    {
+                        Href = testAddress,
+                        Id = 2,
+                        Name = "Test App",
+                    },
+                ]
+            };
+
+            var pageThreeResponse = new GetPagedAppsResponse
+            {
+                PageNumber = 3,
+                TotalPages = 3,
+                TotalRecords = 3,
+                Items =
+                [
+                    new()
+                    {
+                        Href = testAddress,
+                        Id = 3,
+                        Name = "Test App",
+                    },
+                ]
+            };
+
+            mockHttp
+                .When(HttpMethod.Get, $"{testAddress}/apps?PageNumber=1&PageSize=1")
+                .Respond(
+                    "application/json",
+                    JsonSerializer.Serialize(pageOneResponse)
+                );
+
+            mockHttp
+                .When(HttpMethod.Get, $"{testAddress}/apps?PageNumber=2&PageSize=1")
+                .Respond(
+                    "application/json",
+                    JsonSerializer.Serialize(pageTwoResponse)
+                );
+
+            mockHttp
+                .When(HttpMethod.Get, $"{testAddress}/apps?PageNumber=3&PageSize=1")
+                .Respond(
+                    "application/json",
+                    JsonSerializer.Serialize(pageThreeResponse)
+                );
+
+            var mockHttpClient = mockHttp.ToHttpClient();
+            mockHttpClient.BaseAddress = new(testAddress);
+
+            var apiClient = new OnspringClient("test", mockHttpClient);
+
+            var appsResponse = apiClient.GetAllAppsAsync(1);
 
             var responsePages = new List<GetPagedAppsResponse>();
 
