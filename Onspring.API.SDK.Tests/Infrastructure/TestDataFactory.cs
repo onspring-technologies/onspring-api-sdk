@@ -32,5 +32,37 @@ namespace Onspring.API.SDK.Tests.Infrastructure
                     }
             };
         }
+
+        public static List<GetPagedAppsResponse> GetPagesOfApps(int totalApps, int pageSize)
+        {
+            var pages = new List<GetPagedAppsResponse>();
+            var totalPages = (int)Math.Ceiling((double)totalApps / pageSize);
+
+            for (var i = 1; i <= totalPages; i++)
+            {
+                var page = new GetPagedAppsResponse
+                {
+                    PageNumber = i,
+                    TotalPages = totalPages,
+                    TotalRecords = totalApps,
+                    Items = []
+                };
+
+                for (var j = 1; j <= pageSize; j++)
+                {
+                    var app = new App
+                    {
+                        Id = (i - 1) * pageSize + j,
+                        Name = "App"
+                    };
+
+                    page.Items.Add(app);
+                }
+
+                pages.Add(page);
+            }
+
+            return pages;
+        }
     }
 }
