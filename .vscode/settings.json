@@ -2,4 +2,8 @@
   "editor.formatOnSave": true,
   "dotnet.defaultSolution": "./Onspring.API.SDK.sln",
   "dotnet.unitTests.runSettingsPath": "./Onspring.API.SDK.Tests/runsettings/internal.runsettings",
+  "cSpell.words": [
+    "netstandard",
+    "Szalay"
+  ],
 }
