@@ -117,6 +117,5 @@ namespace Onspring.API.SDK.Tests.Infrastructure
 
             return pages;
         }
-
     }
 }
