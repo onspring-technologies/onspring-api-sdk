@@ -104,7 +104,7 @@ namespace Onspring.API.SDK
         #region Apps
 
         /// <inheritdoc />
-        public async IAsyncEnumerable<ApiResponse<GetPagedAppsResponse>> GetAllApps(int pageSize = 50)
+        public async IAsyncEnumerable<ApiResponse<GetPagedAppsResponse>> GetAllAppsAsync(int pageSize = 50)
         {
             var initialResponse = await GetAppsAsync(new PagingRequest(1, pageSize));
 

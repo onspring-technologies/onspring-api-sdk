@@ -67,7 +67,7 @@ namespace Onspring.API.SDK
         /// </summary>
         /// <param name="pageSize">The number of apps to return per page.</param>
         /// <returns>An async enumerable of <see cref="ApiResponse{T}"/> where T is <see cref="GetPagedAppsResponse"/>.</returns>
-        IAsyncEnumerable<ApiResponse<GetPagedAppsResponse>> GetAllApps(int pageSize = 50);
+        IAsyncEnumerable<ApiResponse<GetPagedAppsResponse>> GetAllAppsAsync(int pageSize = 50);
 
         /// <summary>
         /// Gets all accessible apps.

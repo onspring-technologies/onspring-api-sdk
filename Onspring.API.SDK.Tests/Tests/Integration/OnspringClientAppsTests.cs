@@ -190,7 +190,7 @@ namespace Onspring.API.SDK.Tests.Tests.Integration
 
             var apiClient = new OnspringClient("test", mockHttpClient);
 
-            var appsResponse = apiClient.GetAllApps();
+            var appsResponse = apiClient.GetAllAppsAsync();
 
             var responsePages = new List<GetPagedAppsResponse>();
 
