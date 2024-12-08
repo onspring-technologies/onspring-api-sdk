@@ -114,76 +114,21 @@ namespace Onspring.API.SDK.Tests.Tests.Integration
         {
             var testAddress = "https://localhost";
 
+            var numberOfApps = 3;
+            var pageSize = 50;
+            var pages = TestDataFactory.GetPagesOfApps(numberOfApps, pageSize);
+
             var mockHttp = new MockHttpMessageHandler();
 
-            var pageOneResponse = new GetPagedAppsResponse
+            foreach (var page in pages)
             {
-                PageNumber = 1,
-                TotalPages = 3,
-                TotalRecords = 3,
-                Items =
-                [
-                    new()
-                    {
-                        Href = testAddress,
-                        Id = 1,
-                        Name = "Test App",
-                    },
-                ]
-            };
-
-            var pageTwoResponse = new GetPagedAppsResponse
-            {
-                PageNumber = 2,
-                TotalPages = 3,
-                TotalRecords = 3,
-                Items =
-                [
-                    new()
-                    {
-                        Href = testAddress,
-                        Id = 2,
-                        Name = "Test App",
-                    },
-                ]
-            };
-
-            var pageThreeResponse = new GetPagedAppsResponse
-            {
-                PageNumber = 3,
-                TotalPages = 3,
-                TotalRecords = 3,
-                Items =
-                [
-                    new()
-                    {
-                        Href = testAddress,
-                        Id = 3,
-                        Name = "Test App",
-                    },
-                ]
-            };
-
-            mockHttp
-                .When(HttpMethod.Get, $"{testAddress}/apps?PageNumber=1&PageSize=50")
-                .Respond(
-                    "application/json",
-                    JsonSerializer.Serialize(pageOneResponse)
-                );
-
-            mockHttp
-                .When(HttpMethod.Get, $"{testAddress}/apps?PageNumber=2&PageSize=50")
-                .Respond(
-                    "application/json",
-                    JsonSerializer.Serialize(pageTwoResponse)
-                );
-
-            mockHttp
-                .When(HttpMethod.Get, $"{testAddress}/apps?PageNumber=3&PageSize=50")
-                .Respond(
-                    "application/json",
-                    JsonSerializer.Serialize(pageThreeResponse)
-                );
+                mockHttp
+                    .When(HttpMethod.Get, $"{testAddress}/apps?PageNumber={page.PageNumber}&PageSize={pageSize}")
+                    .Respond(
+                        "application/json",
+                        JsonSerializer.Serialize(page)
+                    );
+            }
 
             var mockHttpClient = mockHttp.ToHttpClient();
             mockHttpClient.BaseAddress = new(testAddress);
@@ -200,19 +145,14 @@ namespace Onspring.API.SDK.Tests.Tests.Integration
                 responsePages.Add(response.Value);
             }
 
-            Assert.AreEqual(3, responsePages.Count);
+            foreach (var page in pages)
+            {
+                var responsePage = responsePages.Single(x => x.PageNumber == page.PageNumber);
 
-            Assert.AreEqual(pageOneResponse.PageNumber, responsePages[0].PageNumber);
-            Assert.AreEqual(pageOneResponse.Items.Count, responsePages[0].Items.Count);
-            Assert.AreEqual(pageOneResponse.Items[0].Id, responsePages[0].Items[0].Id);
-
-            Assert.AreEqual(pageTwoResponse.PageNumber, responsePages[1].PageNumber);
-            Assert.AreEqual(pageTwoResponse.Items.Count, responsePages[1].Items.Count);
-            Assert.AreEqual(pageTwoResponse.Items[0].Id, responsePages[1].Items[0].Id);
-
-            Assert.AreEqual(pageThreeResponse.PageNumber, responsePages[2].PageNumber);
-            Assert.AreEqual(pageThreeResponse.Items.Count, responsePages[2].Items.Count);
-            Assert.AreEqual(pageThreeResponse.Items[0].Id, responsePages[2].Items[0].Id);
+                Assert.AreEqual(page.PageNumber, responsePage.PageNumber);
+                Assert.AreEqual(page.Items.Count, responsePage.Items.Count);
+                Assert.AreEqual(page.Items[0].Id, responsePage.Items[0].Id);
+            }
         }
 
         [TestMethod]
@@ -222,81 +162,26 @@ namespace Onspring.API.SDK.Tests.Tests.Integration
 
             var mockHttp = new MockHttpMessageHandler();
 
-            var pageOneResponse = new GetPagedAppsResponse
+            var numberOfApps = 3;
+            var pageSize = 1;
+            var pages = TestDataFactory.GetPagesOfApps(numberOfApps, pageSize);
+
+            foreach (var page in pages)
             {
-                PageNumber = 1,
-                TotalPages = 3,
-                TotalRecords = 3,
-                Items =
-                [
-                    new()
-                    {
-                        Href = testAddress,
-                        Id = 1,
-                        Name = "Test App",
-                    },
-                ]
-            };
-
-            var pageTwoResponse = new GetPagedAppsResponse
-            {
-                PageNumber = 2,
-                TotalPages = 3,
-                TotalRecords = 3,
-                Items =
-                [
-                    new()
-                    {
-                        Href = testAddress,
-                        Id = 2,
-                        Name = "Test App",
-                    },
-                ]
-            };
-
-            var pageThreeResponse = new GetPagedAppsResponse
-            {
-                PageNumber = 3,
-                TotalPages = 3,
-                TotalRecords = 3,
-                Items =
-                [
-                    new()
-                    {
-                        Href = testAddress,
-                        Id = 3,
-                        Name = "Test App",
-                    },
-                ]
-            };
-
-            mockHttp
-                .When(HttpMethod.Get, $"{testAddress}/apps?PageNumber=1&PageSize=1")
-                .Respond(
-                    "application/json",
-                    JsonSerializer.Serialize(pageOneResponse)
-                );
-
-            mockHttp
-                .When(HttpMethod.Get, $"{testAddress}/apps?PageNumber=2&PageSize=1")
-                .Respond(
-                    "application/json",
-                    JsonSerializer.Serialize(pageTwoResponse)
-                );
-
-            mockHttp
-                .When(HttpMethod.Get, $"{testAddress}/apps?PageNumber=3&PageSize=1")
-                .Respond(
-                    "application/json",
-                    JsonSerializer.Serialize(pageThreeResponse)
-                );
+                mockHttp
+                    .When(HttpMethod.Get, $"{testAddress}/apps?PageNumber={page.PageNumber}&PageSize={pageSize}")
+                    .Respond(
+                        "application/json",
+                        JsonSerializer.Serialize(page)
+                    );
+            }
 
             var mockHttpClient = mockHttp.ToHttpClient();
             mockHttpClient.BaseAddress = new(testAddress);
 
             var apiClient = new OnspringClient("test", mockHttpClient);
 
-            var appsResponse = apiClient.GetAllAppsAsync(1);
+            var appsResponse = apiClient.GetAllAppsAsync(pageSize);
 
             var responsePages = new List<GetPagedAppsResponse>();
 
@@ -306,19 +191,14 @@ namespace Onspring.API.SDK.Tests.Tests.Integration
                 responsePages.Add(response.Value);
             }
 
-            Assert.AreEqual(3, responsePages.Count);
+            foreach (var page in pages)
+            {
+                var responsePage = responsePages.Single(x => x.PageNumber == page.PageNumber);
 
-            Assert.AreEqual(pageOneResponse.PageNumber, responsePages[0].PageNumber);
-            Assert.AreEqual(pageOneResponse.Items.Count, responsePages[0].Items.Count);
-            Assert.AreEqual(pageOneResponse.Items[0].Id, responsePages[0].Items[0].Id);
-
-            Assert.AreEqual(pageTwoResponse.PageNumber, responsePages[1].PageNumber);
-            Assert.AreEqual(pageTwoResponse.Items.Count, responsePages[1].Items.Count);
-            Assert.AreEqual(pageTwoResponse.Items[0].Id, responsePages[1].Items[0].Id);
-
-            Assert.AreEqual(pageThreeResponse.PageNumber, responsePages[2].PageNumber);
-            Assert.AreEqual(pageThreeResponse.Items.Count, responsePages[2].Items.Count);
-            Assert.AreEqual(pageThreeResponse.Items[0].Id, responsePages[2].Items[0].Id);
+                Assert.AreEqual(page.PageNumber, responsePage.PageNumber);
+                Assert.AreEqual(page.Items.Count, responsePage.Items.Count);
+                Assert.AreEqual(page.Items[0].Id, responsePage.Items[0].Id);
+            }
         }
     }
 }
