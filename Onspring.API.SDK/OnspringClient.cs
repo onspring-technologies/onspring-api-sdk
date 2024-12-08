@@ -106,19 +106,8 @@ namespace Onspring.API.SDK
         /// <inheritdoc />
         public async IAsyncEnumerable<ApiResponse<GetPagedAppsResponse>> GetAllAppsAsync(int pageSize = 50)
         {
-            var initialResponse = await GetAppsAsync(new PagingRequest(1, pageSize));
-
-            yield return initialResponse;
-
-            var totalPages = initialResponse.Value.TotalPages;
-            var nextPage = initialResponse.Value.PageNumber + 1;
-
-            while (nextPage <= totalPages)
+            await foreach (var response in GetAllPagesAsync(page => GetAppsAsync(new PagingRequest(page, pageSize))))
             {
-                var pagingRequest = new PagingRequest(nextPage, pageSize);
-                var response = await GetAppsAsync(pagingRequest);
-                nextPage++;
-
                 yield return response;
             }
         }
@@ -164,6 +153,15 @@ namespace Onspring.API.SDK
         // ------------------------------------ Fields ------------------------------------
 
         #region Fields
+
+        /// <inheritdoc />
+        public async IAsyncEnumerable<ApiResponse<GetPagedFieldsResponse>> GetAllFieldsForAppAsync(int appId, int pageSize = 50)
+        {
+            await foreach (var response in GetAllPagesAsync(page => GetFieldsForAppAsync(appId, new PagingRequest(page, pageSize))))
+            {
+                yield return response;
+            }
+        }
 
         /// <summary>
         /// Gets the requested field. Returns null if field could not be found.
@@ -484,6 +482,25 @@ namespace Onspring.API.SDK
         #endregion
 
         // ------------------------------------ Client internals ------------------------------------
+
+        // Common method to use for methods that return paged resposnes
+        private async IAsyncEnumerable<ApiResponse<T>> GetAllPagesAsync<T>(Func<int, Task<ApiResponse<T>>> callback) where T : PagedResponse
+        {
+            var initialResponse = await callback(1);
+
+            yield return initialResponse;
+
+            var totalPages = initialResponse.Value.TotalPages;
+            var nextPage = initialResponse.Value.PageNumber + 1;
+
+            while (nextPage <= totalPages)
+            {
+                var response = await callback(nextPage);
+                nextPage++;
+
+                yield return response;
+            }
+        }
 
         /// <summary>
         /// Performs an HTTP DELETE request to the <paramref name="path"/> and adds an API Key header.
