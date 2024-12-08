@@ -483,7 +483,12 @@ namespace Onspring.API.SDK
 
         // ------------------------------------ Client internals ------------------------------------
 
-        // Common method to use for methods that return paged resposnes
+        /// <summary>
+        /// Gets all pages of a paged response.
+        /// </summary>
+        /// <typeparam name="T">Where T is a paged response.</typeparam>
+        /// <param name="callback">The callback to get a page of the response.</param>
+        /// <returns>An async enumerable of the paged response.</returns>
         private async IAsyncEnumerable<ApiResponse<T>> GetAllPagesAsync<T>(Func<int, Task<ApiResponse<T>>> callback) where T : PagedResponse
         {
             var initialResponse = await callback(1);
