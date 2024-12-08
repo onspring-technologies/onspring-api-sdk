@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+		<LangVersion>8.0</LangVersion>
 		<AssemblyTitle>Onspring.API.SDK</AssemblyTitle>
 		<Company>Onspring Technologies</Company>
 		<Product>Onspring.API.SDK</Product>
