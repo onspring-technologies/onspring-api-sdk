@@ -92,6 +92,13 @@ namespace Onspring.API.SDK
         Task<ApiResponse<Field>> GetFieldAsync(int fieldId);
 
         /// <summary>
+        /// Gets the requested fields. 
+        /// </summary>
+        /// <param name="fieldIds"></param>
+        /// <returns></returns>
+        Task<ApiResponse<GetFieldsResponse>> GetFieldsAsync(IEnumerable<int> fieldIds);
+
+        /// <summary>
         /// Gets all accessible fields.
         /// </summary>
         /// <param name="appId">The identifier of the app to get fields for.</param>
@@ -99,12 +106,6 @@ namespace Onspring.API.SDK
         /// <returns>An async enumerable of <see cref="ApiResponse{T}"/> where T is <see cref="GetPagedFieldsResponse"/>.</returns>
         IAsyncEnumerable<ApiResponse<GetPagedFieldsResponse>> GetAllFieldsForAppAsync(int appId, int pageSize = 50);
 
-        /// <summary>
-        /// Gets the requested fields. 
-        /// </summary>
-        /// <param name="fieldIds"></param>
-        /// <returns></returns>
-        Task<ApiResponse<GetFieldsResponse>> GetFieldsAsync(IEnumerable<int> fieldIds);
 
         /// <summary>
         /// Gets the fields associated to the <paramref name="appId"/>. 
