@@ -46,7 +46,7 @@ namespace Onspring.API.SDK.Tests.Tests.Integration
         }
 
         [TestMethod]
-        public async Task GetAllReportsAsync_WhenUsingDefaultPageSize_ReturnsAllReports()
+        public async Task GetAllReportsForAppAsync_WhenUsingDefaultPageSize_ReturnsAllReports()
         {
             var testAddress = "https://localhost";
 
@@ -92,7 +92,7 @@ namespace Onspring.API.SDK.Tests.Tests.Integration
         }
 
         [TestMethod]
-        public async Task GetAllReportsAsync_WhenUsingSpecificPageSize_ReturnsAllReports()
+        public async Task GetAllReportsForAppAsync_WhenUsingSpecificPageSize_ReturnsAllReports()
         {
             var testAddress = "https://localhost";
 
