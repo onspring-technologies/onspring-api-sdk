@@ -171,6 +171,14 @@ namespace Onspring.API.SDK
         Task<ApiResponse<GetReportsForAppResponse>> GetReportsForAppAsync(int appId, PagingRequest pagingRequest = null);
 
         /// <summary>
+        /// Gets all reports associated to the <paramref name="appId"/>.
+        /// </summary>
+        /// <param name="appId">The identifier of the app to get reports for.</param>
+        /// <param name="pageSize">The number of reports to return per page.</param>
+        /// <returns>An async enumerable of <see cref="ApiResponse{T}"/> where T is <see cref="GetReportsForAppResponse"/>.</returns>
+        IAsyncEnumerable<ApiResponse<GetReportsForAppResponse>> GetAllReportsForAppAsync(int appId, int pageSize = 50);
+
+        /// <summary>
         /// Queries records.
         /// </summary>
         /// <param name="request"></param>
