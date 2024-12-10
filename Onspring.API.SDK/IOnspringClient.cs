@@ -154,6 +154,13 @@ namespace Onspring.API.SDK
         Task<ApiResponse<GetPagedRecordsResponse>> GetRecordsForAppAsync(GetRecordsByAppRequest request);
 
         /// <summary>
+        /// Gets all records associated to an app.
+        /// </summary>
+        /// <param name="request">An instance of <see cref="GetRecordsByAppRequest"/>.</param>
+        /// <returns>An async enumerable of <see cref="ApiResponse{T}"/> where T is <see cref="GetPagedRecordsResponse"/>.</returns>
+        IAsyncEnumerable<ApiResponse<GetPagedRecordsResponse>> GetAllRecordsForAppAsync(GetRecordsByAppRequest request);
+
+        /// <summary>
         /// Gets the report for <paramref name="reportId"/>.
         /// </summary>
         /// <param name="reportId"></param>
