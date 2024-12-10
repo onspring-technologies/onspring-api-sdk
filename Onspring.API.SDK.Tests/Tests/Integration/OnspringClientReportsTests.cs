@@ -46,13 +46,13 @@ namespace Onspring.API.SDK.Tests.Tests.Integration
         }
 
         [TestMethod]
-        public async Task GetAllReportsAsync_WhenUsingDefaultPageSize_ReturnsAllFields()
+        public async Task GetAllReportsAsync_WhenUsingDefaultPageSize_ReturnsAllReports()
         {
             var testAddress = "https://localhost";
 
             var numberOfReports = 3;
             var pageSize = 50;
-            var pages = TestDataFactory.GetPagesOfFields(numberOfReports, pageSize);
+            var pages = TestDataFactory.GetPagesOfReports(numberOfReports, pageSize);
 
             var mockHttp = new MockHttpMessageHandler();
 
@@ -71,11 +71,11 @@ namespace Onspring.API.SDK.Tests.Tests.Integration
 
             var apiClient = new OnspringClient("test", mockHttpClient);
 
-            var fieldsResponse = apiClient.GetAllReportsForAppAsync(1);
+            var reportsResponse = apiClient.GetAllReportsForAppAsync(1);
 
             var responsePages = new List<GetReportsForAppResponse>();
 
-            await foreach (var response in fieldsResponse)
+            await foreach (var response in reportsResponse)
             {
                 AssertHelper.AssertSuccess(response);
                 responsePages.Add(response.Value);
@@ -92,7 +92,7 @@ namespace Onspring.API.SDK.Tests.Tests.Integration
         }
 
         [TestMethod]
-        public async Task GetAllReportsAsync_WhenUsingSpecificPageSize_ReturnsAllFields()
+        public async Task GetAllReportsAsync_WhenUsingSpecificPageSize_ReturnsAllReports()
         {
             var testAddress = "https://localhost";
 
@@ -117,11 +117,11 @@ namespace Onspring.API.SDK.Tests.Tests.Integration
 
             var apiClient = new OnspringClient("test", mockHttpClient);
 
-            var fieldsResponse = apiClient.GetAllReportsForAppAsync(appId: 1, pageSize: 1);
+            var reportsResponse = apiClient.GetAllReportsForAppAsync(appId: 1, pageSize: 1);
 
             var responsePages = new List<GetReportsForAppResponse>();
 
-            await foreach (var response in fieldsResponse)
+            await foreach (var response in reportsResponse)
             {
                 AssertHelper.AssertSuccess(response);
                 responsePages.Add(response.Value);
