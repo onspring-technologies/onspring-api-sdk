@@ -361,6 +361,21 @@ namespace Onspring.API.SDK
             return apiResponse;
         }
 
+        /// <inheritdoc/>
+        public async IAsyncEnumerable<ApiResponse<GetPagedRecordsResponse>> GetAllRecordsForAppAsync(GetRecordsByAppRequest request)
+        {
+            var callback = new Func<int, Task<ApiResponse<GetPagedRecordsResponse>>>(page =>
+            {
+                request.PagingRequest = new PagingRequest(page, request.PagingRequest?.PageSize ?? 50);
+                return GetRecordsForAppAsync(request);
+            });
+
+            await foreach (var response in GetAllPagesAsync(callback))
+            {
+                yield return response;
+            }
+        }
+
         /// <summary>
         /// Gets a record by its identifier.
         /// </summary>
