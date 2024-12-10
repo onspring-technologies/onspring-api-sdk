@@ -376,6 +376,15 @@ namespace Onspring.API.SDK
             }
         }
 
+        /// <inheritdoc/>
+        public async IAsyncEnumerable<ApiResponse<GetPagedRecordsResponse>> GetAllRecordsByQueryAsync(QueryRecordsRequest request, int pageSize = 50)
+        {
+            await foreach (var response in GetAllPagesAsync(page => QueryRecordsAsync(request, new PagingRequest(page, pageSize))))
+            {
+                yield return response;
+            }
+        }
+
         /// <summary>
         /// Gets a record by its identifier.
         /// </summary>
