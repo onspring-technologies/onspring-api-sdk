@@ -88,5 +88,10 @@ namespace Onspring.API.SDK.Models.Fluent
         {
             return new GetAppsRequestBuilder(_client);
         }
+
+        public IPagedRequestBuilder ToGetAllPages()
+        {
+            return new PagedRequestBuilder(_client);
+        }
     }
 }

@@ -55,5 +55,19 @@ namespace Onspring.API.SDK.Tests.Tests.Integration.Fluent
 
             AssertHelper.AssertSuccess(apiResponse);
         }
+
+        [TestMethod]
+        public async Task GetAllApps()
+        {
+            var apiResponse = await _apiClient
+                .CreateRequest()
+                .ToGetAllPages()
+                .OfApps()
+                .SendAsync(); // TODO: Need to refactor to separate class and interface
+                              // so that we can call the GetAllAppsAsync method as
+                              // the send async implementation
+
+            AssertHelper.AssertSuccess(apiResponse);
+        }
     }
 }
