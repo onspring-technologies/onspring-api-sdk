@@ -59,6 +59,19 @@ namespace Onspring.API.SDK.Tests.Infrastructure
             }
         );
 
+        public static List<GetReportsForAppResponse> GetPagesOfReports(int totalReports, int pageSize) => GetPages(
+            totalReports,
+            pageSize,
+            i => new Report { Id = i, Name = "Report" },
+            (pageNumber, totalPages, totalRecords, items) => new GetReportsForAppResponse
+            {
+                PageNumber = pageNumber,
+                TotalPages = totalPages,
+                TotalRecords = totalRecords,
+                Items = items
+            }
+        );
+
         public static List<TResponse> GetPages<TItem, TResponse>(
             int totalItems,
             int pageSize,

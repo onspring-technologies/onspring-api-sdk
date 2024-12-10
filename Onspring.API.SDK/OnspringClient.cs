@@ -479,6 +479,15 @@ namespace Onspring.API.SDK
             return getReportsResponse;
         }
 
+        /// <inheritdoc/>
+        public async IAsyncEnumerable<ApiResponse<GetReportsForAppResponse>> GetAllReportsForAppAsync(int appId, int pageSize = 50)
+        {
+            await foreach (var response in GetAllPagesAsync(page => GetReportsForAppAsync(appId, new PagingRequest(page, pageSize))))
+            {
+                yield return response;
+            }
+        }
+
         #endregion
 
         // ------------------------------------ Client internals ------------------------------------
