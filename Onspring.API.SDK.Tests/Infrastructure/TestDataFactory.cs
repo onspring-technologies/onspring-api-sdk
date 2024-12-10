@@ -72,7 +72,6 @@ namespace Onspring.API.SDK.Tests.Infrastructure
             }
         );
 
-<<<<<<< HEAD
         public static List<GetPagedRecordsResponse> GetPagesOfRecords(int totalRecords, int pageSize) => GetPages(
             totalRecords,
             pageSize,
@@ -86,8 +85,6 @@ namespace Onspring.API.SDK.Tests.Infrastructure
             }
         );
 
-=======
->>>>>>> 92fd3f5 (feat: add GetAllReportsForAppAsync method)
         public static List<TResponse> GetPages<TItem, TResponse>(
             int totalItems,
             int pageSize,
