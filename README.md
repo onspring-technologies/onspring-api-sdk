@@ -16,7 +16,7 @@ In order to successfully interact with the Onspring API, you must use an API key
 2. On the list page, add a new API Key (requires Create permissions) or click an existing API Key to view its details.
 3. On the details page for an API Key, expand the **Developer Information** section. Copy the **X-ApiKey Header** value from this section.
 
-#### Important
+### Important
 
 - An API Key must have a **Status** of _Enabled_ (available on the details page) in order to be used.
 - Each API Key has an associated **Role** that controls the permissions for requests made using that API Key. An Onspring administrator may configure those permissions as they would any other Role in Onspring. If the API Key does not have sufficient permissions to perform the requested action, an error will be returned.
@@ -114,7 +114,7 @@ bool canConnect = await onspringClient.CanConnectAsync();
 
 Returns a paged collection of apps/surveys, which can be paged through using the `Onspring.API.SDK.Models.PagingRequest`.
 
-##### Basic
+#### Basic
 
 ```C#
 var apps = await onspringClient.GetAppsAsync();
@@ -124,7 +124,7 @@ foreach (App app in apps)
 }
 ```
 
-##### Paged
+#### Paged
 
 Async and synchronous methods allow use of `Onspring.API.SDK.Models.PagingRequest`.
 
@@ -376,6 +376,45 @@ using (var result = getFileResponse.Value)
     using (var fileStream = new FileStream($"C:\Users\Public\Documents\{result.FileName}", FileMode.Create))
     {
         result.Stream.CopyTo(fileStream);
+    }
+}
+```
+
+### Pagination Done For You
+
+There are several methods on the `IOnspringClient` that return a paged collection of items. These include:
+
+- `GetAppsAsync`
+- `GetFieldsForAppAsync`
+- `GetReportsForAppAsync`
+- `QueryRecordsAsync`
+- `GetRecordsForAppAsync`
+
+Using these methods allows the caller to page through the results, but requires the caller to handle the pagination process themselves. This can feel like a chore, given that in the vast majority of cases the caller will want to iterate through all the pages. In order to improve developer experience, the SDK provides a set of wrapper methods that handle the pagination process for you by leveraging the `IAsyncEnumerable<T>` interface. These methods accept all the same parameters as the methods they wrap, but when it comes to paging they only allow you to control the size of each page and they internally can moving from the first page to the last for you. These methods include:
+
+- `GetAllAppsAsync`
+- `GetAllFieldsForAppAsync`
+- `GetAllReportsForAppAsync`
+- `GetAllRecordsByQueryAsync`
+- `GetAllRecordsForAppAsync`
+
+These methods return an `IAsyncEnumerable<T>` that allows the caller to iterate through all pages. The caller can use the `await foreach` construct to iterate through the items. The value of each iteration is an `ApiResponse<T>` where `T` is the response that was received for that page. The following example demonstrates how to use these methods:
+
+```C#
+var appsResponses = onspringClient.GetAllAppsAsync();
+
+await foreach (var response in appsResponses)
+{
+    if (response.IsSuccessful)
+    {
+        foreach (var app in response.Value.Items)
+        {
+            Console.WriteLine($"{app.Id}, {app.Name}");
+        }
+    }
+    else
+    {
+        Console.WriteLine($"Error: {response.Message}");
     }
 }
 ```
