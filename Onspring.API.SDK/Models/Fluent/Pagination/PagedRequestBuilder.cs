@@ -11,9 +11,9 @@ namespace Onspring.API.SDK.Models.Fluent
             _client = client;
         }
 
-        public IGetPagedAppsRequestBuilder OfApps()
+        public IGetAllAppsPagesRequestBuilder OfApps()
         {
-            return new GetPagedAppsRequestBuilder(_client, 1);
+            return new GetAllAppsPagesRequestBuilder(_client);
         }
     }
 }
