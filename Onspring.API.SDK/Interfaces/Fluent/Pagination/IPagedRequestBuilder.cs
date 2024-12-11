@@ -5,6 +5,6 @@ namespace Onspring.API.SDK.Interfaces.Fluent
 {
     public interface IPagedRequestBuilder
     {
-        IGetPagedAppsRequestBuilder OfApps();
+        IGetAllAppsPagesRequestBuilder OfApps();
     }
 }
