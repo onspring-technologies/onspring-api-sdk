@@ -82,16 +82,16 @@ namespace Onspring.API.SDK.Models.Fluent
             }
         }
 
-        public async IAsyncEnumerable<ApiResponse<GetPagedRecordsResponse>> SendAsync(Action<GetAllRecordsPagesByQueryRequestBuilderOptions> options)
+        public async IAsyncEnumerable<ApiResponse<GetPagedRecordsResponse>> SendAsync(Action<GetAllRecordsPagesByAppRequestBuilderOptions> options)
         {
-            var opts = new GetAllRecordsPagesByQueryRequestBuilderOptions();
+            var opts = new GetAllRecordsPagesByAppRequestBuilderOptions();
             options.Invoke(opts);
 
             var request = new QueryRecordsRequest
             {
                 AppId = AppId,
-                DataFormat = DataFormat,
-                FieldIds = FieldIds.ToList(),
+                DataFormat = opts.DataFormat,
+                FieldIds = opts.FieldIds.ToList(),
                 Filter = Filter
             };
 
