@@ -15,5 +15,15 @@ namespace Onspring.API.SDK.Models.Fluent
         {
             return new GetAllAppsPagesRequestBuilder(_client);
         }
+
+        public IGetAllFieldsPagesRequestBuilder OfFields()
+        {
+            return new GetAllFieldsPagesRequestBuilder(_client);
+        }
+
+        public IGetAllRecordsPagesRequestBuilder OfRecords()
+        {
+            return new GetAllRecordsPagesRequestBuilder(_client);
+        }
     }
 }
