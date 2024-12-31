@@ -3,6 +3,9 @@ using System.Threading.Tasks;
 
 namespace Onspring.API.SDK.Interfaces.Fluent
 {
+    /// <summary>
+    /// Represents a request builder for getting paged apps.
+    /// </summary>
     public interface IGetPagedAppsRequestBuilder
     {
         /// <summary>

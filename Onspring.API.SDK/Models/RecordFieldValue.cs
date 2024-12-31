@@ -28,7 +28,7 @@ namespace Onspring.API.SDK.Models
         public int FieldId { get; set; }
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public class RecordFieldValue<T> : RecordFieldValue
     {
         /// <summary>
