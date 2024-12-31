@@ -65,7 +65,7 @@ namespace Onspring.API.SDK.Tests.Tests.Integration.Fluent
         }
 
         [TestMethod]
-        public async Task GetAllApps()
+        public async Task GetAllApps_WhenUsingDefaultPageSize_ItShouldReturnAllPages()
         {
             var testAddress = "https://localhost";
 
@@ -95,6 +95,56 @@ namespace Onspring.API.SDK.Tests.Tests.Integration.Fluent
                 .ToGetAllPages()
                 .OfApps()
                 .SendAsync();
+
+            var responsePages = new List<GetPagedAppsResponse>();
+
+            await foreach (var response in appsResponses)
+            {
+                AssertHelper.AssertSuccess(response);
+                responsePages.Add(response.Value);
+            }
+
+            foreach (var page in pages)
+            {
+                var responsePage = responsePages.Single(x => x.PageNumber == page.PageNumber);
+
+                Assert.AreEqual(page.PageNumber, responsePage.PageNumber);
+                Assert.AreEqual(page.Items.Count, responsePage.Items.Count);
+                Assert.AreEqual(page.Items[0].Id, responsePage.Items[0].Id);
+            }
+        }
+
+        [TestMethod]
+        public async Task GetAllApps_WhenUsingCustomPageSize_ItShouldReturnAllPages()
+        {
+            var testAddress = "https://localhost";
+
+            var numberOfApps = 3;
+            var pageSize = 1;
+            var pages = TestDataFactory.GetPagesOfApps(numberOfApps, pageSize);
+
+            var mockHttp = new MockHttpMessageHandler();
+
+            foreach (var page in pages)
+            {
+                mockHttp
+                    .When(HttpMethod.Get, $"{testAddress}/apps?PageNumber={page.PageNumber}&PageSize={pageSize}")
+                    .Respond(
+                        "application/json",
+                        JsonSerializer.Serialize(page)
+                    );
+            }
+
+            var mockHttpClient = mockHttp.ToHttpClient();
+            mockHttpClient.BaseAddress = new(testAddress);
+
+            var apiClient = new OnspringClient("test", mockHttpClient);
+
+            var appsResponses = apiClient
+                .CreateRequest()
+                .ToGetAllPages()
+                .OfApps()
+                .SendAsync(o => o.PageSize = pageSize);
 
             var responsePages = new List<GetPagedAppsResponse>();
 
