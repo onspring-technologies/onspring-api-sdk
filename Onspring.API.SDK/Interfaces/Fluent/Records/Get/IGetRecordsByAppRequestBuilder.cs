@@ -25,14 +25,14 @@ namespace Onspring.API.SDK.Interfaces.Fluent
         /// Specifies the record ID to retrieve.
         /// </summary>
         /// <param name="recordId">The ID of the record to retrieve.</param>
-        /// <returns>A builder <see cref="IGetRecordByIdRequestBuilder"/> for further configuration of the request.</returns>
+        /// <returns>A <see cref="IGetRecordByIdRequestBuilder"/> for further configuration of the request.</returns>
         IGetRecordByIdRequestBuilder WithId(int recordId);
 
         /// <summary>
         /// Specifies the IDs of the records to retrieve.
         /// </summary>
         /// <param name="recordIds">The IDs of the records to retrieve.</param>
-        /// <returns>A builder <see cref="IGetRecordsByIdsRequestBuilder"/> for further configuration of the request.</returns>
+        /// <returns>A <see cref="IGetRecordsByIdsRequestBuilder"/> for further configuration of the request.</returns>
         IGetRecordsByIdsRequestBuilder WithIds(IEnumerable<int> recordIds);
 
         /// <summary>

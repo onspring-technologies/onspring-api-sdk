@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 namespace Onspring.API.SDK.Models.Fluent
 {
+    /// <summary>
+    /// Represents a request builder for getting all pages of apps.
+    /// </summary>
+    /// <inheritdoc/>
     public class GetAllAppsPagesRequestBuilder : IGetAllAppsPagesRequestBuilder
     {
         private readonly IOnspringClient _client;

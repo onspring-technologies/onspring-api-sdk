@@ -31,7 +31,7 @@ namespace Onspring.API.SDK.Models
         public int TotalRecords { get; set; }
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public class PagedResponse<T> : PagedResponse
     {
         /// <summary>

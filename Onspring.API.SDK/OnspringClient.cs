@@ -75,7 +75,7 @@ namespace Onspring.API.SDK
 
         // ------------------------------------ Fluent Interface ------------------------------------
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public IOnspringRequestBuilder CreateRequest()
         {
             return new OnspringRequestBuilder(this);
@@ -103,7 +103,7 @@ namespace Onspring.API.SDK
 
         #region Apps
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public async IAsyncEnumerable<ApiResponse<GetPagedAppsResponse>> GetAllAppsAsync(int pageSize = 50)
         {
             await foreach (var response in GetAllPagesAsync(page => GetAppsAsync(new PagingRequest(page, pageSize))))
@@ -154,7 +154,7 @@ namespace Onspring.API.SDK
 
         #region Fields
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public async IAsyncEnumerable<ApiResponse<GetPagedFieldsResponse>> GetAllFieldsForAppAsync(int appId, int pageSize = 50)
         {
             await foreach (var response in GetAllPagesAsync(page => GetFieldsForAppAsync(appId, new PagingRequest(page, pageSize))))

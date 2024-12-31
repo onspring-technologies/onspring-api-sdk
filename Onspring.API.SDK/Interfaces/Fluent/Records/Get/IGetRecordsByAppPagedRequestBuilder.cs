@@ -54,21 +54,21 @@ namespace Onspring.API.SDK.Interfaces.Fluent
         /// Specifies the page size to retrieve.
         /// </summary>
         /// <param name="pageSize">The size of page to retrieve</param>
-        /// <returns>A builder for further configuration of the request.</returns>
+        /// <returns>A <see cref="IGetRecordsByAppPagedRequestBuilder"/> for further configuration of the request.</returns>
         IGetRecordsByAppPagedRequestBuilder WithPageSize(int pageSize);
 
         /// <summary>
         /// Specifies the IDs of the fields to retrieve.
         /// </summary>
         /// <param name="fieldIds">The IDs of the fields to retrieve.</param>
-        /// <returns>A builder for further configuration of the request.</returns>
+        /// <returns>A <see cref="IGetRecordsByAppPagedRequestBuilder"/> for further configuration of the request.</returns>
         IGetRecordsByAppPagedRequestBuilder WithFieldIds(IEnumerable<int> fieldIds);
 
         /// <summary>
         /// Specifies the data format for the response.
         /// </summary>
         /// <param name="dataFormat">The data format for the response.</param>
-        /// <returns>A builder for further configuration of the request.</returns>
+        /// <returns>A <see cref="IGetRecordsByAppPagedRequestBuilder"/> for further configuration of the request.</returns>
         IGetRecordsByAppPagedRequestBuilder WithFormat(DataFormat dataFormat);
     }
 }
