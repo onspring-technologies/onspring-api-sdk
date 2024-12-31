@@ -56,13 +56,16 @@ namespace Onspring.API.SDK.Models.Fluent
 
         public IGetAllRecordsPagesByQueryRequestBuilder WithFilter(Action<Filter> filter)
         {
+            var newFilter = new Filter();
+            filter.Invoke(newFilter);
+
             return new GetAllRecordsPagesByQueryRequestBuilder(
                 _client,
                 AppId,
                 PageSize,
                 FieldIds,
                 DataFormat,
-                filter.ToString()
+                newFilter.ToString()
             );
         }
 
