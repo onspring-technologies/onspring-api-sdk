@@ -418,3 +418,6 @@ await foreach (var response in appsResponses)
     }
 }
 ```
+
+> [!NOTE]
+> This same pagination API is exposed for the `IOnspringRequestBuilder` interface through the `ToGetAllPages` method.
