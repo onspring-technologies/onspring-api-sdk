@@ -9,7 +9,7 @@ namespace Onspring.API.SDK.Models.Fluent
     /// <summary>
     /// Represents a request builder for getting all pages of records from an app.
     /// </summary>
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public class GetAllRecordsPagesByAppRequestBuilder : IGetAllRecordsPagesByAppRequestBuilder
     {
         private readonly IOnspringClient _client;

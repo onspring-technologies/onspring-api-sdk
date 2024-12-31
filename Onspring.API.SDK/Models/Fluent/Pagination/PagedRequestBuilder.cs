@@ -2,6 +2,10 @@ using Onspring.API.SDK.Interfaces.Fluent;
 
 namespace Onspring.API.SDK.Models.Fluent
 {
+    /// <summary>
+    /// Represents a builder for paged requests.
+    /// </summary>
+    /// <inheritdoc/>
     public class PagedRequestBuilder : IPagedRequestBuilder
     {
         private readonly IOnspringClient _client;
@@ -24,6 +28,11 @@ namespace Onspring.API.SDK.Models.Fluent
         public IGetAllRecordsPagesRequestBuilder OfRecords()
         {
             return new GetAllRecordsPagesRequestBuilder(_client);
+        }
+
+        public IGetAllReportsPagesRequestBuilder OfReports()
+        {
+            return new GetAllReportsPagesRequestBuilder(_client);
         }
     }
 }
