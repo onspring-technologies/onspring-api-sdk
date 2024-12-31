@@ -89,6 +89,10 @@ namespace Onspring.API.SDK.Interfaces.Fluent
         /// <returns>A builder instance for retrieving apps that implements the <see cref="IGetAppsRequestBuilder"/> interface.</returns>
         IGetAppsRequestBuilder ToGetApps();
 
+        /// <summary>
+        /// Creates a builder for retrieving all pages of an entity that supports pagination.
+        /// </summary>
+        /// <returns>A builder instance for retrieving all pages that implements the <see cref="IPagedRequestBuilder"/> interface.</returns>
         IPagedRequestBuilder ToGetAllPages();
     }
 }
