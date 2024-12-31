@@ -82,6 +82,6 @@ namespace Onspring.API.SDK.Interfaces.Fluent
         /// </summary>
         /// <param name="options">The options to use when sending the request.</param>
         /// <returns>An async enumerable of <see cref="ApiResponse{T}"/> where T is <see cref="GetPagedRecordsResponse"/>.</returns>
-        IAsyncEnumerable<ApiResponse<GetPagedRecordsResponse>> SendAsync(Action<GetAllRecordsPagesByQueryRequestBuilderOptions> options);
+        IAsyncEnumerable<ApiResponse<GetPagedRecordsResponse>> SendAsync(Action<GetAllRecordsPagesByAppRequestBuilderOptions> options);
     }
 }

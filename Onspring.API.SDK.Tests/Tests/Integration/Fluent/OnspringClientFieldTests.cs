@@ -152,7 +152,10 @@ namespace Onspring.API.SDK.Tests.Tests.Integration.Fluent
             foreach (var page in pages)
             {
                 mockHttp
-                    .When(HttpMethod.Get, $"{testAddress}/fields/appId/{_appIdWithFields}?PageNumber={page.PageNumber}&PageSize={pageSize}")
+                    .When(
+                        HttpMethod.Get,
+                        $"{testAddress}/fields/appId/{_appIdWithFields}?PageNumber={page.PageNumber}&PageSize={pageSize}"
+                    )
                     .Respond(
                         "application/json",
                         JsonSerializer.Serialize(page)
