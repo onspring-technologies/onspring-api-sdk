@@ -1,6 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Onspring.API.SDK.Interfaces.Fluent;
-using Onspring.API.SDK.Models.Fluent;
 using Onspring.API.SDK.Tests.Infrastructure;
 using System;
 using System.Diagnostics.CodeAnalysis;
