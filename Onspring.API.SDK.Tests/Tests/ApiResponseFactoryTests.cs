@@ -1,5 +1,4 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 using Onspring.API.SDK.Http;
 using Onspring.API.SDK.Json;
 using Onspring.API.SDK.Tests.Infrastructure;
