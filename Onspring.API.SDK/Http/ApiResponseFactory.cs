@@ -1,9 +1,9 @@
-﻿using Newtonsoft.Json;
-using Onspring.API.SDK.Extensions;
-using Onspring.API.SDK.Models;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Onspring.API.SDK.Extensions;
+using Onspring.API.SDK.Models;
 
 namespace Onspring.API.SDK.Http
 {
@@ -63,7 +63,11 @@ namespace Onspring.API.SDK.Http
         internal static async Task<string> TryGetMessageAsync(HttpResponseMessage httpResponse, JsonSerializer jsonSerializer)
         {
             var message = string.Empty;
-            if (httpResponse.StatusCode == HttpStatusCode.Unauthorized || httpResponse.StatusCode == HttpStatusCode.Forbidden || httpResponse.StatusCode == HttpStatusCode.NotFound)
+
+            if (
+                (httpResponse.StatusCode == HttpStatusCode.Unauthorized || httpResponse.StatusCode == HttpStatusCode.Forbidden || httpResponse.StatusCode == HttpStatusCode.NotFound) &&
+                IsJsonContentType(httpResponse.Content.Headers.ContentType?.MediaType)
+            )
             {
                 var messageResponse = await httpResponse.Content.ReadAsJsonAsync<MessageResponse>(jsonSerializer);
                 message = messageResponse?.Message;
@@ -72,7 +76,23 @@ namespace Onspring.API.SDK.Http
             {
                 message = await httpResponse.Content.ReadAsStringAsync();
             }
+
             return message ?? string.Empty;
+        }
+
+        /// <summary>
+        /// Determines if the provided media type indicates JSON content.
+        /// </summary>
+        /// <param name="mediaType"></param>
+        /// <returns></returns>
+        private static bool IsJsonContentType(string mediaType)
+        {
+            if (string.IsNullOrEmpty(mediaType))
+            {
+                return false;
+            }
+
+            return mediaType.IndexOf("application/json", System.StringComparison.OrdinalIgnoreCase) >= 0;
         }
     }
 }
