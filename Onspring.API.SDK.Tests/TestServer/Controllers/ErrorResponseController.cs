@@ -39,7 +39,7 @@ namespace Onspring.API.SDK.Tests.TestServer.Controllers
             var htmlContent = "<html><body>Not Found</body></html>";
             return new ContentResult
             {
-                Content = "Forbidden",
+                Content = htmlContent,
                 ContentType = "text/html; charset=utf-8",
                 StatusCode = 404
             };
