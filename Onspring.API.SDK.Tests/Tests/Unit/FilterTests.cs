@@ -57,7 +57,7 @@ namespace Onspring.API.SDK.Tests.Tests.Unit
         public void Filter_ConstructorWhenCalledAndOperatorIsNotANullOperatorAndValueIsNull_ItShouldThrowException()
         {
             var action = () => new Filter(1, FilterOperator.And, null);
-            Assert.ThrowsException<ArgumentException>(action);
+            Assert.Throws<ArgumentException>(action);
         }
 
         [TestMethod]
@@ -93,7 +93,7 @@ namespace Onspring.API.SDK.Tests.Tests.Unit
         {
             var filter = new Filter(1, FilterOperator.Equal, 1);
             var action = () => filter.Value = null;
-            Assert.ThrowsException<ArgumentException>(action);
+            Assert.Throws<ArgumentException>(action);
         }
 
         [TestMethod]
