@@ -27,7 +27,7 @@ namespace Onspring.API.SDK.Tests.Infrastructure.Helpers
         {
             Assert.IsNotNull(apiResponse, "ApiResponse was null.");
             Assert.IsFalse(apiResponse.IsSuccessful, $"ApiResponse.IsSuccessful was true. Response code: {apiResponse.StatusCode}; Message: {apiResponse.Message ?? "None"}");
-            Assert.AreEqual(apiResponse.StatusCode, expectedStatusCode, "ApiResponse.StatusCode was expected.");
+            Assert.AreEqual(expectedStatusCode, apiResponse.StatusCode, "ApiResponse.StatusCode was expected.");
 
             if (shouldHaveMessage)
             {
