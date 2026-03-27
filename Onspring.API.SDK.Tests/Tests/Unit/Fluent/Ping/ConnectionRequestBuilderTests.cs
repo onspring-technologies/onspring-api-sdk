@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace Onspring.API.SDK.Tests.Tests.Integration.Fluent
 {
+    [TestClass]
     public class ConnectionRequestBuilderTests
     {
         private static IOnspringClient _client;
