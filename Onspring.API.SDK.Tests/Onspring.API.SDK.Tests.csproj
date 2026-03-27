@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 
 		<IsPackable>false</IsPackable>
 	</PropertyGroup>
@@ -11,20 +11,21 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="coverlet.msbuild" Version="6.0.0">
+		<PackageReference Include="coverlet.msbuild" Version="8.0.1">
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.11" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.2" />
-		<PackageReference Include="MSTest.TestAdapter" Version="3.1.1" />
-		<PackageReference Include="MSTest.TestFramework" Version="3.1.1" />
-		<PackageReference Include="coverlet.collector" Version="6.0.0">
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="10.0.5" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.3.0" />
+		<PackageReference Include="MSTest.TestAdapter" Version="4.1.0" />
+		<PackageReference Include="MSTest.TestFramework" Version="4.1.0" />
+		<PackageReference Include="coverlet.collector" Version="8.0.1">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="NSubstitute" Version="5.1.0" />
-		<PackageReference Include="ReportGenerator" Version="5.1.25" />
+		<PackageReference Include="NSubstitute" Version="5.3.0" />
+		<PackageReference Include="ReportGenerator" Version="5.5.4" />
+		<PackageReference Include="RichardSzalay.MockHttp" Version="7.0.0" />
 	</ItemGroup>
 
 	<PropertyGroup>
@@ -33,8 +34,17 @@
 		<CoverletOutputFormat>opencover</CoverletOutputFormat>
 	</PropertyGroup>
 
+	<Target Name="GetReportGeneratorVersion" BeforeTargets="GenerateHtmlCoverageReport">
+		<ItemGroup>
+			<ReportGeneratorPackage Include="@(PackageReference)" Condition="'%(Identity)' == 'ReportGenerator'" />
+		</ItemGroup>
+		<PropertyGroup>
+			<ReportGeneratorVersion>@(ReportGeneratorPackage -> '%(Version)')</ReportGeneratorVersion>
+		</PropertyGroup>
+	</Target>
+
 	<Target Name="GenerateHtmlCoverageReport" AfterTargets="GenerateCoverageResultAfterTest">
-		<Exec Command="$(UserProfile)\.nuget\packages\reportgenerator\5.1.25\tools\net7.0\ReportGenerator -reports:./TestResults/coverage/$(MSBuildProjectName)/*.xml -targetdir:./TestResults/coverage/$(MSBuildProjectName)/report/ -reporttypes:Html_Dark" />
+		<Exec Command="$(UserProfile)\.nuget\packages\reportgenerator\$(ReportGeneratorVersion)\tools\$(TargetFramework)\ReportGenerator -reports:./TestResults/coverage/$(MSBuildProjectName)/*.xml -targetdir:./TestResults/coverage/$(MSBuildProjectName)/report/ -reporttypes:Html_Dark" />
 	</Target>
 
 	<PropertyGroup>

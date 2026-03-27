@@ -13,17 +13,12 @@ namespace Onspring.API.SDK.Models
     /// <summary>
     /// Represents a response to request that has paged items.
     /// </summary>
-    public class PagedResponse<T>
+    public class PagedResponse
     {
         /// <summary>
         /// Gets the page number of the response.
         /// </summary>
         public int PageNumber { get; set; }
-
-        /// <summary>
-        /// Gets the size of the page.
-        /// </summary>
-        public int PageSize => Items?.Count ?? 0;
 
         /// <summary>
         /// Gets the total amount of pages.
@@ -34,10 +29,19 @@ namespace Onspring.API.SDK.Models
         /// Gets the total amount of records.
         /// </summary>
         public int TotalRecords { get; set; }
+    }
 
+    /// <inheritdoc/>
+    public class PagedResponse<T> : PagedResponse
+    {
         /// <summary>
         /// Gets the collection of items in the response.
         /// </summary>
         public List<T> Items { get; set; } = new List<T>();
+
+        /// <summary>
+        /// Gets the size of the page.
+        /// </summary>
+        public int PageSize => Items?.Count ?? 0;
     }
 }

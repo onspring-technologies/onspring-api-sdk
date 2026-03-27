@@ -1,9 +1,14 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Onspring.API.SDK.Models;
 using Onspring.API.SDK.Tests.Infrastructure;
 using Onspring.API.SDK.Tests.Infrastructure.Helpers;
 using Onspring.API.SDK.Tests.Infrastructure.Http;
+using RichardSzalay.MockHttp;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Onspring.API.SDK.Tests.Tests.Integration.Fluent
@@ -77,6 +82,114 @@ namespace Onspring.API.SDK.Tests.Tests.Integration.Fluent
                 });
 
             AssertHelper.AssertSuccess(apiResponse);
+        }
+
+        [TestMethod]
+        public async Task GetAllFields_WhenUsingDefaultPageSize_ItShouldReturnAllPages()
+        {
+            var testAddress = "https://localhost";
+
+            var numberOfFields = 3;
+            var pageSize = 50;
+            var pages = TestDataFactory.GetPagesOfFields(numberOfFields, pageSize);
+
+            var mockHttp = new MockHttpMessageHandler();
+
+            foreach (var page in pages)
+            {
+                mockHttp
+                    .When(
+                        HttpMethod.Get,
+                        $"{testAddress}/fields/appId/{_appIdWithFields}?PageNumber={page.PageNumber}&PageSize={pageSize}"
+                    )
+                    .Respond(
+                        "application/json",
+                        JsonSerializer.Serialize(page)
+                    );
+            }
+
+            var mockHttpClient = mockHttp.ToHttpClient();
+            mockHttpClient.BaseAddress = new(testAddress);
+
+            var apiClient = new OnspringClient("test", mockHttpClient);
+
+            var fieldsResponses = apiClient
+                .CreateRequest()
+                .ToGetAllPages()
+                .OfFields()
+                .FromApp(_appIdWithFields)
+                .SendAsync();
+
+            var responsePages = new List<GetPagedFieldsResponse>();
+
+            await foreach (var response in fieldsResponses)
+            {
+                AssertHelper.AssertSuccess(response);
+                responsePages.Add(response.Value);
+            }
+
+            foreach (var page in pages)
+            {
+                var responsePage = responsePages.Single(x => x.PageNumber == page.PageNumber);
+
+                Assert.AreEqual(page.PageNumber, responsePage.PageNumber);
+                Assert.AreEqual(page.Items.Count, responsePage.Items.Count);
+                Assert.AreEqual(page.Items[0].Id, responsePage.Items[0].Id);
+            }
+        }
+
+        [TestMethod]
+        public async Task GetAllFields_WhenUsingCustomPageSize_ItShouldReturnAllPages()
+        {
+            var testAddress = "https://localhost";
+
+            var numberOfFields = 3;
+            var pageSize = 1;
+            var pages = TestDataFactory.GetPagesOfFields(numberOfFields, pageSize);
+
+            var mockHttp = new MockHttpMessageHandler();
+
+            foreach (var page in pages)
+            {
+                mockHttp
+                    .When(
+                        HttpMethod.Get,
+                        $"{testAddress}/fields/appId/{_appIdWithFields}?PageNumber={page.PageNumber}&PageSize={pageSize}"
+                    )
+                    .Respond(
+                        "application/json",
+                        JsonSerializer.Serialize(page)
+                    );
+            }
+
+            var mockHttpClient = mockHttp.ToHttpClient();
+            mockHttpClient.BaseAddress = new(testAddress);
+
+            var apiClient = new OnspringClient("test", mockHttpClient);
+
+            var appsResponses = apiClient
+                .CreateRequest()
+                .ToGetAllPages()
+                .OfFields()
+                .FromApp(_appIdWithFields)
+                .SendAsync(o => o.PageSize = pageSize);
+
+            var responsePages = new List<GetPagedFieldsResponse>();
+
+            await foreach (var response in appsResponses)
+            {
+                AssertHelper.AssertSuccess(response);
+                responsePages.Add(response.Value);
+            }
+
+            foreach (var page in pages)
+            {
+                var responsePage = responsePages.Single(x => x.PageNumber == page.PageNumber);
+
+                Assert.AreEqual(page.PageNumber, responsePage.PageNumber);
+                Assert.AreEqual(page.Items.Count, responsePage.Items.Count);
+                Assert.AreEqual(page.Items[0].Id, responsePage.Items[0].Id);
+            }
         }
     }
 }

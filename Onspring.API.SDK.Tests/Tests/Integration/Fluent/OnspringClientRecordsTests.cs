@@ -4,7 +4,12 @@ using Onspring.API.SDK.Models;
 using Onspring.API.SDK.Tests.Infrastructure;
 using Onspring.API.SDK.Tests.Infrastructure.Helpers;
 using Onspring.API.SDK.Tests.Infrastructure.Http;
+using RichardSzalay.MockHttp;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Onspring.API.SDK.Tests.Tests.Integration.Fluent
@@ -231,6 +236,273 @@ namespace Onspring.API.SDK.Tests.Tests.Integration.Fluent
                 .SendAsync();
 
             AssertHelper.AssertSuccess(apiResponse);
+        }
+
+        [TestMethod]
+        public async Task GetAllRecords_WhenUsingDefaultOptions_ItShouldReturnAllPages()
+        {
+            var testAddress = "https://localhost";
+
+            var numberOfRecords = 3;
+            var pageSize = 50;
+            var pages = TestDataFactory.GetPagesOfRecords(numberOfRecords, pageSize);
+
+            var mockHttp = new MockHttpMessageHandler();
+
+            foreach (var page in pages)
+            {
+                mockHttp
+                    .When(
+                        HttpMethod.Get,
+                        $"{testAddress}/records/appId/{_appIdWithRecords}"
+                    )
+                    .WithQueryString(new Dictionary<string, string>
+                    {
+                        { "PageNumber", page.PageNumber.ToString() },
+                        { "PageSize", pageSize.ToString() },
+                        { "dataFormat", DataFormat.Raw.ToString() }
+                    })
+                    .Respond(
+                        "application/json",
+                        JsonSerializer.Serialize(page)
+                    );
+            }
+
+            var mockHttpClient = mockHttp.ToHttpClient();
+            mockHttpClient.BaseAddress = new(testAddress);
+
+            var apiClient = new OnspringClient("test", mockHttpClient);
+
+            var recordsResponses = apiClient
+                .CreateRequest()
+                .ToGetAllPages()
+                .OfRecords()
+                .FromApp(_appIdWithRecords)
+                .SendAsync();
+
+            var responsePages = new List<GetPagedRecordsResponse>();
+
+            await foreach (var response in recordsResponses)
+            {
+                AssertHelper.AssertSuccess(response);
+                responsePages.Add(response.Value);
+            }
+
+            foreach (var page in pages)
+            {
+                var responsePage = responsePages.Single(x => x.PageNumber == page.PageNumber);
+
+                Assert.AreEqual(page.PageNumber, responsePage.PageNumber);
+                Assert.AreEqual(page.Items.Count, responsePage.Items.Count);
+                Assert.AreEqual(page.Items[0].RecordId, responsePage.Items[0].RecordId);
+            }
+        }
+
+        [TestMethod]
+        public async Task GetAllRecords_WhenUsingCustomOptions_ItShouldReturnAllPages()
+        {
+            var testAddress = "https://localhost";
+
+            var numberOfRecords = 3;
+            var pageSize = 1;
+            var pages = TestDataFactory.GetPagesOfRecords(numberOfRecords, pageSize);
+
+            var mockHttp = new MockHttpMessageHandler();
+
+            foreach (var page in pages)
+            {
+                mockHttp
+                    .When(
+                        HttpMethod.Get,
+                        $"{testAddress}/records/appId/{_appIdWithRecords}"
+                    )
+                    .WithQueryString(new Dictionary<string, string>
+                    {
+                        { "PageNumber", page.PageNumber.ToString() },
+                        { "PageSize", pageSize.ToString() },
+                        { "dataFormat", DataFormat.Formatted.ToString() },
+                        { "fieldIds", "1,2,3" }
+                    })
+                    .Respond(
+                        "application/json",
+                        JsonSerializer.Serialize(page)
+                    );
+            }
+
+            var mockHttpClient = mockHttp.ToHttpClient();
+            mockHttpClient.BaseAddress = new(testAddress);
+
+            var apiClient = new OnspringClient("test", mockHttpClient);
+
+            var recordsResponses = apiClient
+                .CreateRequest()
+                .ToGetAllPages()
+                .OfRecords()
+                .FromApp(_appIdWithRecords)
+                .SendAsync(o =>
+                {
+                    o.FieldIds = [1, 2, 3];
+                    o.DataFormat = DataFormat.Formatted;
+                    o.PageSize = pageSize;
+                });
+
+            var responsePages = new List<GetPagedRecordsResponse>();
+
+            await foreach (var response in recordsResponses)
+            {
+                AssertHelper.AssertSuccess(response);
+                responsePages.Add(response.Value);
+            }
+
+            foreach (var page in pages)
+            {
+                var responsePage = responsePages.Single(x => x.PageNumber == page.PageNumber);
+
+                Assert.AreEqual(page.PageNumber, responsePage.PageNumber);
+                Assert.AreEqual(page.Items.Count, responsePage.Items.Count);
+                Assert.AreEqual(page.Items[0].RecordId, responsePage.Items[0].RecordId);
+            }
+        }
+
+        [TestMethod]
+        public async Task GetAllRecordsByQuery_WhenUsingDefaultOptions_ItShouldReturnAllPages()
+        {
+            var testAddress = "https://localhost";
+
+            var testFilter = "testFilter";
+            var numberOfRecords = 3;
+            var pageSize = 50;
+            var pages = TestDataFactory.GetPagesOfRecords(numberOfRecords, pageSize);
+
+            var mockHttp = new MockHttpMessageHandler();
+
+            foreach (var page in pages)
+            {
+                mockHttp
+                    .When(
+                        HttpMethod.Post,
+                        $"{testAddress}/records/query"
+                    )
+                    .WithQueryString(new Dictionary<string, string>
+                    {
+                        { "PageNumber", page.PageNumber.ToString() },
+                        { "PageSize", pageSize.ToString() }
+                    })
+                    .WithJsonContent<QueryRecordsRequest>(req =>
+                    {
+                        return req.AppId == _appIdWithRecords
+                            && req.Filter == testFilter
+                            && req.FieldIds.SequenceEqual([])
+                            && req.DataFormat == DataFormat.Raw;
+                    })
+                    .Respond(
+                        "application/json",
+                        JsonSerializer.Serialize(page)
+                    );
+            }
+
+            var mockHttpClient = mockHttp.ToHttpClient();
+            mockHttpClient.BaseAddress = new(testAddress);
+
+            var apiClient = new OnspringClient("test", mockHttpClient);
+
+            var recordsResponses = apiClient
+                .CreateRequest()
+                .ToGetAllPages()
+                .OfRecords()
+                .FromApp(_appIdWithRecords)
+                .WithFilter(testFilter)
+                .SendAsync();
+
+            var responsePages = new List<GetPagedRecordsResponse>();
+
+            await foreach (var response in recordsResponses)
+            {
+                AssertHelper.AssertSuccess(response);
+                responsePages.Add(response.Value);
+            }
+
+            foreach (var page in pages)
+            {
+                var responsePage = responsePages.Single(x => x.PageNumber == page.PageNumber);
+
+                Assert.AreEqual(page.PageNumber, responsePage.PageNumber);
+                Assert.AreEqual(page.Items.Count, responsePage.Items.Count);
+                Assert.AreEqual(page.Items[0].RecordId, responsePage.Items[0].RecordId);
+            }
+        }
+
+        [TestMethod]
+        public async Task GetAllRecordsByQuery_WhenUsingCustomOptions_ItShouldReturnAllPages()
+        {
+            var testAddress = "https://localhost";
+
+            var testFilter = "testFilter";
+            var numberOfRecords = 3;
+            var pageSize = 50;
+            var pages = TestDataFactory.GetPagesOfRecords(numberOfRecords, pageSize);
+
+            var mockHttp = new MockHttpMessageHandler();
+
+            foreach (var page in pages)
+            {
+                mockHttp
+                    .When(
+                        HttpMethod.Post,
+                        $"{testAddress}/records/query"
+                    )
+                    .WithQueryString(new Dictionary<string, string>
+                    {
+                        { "PageNumber", page.PageNumber.ToString() },
+                        { "PageSize", pageSize.ToString() }
+                    })
+                    .WithJsonContent<QueryRecordsRequest>(req =>
+                    {
+                        return req.AppId == _appIdWithRecords
+                            && req.Filter == testFilter
+                            && req.FieldIds.SequenceEqual([1, 2, 3])
+                            && req.DataFormat == DataFormat.Formatted;
+                    })
+                    .Respond(
+                        "application/json",
+                        JsonSerializer.Serialize(page)
+                    );
+            }
+
+            var mockHttpClient = mockHttp.ToHttpClient();
+            mockHttpClient.BaseAddress = new(testAddress);
+
+            var apiClient = new OnspringClient("test", mockHttpClient);
+
+            var recordsResponses = apiClient
+                .CreateRequest()
+                .ToGetAllPages()
+                .OfRecords()
+                .FromApp(_appIdWithRecords)
+                .WithFilter(testFilter)
+                .SendAsync(o =>
+                {
+                    o.FieldIds = [1, 2, 3];
+                    o.DataFormat = DataFormat.Formatted;
+                    o.PageSize = pageSize;
+                });
+
+            var responsePages = new List<GetPagedRecordsResponse>();
+
+            await foreach (var response in recordsResponses)
+            {
+                AssertHelper.AssertSuccess(response);
+                responsePages.Add(response.Value);
+            }
+
+            foreach (var page in pages)
+            {
+                var responsePage = responsePages.Single(x => x.PageNumber == page.PageNumber);
+
+                Assert.AreEqual(page.PageNumber, responsePage.PageNumber);
+                Assert.AreEqual(page.Items.Count, responsePage.Items.Count);
+                Assert.AreEqual(page.Items[0].RecordId, responsePage.Items[0].RecordId);
+            }
         }
     }
 }

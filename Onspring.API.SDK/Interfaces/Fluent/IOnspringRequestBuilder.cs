@@ -33,7 +33,7 @@ namespace Onspring.API.SDK.Interfaces.Fluent
         /// Creates a builder for retrieving reports from Onspring.
         /// </summary>
         /// <returns>A builder instance for retrieving reports that implements the <see cref="IGetReportsRequestBuilder"/> interface.</returns>
-        IGetReportsByAppRequestBuilder ToGetReports();
+        IGetReportsRequestBuilder ToGetReports();
 
         /// <summary>
         /// Creates a builder for retrieving report data from Onspring.
@@ -88,5 +88,11 @@ namespace Onspring.API.SDK.Interfaces.Fluent
         /// </summary>
         /// <returns>A builder instance for retrieving apps that implements the <see cref="IGetAppsRequestBuilder"/> interface.</returns>
         IGetAppsRequestBuilder ToGetApps();
+
+        /// <summary>
+        /// Creates a builder for retrieving all pages of an entity that supports pagination.
+        /// </summary>
+        /// <returns>A builder instance for retrieving all pages that implements the <see cref="IPagedRequestBuilder"/> interface.</returns>
+        IPagedRequestBuilder ToGetAllPages();
     }
 }

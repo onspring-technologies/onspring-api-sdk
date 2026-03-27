@@ -65,6 +65,13 @@ namespace Onspring.API.SDK
         /// <summary>
         /// Gets all accessible apps.
         /// </summary>
+        /// <param name="pageSize">The number of apps to return per page.</param>
+        /// <returns>An async enumerable of <see cref="ApiResponse{T}"/> where T is <see cref="GetPagedAppsResponse"/>.</returns>
+        IAsyncEnumerable<ApiResponse<GetPagedAppsResponse>> GetAllAppsAsync(int pageSize = 50);
+
+        /// <summary>
+        /// Gets all accessible apps.
+        /// </summary>
         /// <param name="pagingRequest"></param>
         /// <returns></returns>
         Task<ApiResponse<GetPagedAppsResponse>> GetAppsAsync(PagingRequest pagingRequest = null);
@@ -75,6 +82,7 @@ namespace Onspring.API.SDK
         /// <param name="appIds"></param>
         /// <returns></returns>
         Task<ApiResponse<GetAppsResponse>> GetAppsAsync(IEnumerable<int> appIds);
+
 
         /// <summary>
         /// Gets the requested field.
@@ -89,6 +97,15 @@ namespace Onspring.API.SDK
         /// <param name="fieldIds"></param>
         /// <returns></returns>
         Task<ApiResponse<GetFieldsResponse>> GetFieldsAsync(IEnumerable<int> fieldIds);
+
+        /// <summary>
+        /// Gets all accessible fields.
+        /// </summary>
+        /// <param name="appId">The identifier of the app to get fields for.</param>
+        /// <param name="pageSize">The number of fields to return per page.</param>
+        /// <returns>An async enumerable of <see cref="ApiResponse{T}"/> where T is <see cref="GetPagedFieldsResponse"/>.</returns>
+        IAsyncEnumerable<ApiResponse<GetPagedFieldsResponse>> GetAllFieldsForAppAsync(int appId, int pageSize = 50);
+
 
         /// <summary>
         /// Gets the fields associated to the <paramref name="appId"/>. 
@@ -131,6 +148,21 @@ namespace Onspring.API.SDK
         Task<ApiResponse<GetRecordsResponse>> GetRecordsAsync(GetRecordsRequest request);
 
         /// <summary>
+        /// Gets all records associated to an app.
+        /// </summary>
+        /// <param name="request">An instance of <see cref="GetRecordsByAppRequest"/>.</param>
+        /// <returns>An async enumerable of <see cref="ApiResponse{T}"/> where T is <see cref="GetPagedRecordsResponse"/>.</returns>
+        IAsyncEnumerable<ApiResponse<GetPagedRecordsResponse>> GetAllRecordsForAppAsync(GetRecordsByAppRequest request);
+
+        /// <summary>
+        /// Gets all records by query.
+        /// </summary>
+        /// <param name="request">An instance of <see cref="QueryRecordsRequest"/>.</param>
+        /// <param name="pageSize">The number of records to return per page.</param>
+        /// <returns>An async enumerable of <see cref="ApiResponse{T}"/> where T is <see cref="GetPagedRecordsResponse"/>.</returns>
+        IAsyncEnumerable<ApiResponse<GetPagedRecordsResponse>> GetAllRecordsByQueryAsync(QueryRecordsRequest request, int pageSize = 50);
+
+        /// <summary>
         /// Gets the records associated to an app.
         /// </summary>
         /// <param name="request"></param>
@@ -145,6 +177,14 @@ namespace Onspring.API.SDK
         /// <param name="dataFormat"></param>
         /// <returns></returns>
         Task<ApiResponse<ReportData>> GetReportAsync(int reportId, ReportDataType dataType = ReportDataType.ReportData, DataFormat dataFormat = DataFormat.Raw);
+
+        /// <summary>
+        /// Gets all reports associated to the <paramref name="appId"/>.
+        /// </summary>
+        /// <param name="appId">The identifier of the app to get reports for.</param>
+        /// <param name="pageSize">The number of reports to return per page.</param>
+        /// <returns>An async enumerable of <see cref="ApiResponse{T}"/> where T is <see cref="GetReportsForAppResponse"/>.</returns>
+        IAsyncEnumerable<ApiResponse<GetReportsForAppResponse>> GetAllReportsForAppAsync(int appId, int pageSize = 50);
 
         /// <summary>
         /// Gets the reports associated to the <paramref name="appId"/>.
@@ -182,5 +222,6 @@ namespace Onspring.API.SDK
         /// <param name="request"></param>
         /// <returns></returns>
         Task<ApiResponse<SaveRecordResponse>> SaveRecordAsync(ResultRecord request);
+
     }
 }

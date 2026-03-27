@@ -1,6 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Onspring.API.SDK.Interfaces.Fluent;
-using Onspring.API.SDK.Models.Fluent;
 using Onspring.API.SDK.Tests.Infrastructure;
 using System;
 using System.Diagnostics.CodeAnalysis;
@@ -25,7 +24,7 @@ namespace Onspring.API.SDK.Tests.Tests.Integration
             var _ = new OnspringClient(_testConfiguration.BaseAddress, _testConfiguration.ApiKey);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow((string)null, "testkey")]
         [DataRow("", "testkey")]
         [DataRow("        ", "testkey")]
@@ -33,10 +32,10 @@ namespace Onspring.API.SDK.Tests.Tests.Integration
         [DataRow("http://localhost", (string)null)]
         [DataRow("http://localhost", "")]
         [DataRow("http://localhost", "        ")]
-        [ExpectedException(typeof(ArgumentException))]
         public void InvalidConstructor_BaseAddress_ApiKey(string baseAddress, string apiKey)
         {
-            var _ = new OnspringClient(baseAddress, apiKey);
+            var act = () => new OnspringClient(baseAddress, apiKey);
+            Assert.Throws<ArgumentException>(act);
         }
 
         [TestMethod]
@@ -46,7 +45,7 @@ namespace Onspring.API.SDK.Tests.Tests.Integration
             var _ = new OnspringClient(clientConfig);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow((string)null, "testkey")]
         [DataRow("", "testkey")]
         [DataRow("        ", "testkey")]
@@ -54,7 +53,6 @@ namespace Onspring.API.SDK.Tests.Tests.Integration
         [DataRow("http://localhost", (string)null)]
         [DataRow("http://localhost", "")]
         [DataRow("http://localhost", "        ")]
-        [ExpectedException(typeof(ArgumentException))]
         public void InvalidConstructor_ClientConfiguration(string baseAddress, string apiKey)
         {
             var clientConfig = new OnspringClientConfiguration
@@ -63,14 +61,15 @@ namespace Onspring.API.SDK.Tests.Tests.Integration
                 ApiKey = apiKey
             };
 
-            var _ = new OnspringClient(clientConfig);
+            var act = () => new OnspringClient(clientConfig);
+            Assert.Throws<ArgumentException>(act);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void InvalidConstructor_NullClientConfiguration()
         {
-            var _ = new OnspringClient(null);
+            var act = () => new OnspringClient(null);
+            Assert.Throws<ArgumentNullException>(act);
         }
 
         [TestMethod]
@@ -80,27 +79,27 @@ namespace Onspring.API.SDK.Tests.Tests.Integration
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void InvalidConstructor_NullHttpClient()
         {
-            var _ = new OnspringClient(_testConfiguration.ApiKey, httpClient: null);
-        }
-
-        [DataTestMethod]
-        [DataRow((string)null)]
-        [DataRow("")]
-        [DataRow("        ")]
-        [ExpectedException(typeof(ArgumentException))]
-        public void InvalidConstructor_InvalidApiKey_HttpClient(string apiKey)
-        {
-            var _ = new OnspringClient(apiKey, new HttpClient { BaseAddress = new Uri(_testConfiguration.BaseAddress) });
+            var act = () => new OnspringClient(_testConfiguration.ApiKey, httpClient: null);
+            Assert.Throws<ArgumentNullException>(act);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [DataRow((string)null)]
+        [DataRow("")]
+        [DataRow("        ")]
+        public void InvalidConstructor_InvalidApiKey_HttpClient(string apiKey)
+        {
+            var act = () => new OnspringClient(apiKey, new HttpClient { BaseAddress = new Uri(_testConfiguration.BaseAddress) });
+            Assert.Throws<ArgumentException>(act);
+        }
+
+        [TestMethod]
         public void InvalidConstructor_HttpClient_NoBaseAddress()
         {
-            var _ = new OnspringClient(_testConfiguration.ApiKey, new HttpClient());
+            var act = () => new OnspringClient(_testConfiguration.ApiKey, new HttpClient());
+            Assert.Throws<ArgumentException>(act);
         }
 
         [TestMethod]

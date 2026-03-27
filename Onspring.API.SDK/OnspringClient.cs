@@ -75,7 +75,7 @@ namespace Onspring.API.SDK
 
         // ------------------------------------ Fluent Interface ------------------------------------
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public IOnspringRequestBuilder CreateRequest()
         {
             return new OnspringRequestBuilder(this);
@@ -102,6 +102,15 @@ namespace Onspring.API.SDK
         // ------------------------------------ Apps ------------------------------------
 
         #region Apps
+
+        /// <inheritdoc/>
+        public async IAsyncEnumerable<ApiResponse<GetPagedAppsResponse>> GetAllAppsAsync(int pageSize = 50)
+        {
+            await foreach (var response in GetAllPagesAsync(page => GetAppsAsync(new PagingRequest(page, pageSize))))
+            {
+                yield return response;
+            }
+        }
 
         /// <summary>
         /// Gets all accessible apps.
@@ -144,6 +153,15 @@ namespace Onspring.API.SDK
         // ------------------------------------ Fields ------------------------------------
 
         #region Fields
+
+        /// <inheritdoc/>
+        public async IAsyncEnumerable<ApiResponse<GetPagedFieldsResponse>> GetAllFieldsForAppAsync(int appId, int pageSize = 50)
+        {
+            await foreach (var response in GetAllPagesAsync(page => GetFieldsForAppAsync(appId, new PagingRequest(page, pageSize))))
+            {
+                yield return response;
+            }
+        }
 
         /// <summary>
         /// Gets the requested field. Returns null if field could not be found.
@@ -343,6 +361,30 @@ namespace Onspring.API.SDK
             return apiResponse;
         }
 
+        /// <inheritdoc/>
+        public async IAsyncEnumerable<ApiResponse<GetPagedRecordsResponse>> GetAllRecordsForAppAsync(GetRecordsByAppRequest request)
+        {
+            var callback = new Func<int, Task<ApiResponse<GetPagedRecordsResponse>>>(page =>
+            {
+                request.PagingRequest = new PagingRequest(page, request.PagingRequest?.PageSize ?? 50);
+                return GetRecordsForAppAsync(request);
+            });
+
+            await foreach (var response in GetAllPagesAsync(callback))
+            {
+                yield return response;
+            }
+        }
+
+        /// <inheritdoc/>
+        public async IAsyncEnumerable<ApiResponse<GetPagedRecordsResponse>> GetAllRecordsByQueryAsync(QueryRecordsRequest request, int pageSize = 50)
+        {
+            await foreach (var response in GetAllPagesAsync(page => QueryRecordsAsync(request, new PagingRequest(page, pageSize))))
+            {
+                yield return response;
+            }
+        }
+
         /// <summary>
         /// Gets a record by its identifier.
         /// </summary>
@@ -461,9 +503,42 @@ namespace Onspring.API.SDK
             return getReportsResponse;
         }
 
+        /// <inheritdoc/>
+        public async IAsyncEnumerable<ApiResponse<GetReportsForAppResponse>> GetAllReportsForAppAsync(int appId, int pageSize = 50)
+        {
+            await foreach (var response in GetAllPagesAsync(page => GetReportsForAppAsync(appId, new PagingRequest(page, pageSize))))
+            {
+                yield return response;
+            }
+        }
+
         #endregion
 
         // ------------------------------------ Client internals ------------------------------------
+
+        /// <summary>
+        /// Gets all pages of a paged response.
+        /// </summary>
+        /// <typeparam name="T">Where T is a paged response.</typeparam>
+        /// <param name="callback">The callback to get a page of the response.</param>
+        /// <returns>An async enumerable of the paged response.</returns>
+        private async IAsyncEnumerable<ApiResponse<T>> GetAllPagesAsync<T>(Func<int, Task<ApiResponse<T>>> callback) where T : PagedResponse
+        {
+            var initialResponse = await callback(1);
+
+            yield return initialResponse;
+
+            var totalPages = initialResponse.Value.TotalPages;
+            var nextPage = initialResponse.Value.PageNumber + 1;
+
+            while (nextPage <= totalPages)
+            {
+                var response = await callback(nextPage);
+                nextPage++;
+
+                yield return response;
+            }
+        }
 
         /// <summary>
         /// Performs an HTTP DELETE request to the <paramref name="path"/> and adds an API Key header.
