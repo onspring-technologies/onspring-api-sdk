@@ -1,4 +1,5 @@
 ﻿using Onspring.API.SDK.Enums;
+using Onspring.API.SDK.Interfaces.Fluent;
 using Onspring.API.SDK.Models;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,12 @@ namespace Onspring.API.SDK
     /// </summary>
     public interface IOnspringClient
     {
+        /// <summary>
+        /// Creates a new Onspring Request which exposes a fluent interface for making a request to the Onspring API.
+        /// </summary>
+        /// <returns>An instance that implements the <see cref="IOnspringRequestBuilder"/> interface.</returns>
+        IOnspringRequestBuilder CreateRequest();
+
         /// <summary>
         /// Determines if the API is reachable.
         /// </summary>
